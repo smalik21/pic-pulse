@@ -8,7 +8,7 @@ const filters = [
 
 const Filters = () => {
     return (
-        <section className="py-6 px-2 overflow-clip flex flex-col md:flex-row items-center md:justify-center md:gap-4">
+        <section className="py-4 px-2 overflow-clip flex flex-col md:flex-row items-center md:justify-center md:gap-4 bg-red-100">
             <input
                 id="filters-toggle"
                 name="filters-toggle"

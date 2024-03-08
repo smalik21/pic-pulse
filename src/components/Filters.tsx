@@ -17,7 +17,7 @@ const Filters = () => {
                             before:inline-block before:content-['FILTERS'] before:text-xs before:sm:text-sm
                             checked:before:text-white checked:bg-dark"
             />
-            <section className="hidden peer-checked:flex md:flex mt-4 pb-1 md:p-0 md:m-0 w-full md:w-fit overflow-x-scroll scroll-m-0 gap-3 xs:justify-center">
+            <section className="hidden peer-checked:flex md:flex mt-4 pb-1 md:p-0 md:m-0 w-full md:w-fit overflow-x-scroll no-scrollbar gap-3 xs:justify-center">
                 {filters.map(filter => {
                     return (
                         <div key={filter.name} className="w-fit text-xs sm:text-sm flex items-center border border-black rounded-md">

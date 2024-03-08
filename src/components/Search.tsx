@@ -1,6 +1,5 @@
 import photosIcon from "../assets/photos-icon.svg"
 import videosIcon from "../assets/videos-icon.svg"
-import arrowIcon from "../assets/arrow-icon.svg"
 import searchIcon from "../assets/search-icon.svg"
 import { ChangeEvent, useState } from "react"
 

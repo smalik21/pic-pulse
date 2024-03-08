@@ -19,6 +19,9 @@ export default {
                 'gray-1': '#CFCFCF',
                 'gray-2': '#9A9A9A',
                 'dark': '#1C1C1C',
+            },
+            screens: {
+                'xs': '520px',
             }
         },
     },

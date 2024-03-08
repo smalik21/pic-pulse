@@ -1,9 +1,11 @@
+import MainHeader from "./components/MainHeader";
 
 export default function App() {
 
-  return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
-  )
+    return (
+        <div className="min-h-dvh max-w-screen-2xl font-body bg-light">
+            <MainHeader />
+            <main>Main section</main>
+        </div>
+    )
 }

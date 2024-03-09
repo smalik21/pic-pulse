@@ -19,7 +19,7 @@ const SearchPage = () => {
             <h3 className="my-2 sm:my-4 px-2 sm:px-8 sm:text-lg lg:text-xl">Showing results for
                 <span className="font-bold italic"> SEARCH ITEM</span>
             </h3>
-            <section id="search-type" className="flex px-2 sm:px-8 my-4 sm:my-8 gap-2 sm:gap-4 justify-center xs:justify-start">
+            <section id="search-type" className="flex px-2 sm:px-8 my-4 sm:mt-8 gap-2 sm:gap-4 justify-center xs:justify-start">
                 {searchTypes.map(searchType => {
                     return (
                         <input

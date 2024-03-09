@@ -1,6 +1,6 @@
 const PageOptions = () => {
     return (
-        <section className="space-x-6 flex items-center" id="page-options">
+        <section className="space-x-8 flex items-center" id="page-options">
             <input
                 type="checkbox"
                 name="theme-toggle"
@@ -11,7 +11,7 @@ const PageOptions = () => {
                 checked:before:translate-x-full checked:bg-dark checked:before:bg-light
                 transition-colors duration-200"
             />
-            <button className="hidden sm:inline text-sm">Upload</button>
+            <button className="hidden sm:inline">Upload</button>
             <button className="px-4 py-1 sm:py-2 text-sm rounded-md text-black bg-white hover:bg-slate-200">
                 Login
             </button>

@@ -22,19 +22,25 @@ const SearchPage = () => {
             <section id="search-type" className="flex px-2 sm:px-8 my-4 sm:mt-8 gap-2 sm:gap-4 justify-center xs:justify-start">
                 {searchTypes.map(searchType => {
                     return (
-                        <input
-                            key={searchType}
-                            type="radio"
-                            name="search-type"
-                            value={searchType}
-                            className={`appearance-none 
-                            flex px-6 py-3 sm:px-8 sm:py-4 border border-black rounded-full
-                            before:inline before:content-['${searchType}'] before:font-semibold before:text-sm sm:before:text-base
-                            checked:bg-black checked:before:text-white`}
-                        />
+                        <span key={searchType}>
+                            <input
+                                type="radio"
+                                name="search-type"
+                                id={searchType}
+                                value={searchType}
+                                className="hidden peer"
+                            />
+                            <label
+                                htmlFor={searchType}
+                                className="flex px-6 py-3 sm:px-8 sm:py-4 border border-black rounded-full font-semibold text-sm sm:text-base 
+                                        peer-checked:bg-black peer-checked:text-white cursor-pointer">
+                                {searchType}
+                            </label>
+                        </span>
                     )
                 })}
             </section>
+
             <Filters />
             <MainSection />
         </>

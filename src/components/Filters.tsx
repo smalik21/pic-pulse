@@ -3,7 +3,7 @@ const filters = [
    { "name": "CATEGORY", "options": ["ALL", "ABSTRACT", "NATURE", "BLACK"] },
    { "name": "COLOUR", "options": ["ALL", "RED", "YELLOW", "BLUE"] },
    { "name": "ORIENTATION", "options": ["ALL", "HORIZONTAL", "VERTICAL"] },
-   { "name": "SORT", "options": ["RELEVANCE", "POPULARITY"] },
+   { "name": "SORT", "options": ["POPULAR", "LATEST"] },
 ]
 
 const Filters = () => {

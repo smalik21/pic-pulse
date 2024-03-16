@@ -4,6 +4,7 @@ import { createContext, ReactNode, useReducer } from "react"
 const QueryContextInitState = {
    key: "",
    query: "",
+   type: "image",
    id: "",
    orientation: "all",
    category: "",
@@ -18,6 +19,7 @@ type StateType = {
    key: string,
    query: string,
    id: string,
+   type: string,
    orientation: string,
    category: string,
    colors: string,
@@ -28,6 +30,7 @@ const enum REDUCER_ACTION_TYPE {
    KEY,
    QUERY,
    ID,
+   TYPE,
    ORIENTATION,
    CATEGORY,
    COLORS,
@@ -38,6 +41,7 @@ const defaultState: StateType = {
    key: "",
    query: "",
    id: "",
+   type: "image",
    orientation: "all",
    category: "",
    colors: "",
@@ -59,6 +63,8 @@ const reducer = (state: StateType, action: ReducerAction): StateType => {
          return { ...state, query: action.payload ?? defaultState.query }
       case REDUCER_ACTION_TYPE.ID:
          return { ...state, id: action.payload ?? defaultState.id }
+      case REDUCER_ACTION_TYPE.TYPE:
+         return { ...state, type: action.payload ?? defaultState.type }
       case REDUCER_ACTION_TYPE.ORIENTATION:
          return { ...state, orientation: action.payload ?? defaultState.orientation }
       case REDUCER_ACTION_TYPE.CATEGORY:
@@ -88,6 +94,7 @@ export const QueryProvider = ({ children }: QueryProviderPropTypes) => {
             key: state.key,
             query: state.query,
             id: state.id,
+            type: state.type,
             orientation: state.orientation,
             category: state.category,
             colors: state.colors,

@@ -1,5 +1,19 @@
 import { createContext, ReactNode, useReducer } from "react"
 
+
+const QueryContextInitState = {
+   key: "",
+   query: "",
+   id: "",
+   orientation: "all",
+   category: "",
+   colors: "",
+   order: "popular",
+   update: (_parameter: REDUCER_ACTION_TYPE, _value: string) => { }
+}
+
+export const QueryContext = createContext(QueryContextInitState)
+
 type StateType = {
    key: string,
    query: string,
@@ -30,13 +44,6 @@ const defaultState: StateType = {
    order: "popular",
 }
 
-const QueryContextInitState = {
-   ...defaultState,
-   update: (_parameter: REDUCER_ACTION_TYPE, _value: string) => { }
-}
-
-export const QueryContext = createContext(QueryContextInitState)
-
 const initState: StateType = defaultState
 
 type ReducerAction = {
@@ -47,19 +54,19 @@ type ReducerAction = {
 const reducer = (state: StateType, action: ReducerAction): StateType => {
    switch (action.type) {
       case REDUCER_ACTION_TYPE.KEY:
-         return { ...state, key: action.payload }
+         return { ...state, key: action.payload ?? defaultState.key }
       case REDUCER_ACTION_TYPE.QUERY:
-         return { ...state, query: action.payload }
+         return { ...state, query: action.payload ?? defaultState.query }
       case REDUCER_ACTION_TYPE.ID:
-         return { ...state, id: action.payload }
+         return { ...state, id: action.payload ?? defaultState.id }
       case REDUCER_ACTION_TYPE.ORIENTATION:
-         return { ...state, orientation: action.payload }
+         return { ...state, orientation: action.payload ?? defaultState.orientation }
       case REDUCER_ACTION_TYPE.CATEGORY:
-         return { ...state, category: action.payload }
+         return { ...state, category: action.payload ?? defaultState.category }
       case REDUCER_ACTION_TYPE.COLORS:
-         return { ...state, colors: action.payload }
+         return { ...state, colors: action.payload ?? defaultState.colors }
       case REDUCER_ACTION_TYPE.ORDER:
-         return { ...state, order: action.payload }
+         return { ...state, order: action.payload ?? defaultState.order }
       default:
          throw new Error("Reducer action type doesn't match.")
    }

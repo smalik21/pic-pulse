@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useReducer } from "react"
 
 const QueryContextInitState = {
-   key: "",
    query: "",
    type: "image",
    id: "",
@@ -15,7 +14,6 @@ const QueryContextInitState = {
 export const QueryContext = createContext(QueryContextInitState)
 
 type StateType = {
-   key: string,
    query: string,
    id: string,
    type: string,
@@ -26,7 +24,6 @@ type StateType = {
 }
 
 const enum REDUCER_ACTION_TYPE {
-   KEY,
    QUERY,
    ID,
    TYPE,
@@ -37,7 +34,6 @@ const enum REDUCER_ACTION_TYPE {
 }
 
 const defaultState: StateType = {
-   key: "",
    query: "",
    id: "",
    type: "image",
@@ -56,8 +52,6 @@ type ReducerAction = {
 
 const reducer = (state: StateType, action: ReducerAction): StateType => {
    switch (action.type) {
-      case REDUCER_ACTION_TYPE.KEY:
-         return { ...state, key: action.payload ?? defaultState.key }
       case REDUCER_ACTION_TYPE.QUERY:
          return { ...state, query: action.payload ?? defaultState.query }
       case REDUCER_ACTION_TYPE.ID:
@@ -87,10 +81,10 @@ export const QueryProvider = ({ children }: QueryProviderPropTypes) => {
          payload: value,
       })
    }
+
    return (
       <QueryContext.Provider
          value={{
-            key: state.key,
             query: state.query,
             id: state.id,
             type: state.type,

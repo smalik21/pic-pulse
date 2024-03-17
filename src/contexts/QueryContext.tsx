@@ -1,6 +1,5 @@
 import { createContext, ReactNode, useReducer } from "react"
 
-
 const QueryContextInitState = {
    key: "",
    query: "",

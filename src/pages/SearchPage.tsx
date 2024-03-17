@@ -1,6 +1,6 @@
-import Filters from "./Filters"
-import MainSection from "./MainSection"
-import SearchHeader from "./SearchHeader"
+import Filters from "../components/Filters"
+import MainSection from "../components/MainSection"
+import SearchHeader from "../components/SearchHeader"
 
 const similarQueries = ['PHOTOS', 'NATURE', 'PHOTOGRAPHY', 'PHOTOS', 'NATURE', 'PHOTOGRAPHY', 'PHOTOS', 'NATURE', 'PHOTOGRAPHY', 'PHOTOS', 'NATURE', 'PHOTOGRAPHY']
 const searchTypes = ['Photos', 'Videos'] // Users too?

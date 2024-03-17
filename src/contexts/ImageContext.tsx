@@ -10,6 +10,7 @@ const ImageContextInitState = {
 export const ImageContext = createContext(ImageContextInitState)
 
 export type imageType = {
+   imageId: string,
    previewURL: string,
    imageURL: string,
 }

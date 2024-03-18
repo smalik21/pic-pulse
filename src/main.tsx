@@ -2,9 +2,15 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
+import { ParameterProvider } from './contexts/ParameterContext.tsx'
+import { ImageProvider } from './contexts/ImageContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+   <React.StrictMode>
+      <ParameterProvider>
+         <ImageProvider>
+            <App />
+         </ImageProvider>
+      </ParameterProvider>
+   </React.StrictMode>,
 )

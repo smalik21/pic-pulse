@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useReducer } from "react"
 
-const QueryContextInitState = {
+const ParameterContextInitState = {
    query: "",
    type: "image",
    id: "",
@@ -11,7 +11,7 @@ const QueryContextInitState = {
    update: (_parameter: REDUCER_ACTION_TYPE, _value: string) => { }
 }
 
-export const QueryContext = createContext(QueryContextInitState)
+export const ParameterContext = createContext(ParameterContextInitState)
 
 type StateType = {
    query: string,
@@ -71,8 +71,8 @@ const reducer = (state: StateType, action: ReducerAction): StateType => {
    }
 }
 
-type QueryProviderPropTypes = { children: ReactNode }
-export const QueryProvider = ({ children }: QueryProviderPropTypes) => {
+type ParameterProviderPropTypes = { children: ReactNode }
+export const ParameterProvider = ({ children }: ParameterProviderPropTypes) => {
    const [state, dispatch] = useReducer(reducer, initState)
 
    const update = (parameter: REDUCER_ACTION_TYPE, value: string) => {
@@ -83,7 +83,7 @@ export const QueryProvider = ({ children }: QueryProviderPropTypes) => {
    }
 
    return (
-      <QueryContext.Provider
+      <ParameterContext.Provider
          value={{
             query: state.query,
             id: state.id,
@@ -96,6 +96,6 @@ export const QueryProvider = ({ children }: QueryProviderPropTypes) => {
          }}
       >
          {children}
-      </QueryContext.Provider>
+      </ParameterContext.Provider>
    )
 }

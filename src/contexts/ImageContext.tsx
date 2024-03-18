@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useState } from "react"
-import { fetchImages } from "../api/fetchImages"
-import { useQuery } from "../hooks/useQuery"
+import { fetchImages } from "../api/imagesApi"
+import { useParameter } from "../hooks/useParameter"
 
 const apiKey: string = import.meta.env.VITE_API_KEY
 
@@ -60,7 +60,7 @@ export const ImageProvider = ({ children }: ImageProviderPropTypes) => {
    const [images, setImages] = useState<imageType[]>([])
    const [imageTags, setImageTags] = useState<string[]>([])
 
-   const { query, id, orientation, category, colors, order } = useQuery()
+   const { query, id, orientation, category, colors, order } = useParameter()
 
    const url = computeURL(query, id, orientation, category, colors, order)
 

@@ -2,7 +2,7 @@ import { ReactNode, createContext, useState } from "react"
 import { fetchImages } from "../api/fetchImages"
 import { useQuery } from "../hooks/useQuery"
 
-const apiKey = '' // add real key
+const apiKey: string = import.meta.env.VITE_API_KEY
 
 const ImageContextInitState = {
    images: [{}],
@@ -24,7 +24,9 @@ function getUniqueTags(images: imageType[]): string[] {
    images.forEach((image) => {
       image.imageTags.forEach((tag) => {
          uniqueTags.add(tag)
+         if (uniqueTags.size >= 20) return true
       })
+      return uniqueTags.size >= 20
    })
    return Array.from(uniqueTags)
 }
@@ -63,6 +65,7 @@ export const ImageProvider = ({ children }: ImageProviderPropTypes) => {
    const url = computeURL(query, id, orientation, category, colors, order)
 
    const loadImages = () => {
+      console.log("url:", url)
       fetchImages(url)
          .then(newImages => {
             setImages(newImages)

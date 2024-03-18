@@ -7,7 +7,7 @@ const apiKey: string = import.meta.env.VITE_API_KEY
 const ImageContextInitState = {
    images: [{}],
    imageTags: [""],
-   loadImages: () => { }
+   loadImages: (_query: string) => { }
 }
 
 export const ImageContext = createContext(ImageContextInitState)
@@ -35,7 +35,7 @@ const computeURL = (query: string,
    id: string,
    orientation: string,
    category: string,
-   colors: string,
+   colour: string,
    order: string)
    : string => {
 
@@ -47,7 +47,7 @@ const computeURL = (query: string,
    if (id) queryParams.append('id', id)
    if (orientation) queryParams.append('orientation', orientation)
    if (category) queryParams.append('category', category)
-   if (colors) queryParams.append('colors', colors)
+   if (colour) queryParams.append('colors', colour)
    if (order) queryParams.append('order', order)
 
    const finalUrl = baseUrl + queryParams.toString()
@@ -60,12 +60,12 @@ export const ImageProvider = ({ children }: ImageProviderPropTypes) => {
    const [images, setImages] = useState<imageType[]>([])
    const [imageTags, setImageTags] = useState<string[]>([])
 
-   const { query, id, orientation, category, colors, order } = useParameter()
+   const { id, orientation, category, colour, order } = useParameter()
 
-   const url = computeURL(query, id, orientation, category, colors, order)
-
-   const loadImages = () => {
+   const loadImages = (query: string) => {
+      const url = computeURL(query, id, orientation, category, colour, order)
       console.log("url:", url)
+      return
       fetchImages(url)
          .then(newImages => {
             setImages(newImages)

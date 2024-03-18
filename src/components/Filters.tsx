@@ -1,12 +1,26 @@
+import { useParameter } from "../hooks/useParameter"
+import { REDUCER_ACTION_TYPE } from "../contexts/ParameterContext"
 
 const filters = [
-   { "name": "CATEGORY", "options": ["ALL", "ABSTRACT", "NATURE", "BLACK"] },
-   { "name": "COLOUR", "options": ["ALL", "RED", "YELLOW", "BLUE"] },
-   { "name": "ORIENTATION", "options": ["ALL", "HORIZONTAL", "VERTICAL"] },
-   { "name": "SORT", "options": ["POPULAR", "LATEST"] },
+   { "name": "CATEGORY", "parameter": "CATEGORY", "options": ["ALL", "ABSTRACT", "NATURE", "BLACK"] },
+   { "name": "COLOUR", "parameter": "COLOUR", "options": ["ALL", "RED", "YELLOW", "BLUE"] },
+   { "name": "ORIENTATION", "parameter": "ORIENTATION", "options": ["ALL", "HORIZONTAL", "VERTICAL"] },
+   { "name": "SORT", "parameter": "ORDER", "options": ["POPULAR", "LATEST"] },
 ]
 
 const Filters = () => {
+
+   const { update } = useParameter()
+
+   const handleParameterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      console.log("change:")
+      const parameterName: REDUCER_ACTION_TYPE = e.target.name as REDUCER_ACTION_TYPE
+      let parameterValue: string = e.target.value.toLowerCase()
+      parameterValue = parameterValue === "all" ? "" : parameterValue
+
+      update(parameterName, parameterValue)
+   }
+
    return (
       <section className="py-4 px-2 overflow-clip flex flex-col md:flex-row items-center md:justify-center md:gap-4">
          <input
@@ -25,8 +39,9 @@ const Filters = () => {
                      <div className="w-fit text-xs sm:text-sm flex items-center border border-black rounded-md">
                         <select
                            id={filter.name}
-                           name={filter.name}
+                           name={filter.parameter}
                            className="px-3 py-1.5 text-xs sm:text-sm rounded-md bg-transparent outline-none"
+                           onChange={handleParameterChange}
                         >
                            {filter.options.map(option => {
                               return (

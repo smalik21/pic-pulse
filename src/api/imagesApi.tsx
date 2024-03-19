@@ -14,12 +14,13 @@ export const fetchImages = async (url: string): Promise<imageType[]> => {
       const response = await axios.get(url)
 
       console.log("response:", response.data)
-      // const images: imageType[] = response.data.map((image: any) => ({
-      //    id: image.id,
-      //    url: image.url,
-      //    title: image.title,
-      // }))
-      // cache[url] = images
+      const images: imageType[] = response.data.map((image: any) => ({
+         imageId: image.id,
+         previewURL: image.previewURL,
+         imageURL: image.largeImageURL,
+         imageTags: image.tags,
+      }))
+      cache[url] = images
 
       // return images
       return []

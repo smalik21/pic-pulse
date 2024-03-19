@@ -21,7 +21,7 @@ const Search = () => {
 
       const query: string = inputRef.current?.value || ''
       if (query === '') return
-      const type: string = searchType
+      const type: string = (searchType === "photo") ? "image" : searchType
       update("QUERY", query)
       update("TYPE", type)
 

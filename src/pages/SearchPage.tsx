@@ -1,11 +1,20 @@
 import Filters from "../components/Filters"
 import MainSection from "../components/MainSection"
 import SearchHeader from "../components/SearchHeader"
+import { useParameter } from "../hooks/useParameter"
 
 const similarQueries = ['PHOTOS', 'NATURE', 'PHOTOGRAPHY', 'PHOTOS', 'NATURE', 'PHOTOGRAPHY', 'PHOTOS', 'NATURE', 'PHOTOGRAPHY', 'PHOTOS', 'NATURE', 'PHOTOGRAPHY']
-const searchTypes = ['Photos', 'Videos'] // Users too?
+const searchTypes = ['Photos', 'Videos'] // Users
 
 const SearchPage = () => {
+
+   const { update, type, query } = useParameter()
+
+   const handleTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value === "Photos" ? "image" : "video"
+      update("TYPE", value)
+   }
+
    return (
       <>
          <SearchHeader />
@@ -17,7 +26,7 @@ const SearchPage = () => {
             })}
          </section>
          <h3 className="my-2 sm:my-4 px-2 sm:px-8 sm:text-lg lg:text-xl">Showing results for
-            <span className="font-bold italic"> SEARCH ITEM</span>
+            <span className="font-bold italic"> {query}</span>
          </h3>
          <section id="search-type" className="flex px-2 sm:px-8 my-4 sm:mt-8 gap-2 sm:gap-4 justify-center xs:justify-start">
             {searchTypes.map(searchType => {
@@ -29,6 +38,8 @@ const SearchPage = () => {
                         id={searchType}
                         value={searchType}
                         className="hidden peer"
+                        checked={(searchType === "Photos" && type === "image") || (searchType === "Videos" && type === "video")}
+                        onChange={handleTypeChange}
                      />
                      <label
                         htmlFor={searchType}

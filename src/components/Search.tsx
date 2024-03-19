@@ -4,6 +4,7 @@ import searchIcon from "../assets/search-icon.svg"
 import { ChangeEvent, FormEvent, useRef, useState } from "react"
 import { useParameter } from "../hooks/useParameter"
 import { useImage } from "../hooks/useImage"
+import { useVideo } from "../hooks/useVideo"
 
 const Search = () => {
    const [searchType, setSearchType] = useState<string>("photo")
@@ -11,6 +12,7 @@ const Search = () => {
 
    const { update } = useParameter()
    const { loadImages } = useImage()
+   const { loadVideos } = useVideo()
 
    const onSearchTypeChange = (e: ChangeEvent<HTMLSelectElement>) => setSearchType(e.target.value)
 
@@ -22,7 +24,9 @@ const Search = () => {
       const type: string = searchType
       update("QUERY", query)
       update("TYPE", type)
-      loadImages(query)
+
+      if (type === "photo") loadImages(query)
+      else loadVideos(query)
 
       inputRef.current!.value = ''
    }

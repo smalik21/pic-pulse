@@ -21,13 +21,12 @@ export type imageType = {
 
 function getUniqueTags(images: imageType[]): string[] {
    const uniqueTags: Set<string> = new Set()
-   images.forEach((image) => {
-      image.imageTags.forEach((tag) => {
+   for (const image of images) {
+      for (const tag of image.imageTags) {
          uniqueTags.add(tag)
-         if (uniqueTags.size >= 20) return true
-      })
-      return uniqueTags.size >= 20
-   })
+         if (uniqueTags.size >= 20) return Array.from(uniqueTags)
+      }
+   }
    return Array.from(uniqueTags)
 }
 
@@ -65,12 +64,14 @@ export const ImageProvider = ({ children }: ImageProviderPropTypes) => {
    const loadImages = (query: string) => {
       const url = computeURL(query, id, orientation, category, colour, order)
       console.log("url:", url)
-      return
+      // return
       fetchImages(url)
          .then(newImages => {
             setImages(newImages)
             const uniqueTags: string[] = getUniqueTags(newImages)
             setImageTags(uniqueTags)
+            console.log("images:", newImages)
+            console.log("tags:", uniqueTags)
          })
          .catch(error => console.log(error))
    }

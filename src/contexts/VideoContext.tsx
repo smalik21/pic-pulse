@@ -24,15 +24,26 @@ export type videoType = {
    videoTags: string[],
 }
 
+// function getUniqueTags(videos: videoType[]): string[] {
+//    const uniqueTags: Set<string> = new Set()
+//    videos.forEach((video) => {
+//       video.videoTags.forEach((tag) => {
+//          uniqueTags.add(tag)
+//          if (uniqueTags.size >= 20) return true
+//       })
+//       return uniqueTags.size >= 20
+//    })
+//    return Array.from(uniqueTags)
+// }
+
 function getUniqueTags(videos: videoType[]): string[] {
    const uniqueTags: Set<string> = new Set()
-   videos.forEach((video) => {
-      video.videoTags.forEach((tag) => {
+   for (const image of videos) {
+      for (const tag of image.videoTags) {
          uniqueTags.add(tag)
-         if (uniqueTags.size >= 20) return true
-      })
-      return uniqueTags.size >= 20
-   })
+         if (uniqueTags.size >= 20) return Array.from(uniqueTags)
+      }
+   }
    return Array.from(uniqueTags)
 }
 
@@ -66,12 +77,14 @@ export const VideoProvider = ({ children }: VideoProviderPropTypes) => {
    const loadVideos = (query: string) => {
       const url = computeURL(query, id, orientation, category)
       console.log("url:", url)
-      return
+      // return
       fetchVideos(url)
-         .then(newvideos => {
-            setvideos(newvideos)
-            const uniqueTags: string[] = getUniqueTags(newvideos)
+         .then(newVideos => {
+            setvideos(newVideos)
+            const uniqueTags: string[] = getUniqueTags(newVideos)
             setvideoTags(uniqueTags)
+            console.log("videos:", newVideos)
+            console.log("tags:", uniqueTags)
          })
          .catch(error => console.log(error))
    }

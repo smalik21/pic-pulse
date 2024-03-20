@@ -1,7 +1,7 @@
 import photosIcon from "../assets/photos-icon.svg"
 import videosIcon from "../assets/videos-icon.svg"
 import searchIcon from "../assets/search-icon.svg"
-import { ChangeEvent, FormEvent, useRef, useState } from "react"
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 import { useParameter } from "../hooks/useParameter"
 import { useImage } from "../hooks/useImage"
 import { useVideo } from "../hooks/useVideo"
@@ -9,6 +9,8 @@ import { useVideo } from "../hooks/useVideo"
 const Search = () => {
    const [searchType, setSearchType] = useState<string>("photo")
    const inputRef = useRef<HTMLInputElement>(null)
+
+   useEffect(() => console.log(searchType), [searchType])
 
    const { update } = useParameter()
    const { loadImages } = useImage()
@@ -25,8 +27,10 @@ const Search = () => {
       update("QUERY", query)
       update("TYPE", type)
 
-      if (type === "photo") loadImages(query)
-      else loadVideos(query)
+      if (type === "image") loadImages(query)
+      else if (type === "video") loadVideos(query)
+
+      console.log("type:", type)
 
       inputRef.current!.value = ''
    }

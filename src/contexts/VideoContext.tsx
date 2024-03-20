@@ -24,18 +24,6 @@ export type videoType = {
    videoTags: string[],
 }
 
-// function getUniqueTags(videos: videoType[]): string[] {
-//    const uniqueTags: Set<string> = new Set()
-//    videos.forEach((video) => {
-//       video.videoTags.forEach((tag) => {
-//          uniqueTags.add(tag)
-//          if (uniqueTags.size >= 20) return true
-//       })
-//       return uniqueTags.size >= 20
-//    })
-//    return Array.from(uniqueTags)
-// }
-
 function getUniqueTags(videos: videoType[]): string[] {
    const uniqueTags: Set<string> = new Set()
    for (const image of videos) {

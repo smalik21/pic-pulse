@@ -13,17 +13,17 @@ export const fetchImages = async (url: string): Promise<imageType[]> => {
 
       const response = await axios.get(url)
 
-      console.log("response:", response.data)
-      const images: imageType[] = response.data.map((image: any) => ({
+      console.log("response:", response.data.hits)
+
+      const images: imageType[] = response.data.hits.map((image: any) => ({
          imageId: image.id,
          previewURL: image.previewURL,
          imageURL: image.largeImageURL,
-         imageTags: image.tags,
+         imageTags: image.tags.split(", "),
       }))
       cache[url] = images
 
-      // return images
-      return []
+      return images
    } catch (error) {
       // console.error('Error fetching images:', error)
       throw new Error('Error fetching images')

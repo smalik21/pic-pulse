@@ -14,29 +14,28 @@ export const fetchVideos = async (url: string): Promise<videoType[]> => {
 
       const response = await axios.get(url)
 
-      console.log("response:", response.data)
+      console.log("response:", response.data.hits)
 
-      const videos: videoType[] = response.data.map((video: any) => {
+      const videos: videoType[] = response.data.hits.map((video: any) => {
          const normal: videoDetailType = {
-            videoURL: video.medium.url,
-            thumbnail: video.medium.thumbnail
+            videoURL: video.videos.medium.url,
+            thumbnail: video.videos.medium.thumbnail
          }
          const small: videoDetailType = {
-            videoURL: video.small.url,
-            thumbnail: video.small.thumbnail
+            videoURL: video.videos.small.url,
+            thumbnail: video.videos.small.thumbnail
          }
          const data: videoType = {
             videoId: video.id,
             normal: normal,
             small: small,
-            videoTags: video.tags,
+            videoTags: video.tags.split(", "),
          }
          return data
       })
       cache[url] = videos
 
-      // return videos
-      return []
+      return videos
    } catch (error) {
       // console.error('Error fetching videos:', error)
       throw new Error('Error fetching videos')

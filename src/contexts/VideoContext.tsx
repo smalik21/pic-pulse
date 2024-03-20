@@ -77,7 +77,7 @@ export const VideoProvider = ({ children }: VideoProviderPropTypes) => {
    const loadVideos = (query: string) => {
       const url = computeURL(query, id, orientation, category)
       console.log("url:", url)
-      // return
+
       fetchVideos(url)
          .then(newVideos => {
             setvideos(newVideos)

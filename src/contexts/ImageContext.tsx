@@ -64,7 +64,7 @@ export const ImageProvider = ({ children }: ImageProviderPropTypes) => {
    const loadImages = (query: string) => {
       const url = computeURL(query, id, orientation, category, colour, order)
       console.log("url:", url)
-      // return
+
       fetchImages(url)
          .then(newImages => {
             setImages(newImages)

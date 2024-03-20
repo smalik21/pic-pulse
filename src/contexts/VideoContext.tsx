@@ -4,8 +4,16 @@ import { useParameter } from "../hooks/useParameter"
 
 const apiKey: string = import.meta.env.VITE_API_KEY
 
+
+const VideoInitState = {
+   videoId: "",
+   normal: { videoURL: "", thumbnail: "" },
+   small: { videoURL: "", thumbnail: "" },
+   videoTags: [""],
+}
+
 const VideoContextInitState = {
-   videos: [{}],
+   videos: [VideoInitState],
    videoTags: [""],
    loadVideos: (_query: string) => { }
 }

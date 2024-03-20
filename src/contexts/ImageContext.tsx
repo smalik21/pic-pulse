@@ -4,8 +4,15 @@ import { useParameter } from "../hooks/useParameter"
 
 const apiKey: string = import.meta.env.VITE_API_KEY
 
+const ImageInitState = {
+   imageId: "",
+   previewURL: "",
+   imageURL: "",
+   imageTags: [""],
+}
+
 const ImageContextInitState = {
-   images: [{}],
+   images: [ImageInitState],
    imageTags: [""],
    loadImages: (_query: string) => { }
 }

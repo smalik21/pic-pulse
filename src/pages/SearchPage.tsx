@@ -2,13 +2,25 @@ import Filters from "../components/Filters"
 import MainSection from "../components/MainSection"
 import SearchHeader from "../components/SearchHeader"
 import { useParameter } from "../hooks/useParameter"
+import { useImage } from "../hooks/useImage"
+import { useVideo } from "../hooks/useVideo"
+import { useEffect, useState } from "react"
 
-const similarQueries = ['PHOTOS', 'NATURE', 'PHOTOGRAPHY', 'PHOTOS', 'NATURE', 'PHOTOGRAPHY', 'PHOTOS', 'NATURE', 'PHOTOGRAPHY', 'PHOTOS', 'NATURE', 'PHOTOGRAPHY']
+// const similarQueries = ['PHOTOS', 'NATURE', 'PHOTOGRAPHY', 'PHOTOS', 'NATURE', 'PHOTOGRAPHY', 'PHOTOS', 'NATURE', 'PHOTOGRAPHY', 'PHOTOS', 'NATURE', 'PHOTOGRAPHY']
 const searchTypes = ['Photos', 'Videos'] // Users
 
 const SearchPage = () => {
 
+   const [similarTags, setSimilarTags] = useState<string[]>()
+
    const { update, type, query } = useParameter()
+   const { imageTags } = useImage()
+   const { videoTags } = useVideo()
+
+   useEffect(() => {
+      if (type === "image") setSimilarTags(imageTags)
+      else if (type === "video") setSimilarTags(videoTags)
+   }, [imageTags, videoTags])
 
    const handleTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value === "Photos" ? "image" : "video"
@@ -19,9 +31,9 @@ const SearchPage = () => {
       <>
          <SearchHeader />
          <section id="similar-queries" className="w-full px-2 sm:px-8 flex gap-4 sm:gap-8 py-4 sm:py-8 overflow-scroll no-scrollbar">
-            {similarQueries.map((query, idx) => {
+            {similarTags && similarTags.map((query, idx) => {
                return (
-                  <button key={idx} className="px-4 py-2 text-xs sm:text-base border border-black rounded-md">{query}</button>
+                  <button key={idx} className="px-4 py-2 text-nowrap text-xs sm:text-base border border-black rounded-md">{query}</button>
                )
             })}
          </section>

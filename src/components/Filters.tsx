@@ -1,11 +1,16 @@
 import { useParameter } from "../hooks/useParameter"
 import { REDUCER_ACTION_TYPE } from "../contexts/ParameterContext"
 
+const categories: string[] = ["all", "backgrounds", "fashion", "nature", "science", "education", "feelings", "health", "people", "religion", "places", "animals", "industry", "computer", "food", "sports", "transportation", "travel", "buildings", "business", "music"]
+const colours: string[] = ["all", "grayscale", "transparent", "red", "orange", "yellow", "green", "turquoise", "blue", "lilac", "pink", "white", "gray", "black", "brown"]
+const orientations: string[] = ["all", "horizontal", "vertical"]
+const order: string[] = ["popular", "latest"]
+
 const filters = [
-   { "name": "CATEGORY", "parameter": "CATEGORY", "options": ["ALL", "ABSTRACT", "NATURE", "BLACK"], "video": true },
-   { "name": "COLOUR", "parameter": "COLOUR", "options": ["ALL", "RED", "YELLOW", "BLUE"], "video": false },
-   { "name": "ORIENTATION", "parameter": "ORIENTATION", "options": ["ALL", "HORIZONTAL", "VERTICAL"], "video": false },
-   { "name": "SORT", "parameter": "ORDER", "options": ["POPULAR", "LATEST"], "video": true },
+   { "name": "CATEGORY", "parameter": "CATEGORY", "options": categories, "video": true },
+   { "name": "COLOUR", "parameter": "COLOUR", "options": colours, "video": false },
+   { "name": "ORIENTATION", "parameter": "ORIENTATION", "options": orientations, "video": false },
+   { "name": "SORT", "parameter": "ORDER", "options": order, "video": true },
 ]
 
 const Filters = () => {
@@ -17,7 +22,6 @@ const Filters = () => {
       const parameterName: REDUCER_ACTION_TYPE = e.target.name as REDUCER_ACTION_TYPE
       let parameterValue: string = e.target.value.toLowerCase()
       parameterValue = parameterValue === "all" ? "" : parameterValue
-
       update(parameterName, parameterValue)
    }
 
@@ -50,7 +54,7 @@ const Filters = () => {
                                     key={option}
                                     value={option}
                                  >
-                                    {option}
+                                    {option.toUpperCase()}
                                  </option>
                               )
                            })}

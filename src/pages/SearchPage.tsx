@@ -1,31 +1,36 @@
+import { useEffect, useState } from "react"
+import { useParams, useNavigate } from "react-router-dom"
 import Filters from "../components/Filters"
 import MainSection from "../components/MainSection"
 import SearchHeader from "../components/SearchHeader"
+import SearchType from "../components/SearchType"
 import { useParameter } from "../hooks/useParameter"
 import { useImage } from "../hooks/useImage"
 import { useVideo } from "../hooks/useVideo"
-import { useEffect, useState } from "react"
-
-// const similarQueries = ['PHOTOS', 'NATURE', 'PHOTOGRAPHY', 'PHOTOS', 'NATURE', 'PHOTOGRAPHY', 'PHOTOS', 'NATURE', 'PHOTOGRAPHY', 'PHOTOS', 'NATURE', 'PHOTOGRAPHY']
-const searchTypes = ['Photos', 'Videos'] // Users
 
 const SearchPage = () => {
 
    const [similarTags, setSimilarTags] = useState<string[]>()
 
-   const { update, type, query } = useParameter()
-   const { imageTags } = useImage()
-   const { videoTags } = useVideo()
+   const { type, query, update } = useParameter()
+   const { imageTags, loadImages } = useImage()
+   const { videoTags, loadVideos } = useVideo()
+   const { q } = useParams()
+   const navigate = useNavigate()
+
+   useEffect(() => {
+      if (q) {
+         update("QUERY", q)
+         loadImages(q)
+         loadVideos(q)
+      }
+      else navigate('/')
+   }, [q])
 
    useEffect(() => {
       if (type === "image") setSimilarTags(imageTags)
       else if (type === "video") setSimilarTags(videoTags)
    }, [imageTags, videoTags])
-
-   const handleTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value === "Photos" ? "image" : "video"
-      update("TYPE", value)
-   }
 
    return (
       <>
@@ -40,30 +45,7 @@ const SearchPage = () => {
          <h3 className="my-2 sm:my-4 px-2 sm:px-8 sm:text-lg lg:text-xl">Showing results for
             <span className="font-bold italic"> {query}</span>
          </h3>
-         <section id="search-type" className="flex px-2 sm:px-8 my-4 sm:mt-8 gap-2 sm:gap-4 justify-center xs:justify-start">
-            {searchTypes.map(searchType => {
-               return (
-                  <span key={searchType}>
-                     <input
-                        type="radio"
-                        name="search-type"
-                        id={searchType}
-                        value={searchType}
-                        className="hidden peer"
-                        checked={(searchType === "Photos" && type === "image") || (searchType === "Videos" && type === "video")}
-                        onChange={handleTypeChange}
-                     />
-                     <label
-                        htmlFor={searchType}
-                        className="flex px-6 py-3 sm:px-8 sm:py-4 border border-black rounded-full font-semibold text-sm sm:text-base 
-                                        peer-checked:bg-black peer-checked:text-white cursor-pointer">
-                        {searchType}
-                     </label>
-                  </span>
-               )
-            })}
-         </section>
-
+         <SearchType page="search" />
          <Filters />
          <MainSection />
       </>

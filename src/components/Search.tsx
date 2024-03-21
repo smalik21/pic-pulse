@@ -2,19 +2,18 @@ import photosIcon from "../assets/photos-icon.svg"
 import videosIcon from "../assets/videos-icon.svg"
 import searchIcon from "../assets/search-icon.svg"
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { useParameter } from "../hooks/useParameter"
-import { useImage } from "../hooks/useImage"
-import { useVideo } from "../hooks/useVideo"
 
 const Search = () => {
    const [searchType, setSearchType] = useState<string>("photo")
    const inputRef = useRef<HTMLInputElement>(null)
 
-   useEffect(() => console.log(searchType), [searchType])
+   const { type, update } = useParameter()
+   const navigate = useNavigate()
 
-   const { update } = useParameter()
-   const { loadImages } = useImage()
-   const { loadVideos } = useVideo()
+   useEffect(() => console.log(searchType), [searchType])
+   useEffect(() => setSearchType(type), [type])
 
    const onSearchTypeChange = (e: ChangeEvent<HTMLSelectElement>) => setSearchType(e.target.value)
 
@@ -24,14 +23,9 @@ const Search = () => {
       const query: string = inputRef.current?.value || ''
       if (query === '') return
       const type: string = (searchType === "photo") ? "image" : searchType
-      update("QUERY", query)
+
       update("TYPE", type)
-
-      if (type === "image") loadImages(query)
-      else if (type === "video") loadVideos(query)
-
-      console.log("type:", type)
-
+      navigate("/search/" + query)
       inputRef.current!.value = ''
    }
 

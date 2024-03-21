@@ -30,7 +30,7 @@ const SearchPage = () => {
    useEffect(() => {
       if (type === "image") setSimilarTags(imageTags)
       else if (type === "video") setSimilarTags(videoTags)
-   }, [imageTags, videoTags])
+   }, [type])
 
    return (
       <>

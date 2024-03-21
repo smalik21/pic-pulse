@@ -59,7 +59,6 @@ const Filters = () => {
                   </article>
                )
             })}
-
          </section>
       </section>
    )

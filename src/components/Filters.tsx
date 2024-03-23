@@ -4,18 +4,11 @@ import { REDUCER_ACTION_TYPE } from "../contexts/ParameterContext"
 const categories: string[] = ["all", "backgrounds", "fashion", "nature", "science", "education", "feelings", "health", "people", "religion", "places", "animals", "industry", "computer", "food", "sports", "transportation", "travel", "buildings", "business", "music"]
 const colours: string[] = ["all", "grayscale", "transparent", "red", "orange", "yellow", "green", "turquoise", "blue", "lilac", "pink", "white", "gray", "black", "brown"]
 const orientations: string[] = ["all", "horizontal", "vertical"]
-const order: string[] = ["popular", "latest"]
-
-const filters = [
-   { "name": "CATEGORY", "parameter": "CATEGORY", "options": categories, "video": true },
-   { "name": "COLOUR", "parameter": "COLOUR", "options": colours, "video": false },
-   { "name": "ORIENTATION", "parameter": "ORIENTATION", "options": orientations, "video": false },
-   { "name": "SORT", "parameter": "ORDER", "options": order, "video": true },
-]
+const ordering: string[] = ["popular", "latest"]
 
 const Filters = () => {
 
-   const { update, type } = useParameter()
+   const { type, category, colour, orientation, order, update } = useParameter()
 
    const handleParameterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       console.log("change:")
@@ -24,6 +17,13 @@ const Filters = () => {
       parameterValue = parameterValue === "all" ? "" : parameterValue
       update(parameterName, parameterValue)
    }
+
+   const filters = [
+      { "name": "CATEGORY", "parameter": "CATEGORY", "options": categories, "value": category, "video": true },
+      { "name": "COLOUR", "parameter": "COLOUR", "options": colours, "value": colour, "video": false },
+      { "name": "ORIENTATION", "parameter": "ORIENTATION", "options": orientations, "value": orientation, "video": false },
+      { "name": "SORT", "parameter": "ORDER", "options": ordering, "value": order, "video": true },
+   ]
 
    return (
       <section className="py-4 px-2 overflow-clip flex flex-col md:flex-row items-center md:justify-center md:gap-4">
@@ -47,6 +47,7 @@ const Filters = () => {
                            name={filter.parameter}
                            className="px-3 py-1.5 text-xs sm:text-sm rounded-md bg-transparent outline-none"
                            onChange={handleParameterChange}
+                           value={filter.value}
                         >
                            {filter.options.map(option => {
                               return (

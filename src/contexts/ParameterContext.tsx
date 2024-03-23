@@ -77,7 +77,7 @@ export const ParameterProvider = ({ children }: ParameterProviderPropTypes) => {
       })
       console.log("State:", state)
       setChange(true)
-      setReset(false)
+      if (parameter !== "TYPE") setReset(false)
    }
 
    const resetParameters = (): void => {

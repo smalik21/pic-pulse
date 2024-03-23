@@ -1,6 +1,7 @@
 import { useParameter } from '../hooks/useParameter'
 import { useImage } from '../hooks/useImage'
 import { useVideo } from '../hooks/useVideo'
+import { useEffect } from 'react'
 
 const MainSection = () => {
 
@@ -8,13 +9,17 @@ const MainSection = () => {
    const { images } = useImage()
    const { videos } = useVideo()
 
+   useEffect(() => {
+      console.log("Loaded...")
+   }, [images, videos])
+
    return (
       <main className='p-2 sm:p-4 grid gap-2 grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
          {type === "image" && images.map(image => {
             return <img
                key={image.imageId}
                className='w-full h-full object-cover'
-               src={image.imageURL}
+               src={image.previewURL}
             />
 
          })}
@@ -22,7 +27,7 @@ const MainSection = () => {
             return <img
                key={video.videoId}
                className='w-full h-full object-cover'
-               src={video.normal.thumbnail}
+               src={video.small.thumbnail}
             />
          })}
       </main>

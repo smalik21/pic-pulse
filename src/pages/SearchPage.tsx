@@ -10,17 +10,28 @@ import { useVideo } from "../hooks/useVideo"
 
 const SearchPage = () => {
 
-   const { type, query, update } = useParameter()
+   const { type, query, update, change, resetChange } = useParameter()
    const { imageTags, loadImages } = useImage()
    const { videoTags, loadVideos } = useVideo()
    const { q } = useParams()
    const navigate = useNavigate()
 
+   const load = (q: string) => {
+      loadImages(q)
+      loadVideos(q)
+   }
+
+   useEffect(() => {
+      if (q && change) {
+         load(q)
+         resetChange()
+      }
+   }, [change])
+
    useEffect(() => {
       if (q) {
+         load(q)
          update("QUERY", q)
-         loadImages(q)
-         loadVideos(q)
       }
       else navigate('/')
    }, [q])

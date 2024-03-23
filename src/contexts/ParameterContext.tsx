@@ -1,17 +1,4 @@
-import { createContext, ReactNode, useReducer } from "react"
-
-const ParameterContextInitState = {
-   query: "",
-   type: "image",
-   id: "",
-   orientation: "",
-   category: "",
-   colour: "",
-   order: "popular",
-   update: (_parameter: REDUCER_ACTION_TYPE, _value: string) => { }
-}
-
-export const ParameterContext = createContext(ParameterContextInitState)
+import { createContext, ReactNode, useReducer, useState } from "react"
 
 type StateType = {
    query: string,
@@ -22,8 +9,6 @@ type StateType = {
    colour: string,
    order: string,
 }
-
-export type REDUCER_ACTION_TYPE = "QUERY" | "ID" | "TYPE" | "ORIENTATION" | "CATEGORY" | "COLOUR" | "ORDER"
 
 const defaultState: StateType = {
    query: "",
@@ -37,9 +22,23 @@ const defaultState: StateType = {
 
 const initState: StateType = defaultState
 
+const ParameterContextInitState = {
+   ...initState,
+   state: initState,
+   update: (_parameter: REDUCER_ACTION_TYPE, _value: string) => { },
+   resetParameters: () => { },
+   change: false,
+   resetChange: () => { },
+   reset: true,
+}
+
+export const ParameterContext = createContext(ParameterContextInitState)
+
+export type REDUCER_ACTION_TYPE = "QUERY" | "ID" | "TYPE" | "ORIENTATION" | "CATEGORY" | "COLOUR" | "ORDER" | "RESET"
+
 type ReducerAction = {
    type: REDUCER_ACTION_TYPE
-   payload: string
+   payload?: string
 }
 
 const reducer = (state: StateType, action: ReducerAction): StateType => {
@@ -58,6 +57,8 @@ const reducer = (state: StateType, action: ReducerAction): StateType => {
          return { ...state, colour: action.payload ?? defaultState.colour }
       case "ORDER":
          return { ...state, order: action.payload ?? defaultState.order }
+      case "RESET":
+         return defaultState
       default:
          throw new Error("Reducer action type doesn't match.")
    }
@@ -66,14 +67,26 @@ const reducer = (state: StateType, action: ReducerAction): StateType => {
 type ParameterProviderPropTypes = { children: ReactNode }
 export const ParameterProvider = ({ children }: ParameterProviderPropTypes) => {
    const [state, dispatch] = useReducer(reducer, initState)
+   const [change, setChange] = useState<boolean>(false)
+   const [reset, setReset] = useState<boolean>(true)
 
-   const update = (parameter: REDUCER_ACTION_TYPE, value: string) => {
+   const update = (parameter: REDUCER_ACTION_TYPE, value: string): void => {
       dispatch({
          type: parameter,
          payload: value,
       })
       console.log("State:", state)
+      setChange(true)
+      setReset(false)
    }
+
+   const resetParameters = (): void => {
+      dispatch({ type: "RESET" })
+      setChange(true)
+      setReset(true)
+   }
+
+   const resetChange = (): void => setChange(false)
 
    return (
       <ParameterContext.Provider
@@ -85,7 +98,12 @@ export const ParameterProvider = ({ children }: ParameterProviderPropTypes) => {
             category: state.category,
             colour: state.colour,
             order: state.order,
+            state: state,
             update: update,
+            resetParameters: resetParameters,
+            change: change,
+            resetChange: resetChange,
+            reset: reset,
          }}
       >
          {children}

@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState } from "react"
+import { ReactNode, createContext, useEffect, useState } from "react"
 import { fetchImages } from "../api/imagesApi"
 import { useParameter } from "../hooks/useParameter"
 
@@ -66,7 +66,12 @@ export const ImageProvider = ({ children }: ImageProviderPropTypes) => {
    const [images, setImages] = useState<imageType[]>([])
    const [imageTags, setImageTags] = useState<string[]>([])
 
-   const { id, orientation, category, colour, order } = useParameter()
+   const { id, query, orientation, category, colour, order, change } = useParameter()
+
+   useEffect(() => {
+      console.log("image change:", change)
+      loadImages(query)
+   }, [change])
 
    const loadImages = (query: string) => {
       const url = computeURL(query, id, orientation, category, colour, order)

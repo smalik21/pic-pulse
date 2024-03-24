@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState } from "react"
+import { ReactNode, createContext, useState, useEffect } from "react"
 import { fetchVideos } from "../api/videosApi"
 import { useParameter } from "../hooks/useParameter"
 
@@ -68,7 +68,12 @@ export const VideoProvider = ({ children }: VideoProviderPropTypes) => {
    const [videos, setvideos] = useState<videoType[]>([])
    const [videoTags, setvideoTags] = useState<string[]>([])
 
-   const { id, orientation, category } = useParameter()
+   const { id, query, orientation, category, change } = useParameter()
+
+   useEffect(() => {
+      console.log("video change:", change)
+      loadVideos(query)
+   }, [change])
 
    const loadVideos = (query: string) => {
       const url = computeURL(query, id, orientation, category)

@@ -10,7 +10,7 @@ import { useVideo } from "../hooks/useVideo"
 
 const SearchPage = () => {
 
-   const { type, query, update, change, resetChange } = useParameter()
+   const { type, query, update } = useParameter()
    const { imageTags, loadImages } = useImage()
    const { videoTags, loadVideos } = useVideo()
    const { q } = useParams()
@@ -20,13 +20,6 @@ const SearchPage = () => {
       loadImages(q)
       loadVideos(q)
    }
-
-   useEffect(() => {
-      if (q && change) {
-         load(q)
-         resetChange()
-      }
-   }, [change])
 
    useEffect(() => {
       if (q) {

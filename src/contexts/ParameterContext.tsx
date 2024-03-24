@@ -76,13 +76,15 @@ export const ParameterProvider = ({ children }: ParameterProviderPropTypes) => {
          payload: value,
       })
       console.log("State:", state)
-      setChange(true)
-      if (parameter !== "TYPE") setReset(false)
+      if (parameter !== "TYPE") {
+         setChange(!change)
+         setReset(false)
+      }
    }
 
    const resetParameters = (): void => {
       dispatch({ type: "RESET" })
-      setChange(true)
+      setChange(!change)
       setReset(true)
    }
 

@@ -14,7 +14,8 @@ const ImageInitState = {
 const ImageContextInitState = {
    images: [ImageInitState],
    imageTags: [""],
-   loadImages: (_query: string) => { }
+   loadImages: (_query: string): Promise<void> => Promise.resolve(),
+   imageLoading: false,
 }
 
 export const ImageContext = createContext(ImageContextInitState)
@@ -65,27 +66,33 @@ type ImageProviderPropTypes = { children: ReactNode }
 export const ImageProvider = ({ children }: ImageProviderPropTypes) => {
    const [images, setImages] = useState<imageType[]>([])
    const [imageTags, setImageTags] = useState<string[]>([])
+   const [imageLoading, setimageLoading] = useState<boolean>(false)
 
    const { id, query, orientation, category, colour, order, change } = useParameter()
 
    useEffect(() => {
       console.log("image change:", change)
+      setimageLoading(true)
       loadImages(query)
+         .then(() => setimageLoading(false))
    }, [change])
 
-   const loadImages = (query: string) => {
+   const loadImages = async (query: string): Promise<void> => {
       const url = computeURL(query, id, orientation, category, colour, order)
       console.log("url:", url)
 
-      fetchImages(url)
-         .then(newImages => {
-            setImages(newImages)
-            const uniqueTags: string[] = getUniqueTags(newImages)
-            setImageTags(uniqueTags)
-            console.log("images:", newImages)
-            console.log("tags:", uniqueTags)
-         })
-         .catch(error => console.log(error))
+      return new Promise((resolve, reject) => {
+         fetchImages(url)
+            .then(newImages => {
+               setImages(newImages)
+               const uniqueTags: string[] = getUniqueTags(newImages)
+               setImageTags(uniqueTags)
+               console.log("images:", newImages)
+               console.log("tags:", uniqueTags)
+               resolve()
+            })
+            .catch(error => reject(error))
+      })
    }
 
    return (
@@ -94,6 +101,7 @@ export const ImageProvider = ({ children }: ImageProviderPropTypes) => {
             images,
             imageTags,
             loadImages,
+            imageLoading,
          }}
       >
          {children}

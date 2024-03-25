@@ -15,7 +15,8 @@ const VideoInitState = {
 const VideoContextInitState = {
    videos: [VideoInitState],
    videoTags: [""],
-   loadVideos: (_query: string) => { }
+   loadVideos: (_query: string): Promise<void> => Promise.resolve(),
+   videoLoading: false,
 }
 
 export const VideoContext = createContext(VideoContextInitState)
@@ -67,27 +68,34 @@ type VideoProviderPropTypes = { children: ReactNode }
 export const VideoProvider = ({ children }: VideoProviderPropTypes) => {
    const [videos, setvideos] = useState<videoType[]>([])
    const [videoTags, setvideoTags] = useState<string[]>([])
+   const [videoLoading, setVideoLoading] = useState<boolean>(false)
 
    const { id, query, orientation, category, change } = useParameter()
 
    useEffect(() => {
       console.log("video change:", change)
+      setVideoLoading(true)
       loadVideos(query)
+         .then(() => setVideoLoading(false))
    }, [change])
 
-   const loadVideos = (query: string) => {
+   const loadVideos = async (query: string): Promise<void> => {
       const url = computeURL(query, id, orientation, category)
       console.log("url:", url)
 
-      fetchVideos(url)
-         .then(newVideos => {
-            setvideos(newVideos)
-            const uniqueTags: string[] = getUniqueTags(newVideos)
-            setvideoTags(uniqueTags)
-            console.log("videos:", newVideos)
-            console.log("tags:", uniqueTags)
-         })
-         .catch(error => console.log(error))
+      return new Promise((resolve, reject) => {
+         fetchVideos(url)
+            .then(newVideos => {
+               setvideos(newVideos)
+               const uniqueTags: string[] = getUniqueTags(newVideos)
+               setvideoTags(uniqueTags)
+               console.log("videos:", newVideos)
+               console.log("tags:", uniqueTags)
+               resolve()
+            })
+            .catch(error => reject(error))
+      })
+
    }
 
    return (
@@ -96,6 +104,7 @@ export const VideoProvider = ({ children }: VideoProviderPropTypes) => {
             videos,
             videoTags,
             loadVideos,
+            videoLoading,
          }}
       >
          {children}

@@ -6,8 +6,8 @@ import { useEffect } from 'react'
 const MainSection = () => {
 
    const { type } = useParameter()
-   const { images, loading } = useImage()
-   const { videos } = useVideo()
+   const { images, imageLoading } = useImage()
+   const { videos, videoLoading } = useVideo()
 
    useEffect(() => {
       console.log("Loaded...")
@@ -17,7 +17,7 @@ const MainSection = () => {
 
    return (
       <main className='p-2 sm:p-4 mt-4 sm:mt-10 grid gap-2 grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
-         {loading ? (
+         {(imageLoading || videoLoading) ? (
             <h1>Loading...</h1>
          ) : (
             type === "image" ? (

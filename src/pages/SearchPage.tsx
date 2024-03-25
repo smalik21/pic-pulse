@@ -7,6 +7,7 @@ import SearchType from "../components/SearchType"
 import { useParameter } from "../hooks/useParameter"
 import { useImage } from "../hooks/useImage"
 import { useVideo } from "../hooks/useVideo"
+import ScrollToTopButton from "../components/ScrollToTopButton"
 
 const SearchPage = () => {
 
@@ -35,6 +36,7 @@ const SearchPage = () => {
 
    return (
       <>
+         <ScrollToTopButton />
          <SearchHeader />
          <section id="similar-queries" className="w-full px-2 sm:px-8 flex gap-4 sm:gap-8 py-4 sm:py-8 overflow-scroll no-scrollbar">
             {type === "image" && imageTags.map((query, idx) => {

@@ -38,13 +38,15 @@ function getUniqueTags(images: imageType[]): string[] {
    return Array.from(uniqueTags)
 }
 
-const computeURL = (query: string,
+const computeURL = (
+   query: string,
    id: string,
    orientation: string,
    category: string,
    colour: string,
-   order: string)
-   : string => {
+   order: string,
+   safeSearch: boolean
+): string => {
 
    const baseUrl = 'https://pixabay.com/api/?'
    const queryParams = new URLSearchParams()
@@ -56,6 +58,7 @@ const computeURL = (query: string,
    if (category) queryParams.append('category', category)
    if (colour) queryParams.append('colors', colour)
    if (order) queryParams.append('order', order)
+   if (safeSearch) queryParams.append('safesearch', safeSearch ? "true" : "false")
 
    const finalUrl = baseUrl + queryParams.toString()
    return finalUrl
@@ -68,7 +71,7 @@ export const ImageProvider = ({ children }: ImageProviderPropTypes) => {
    const [imageTags, setImageTags] = useState<string[]>([])
    const [imageLoading, setimageLoading] = useState<boolean>(false)
 
-   const { id, query, orientation, category, colour, order, change } = useParameter()
+   const { id, query, orientation, category, colour, order, safeSearch, change } = useParameter()
 
    useEffect(() => {
       console.log("image change:", change)
@@ -78,7 +81,7 @@ export const ImageProvider = ({ children }: ImageProviderPropTypes) => {
    }, [change])
 
    const loadImages = async (query: string): Promise<void> => {
-      const url = computeURL(query, id, orientation, category, colour, order)
+      const url = computeURL(query, id, orientation, category, colour, order, safeSearch)
       console.log("url:", url)
 
       return new Promise((resolve, reject) => {

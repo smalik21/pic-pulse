@@ -44,11 +44,13 @@ function getUniqueTags(videos: videoType[]): string[] {
    return Array.from(uniqueTags)
 }
 
-const computeURL = (query: string,
+const computeURL = (
+   query: string,
    id: string,
    category: string,
-   order: string)
-   : string => {
+   order: string,
+   safeSearch: boolean
+): string => {
 
    const baseUrl = 'https://pixabay.com/api/videos/?'
    const queryParams = new URLSearchParams()
@@ -58,6 +60,7 @@ const computeURL = (query: string,
    if (id) queryParams.append('id', id)
    if (category) queryParams.append('category', category)
    if (order) queryParams.append('order', order)
+   if (safeSearch) queryParams.append('safesearch', safeSearch ? "true" : "false")
 
    const finalUrl = baseUrl + queryParams.toString()
    return finalUrl
@@ -70,7 +73,7 @@ export const VideoProvider = ({ children }: VideoProviderPropTypes) => {
    const [videoTags, setvideoTags] = useState<string[]>([])
    const [videoLoading, setVideoLoading] = useState<boolean>(false)
 
-   const { id, query, orientation, category, change } = useParameter()
+   const { id, query, order, category, safeSearch, change } = useParameter()
 
    useEffect(() => {
       console.log("video change:", change)
@@ -80,7 +83,7 @@ export const VideoProvider = ({ children }: VideoProviderPropTypes) => {
    }, [change])
 
    const loadVideos = async (query: string): Promise<void> => {
-      const url = computeURL(query, id, orientation, category)
+      const url = computeURL(query, id, category, order, safeSearch)
       console.log("url:", url)
 
       return new Promise((resolve, reject) => {

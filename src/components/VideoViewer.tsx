@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import { videoType } from "../contexts/VideoContext"
+import TagButton from "./TagButton"
 
 type VideoViewerPropTypes = {
    video: videoType | undefined,
@@ -48,14 +49,7 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
                <aside className="w-full mt-4 mb-8 flex flex-col xs:flex-row gap-4 items-center">
                   <h1 className="xs:text-xl font-bold">More Like This: </h1>
                   <section className="flex flex-wrap gap-4">
-                     {video?.videoTags.map(tag => {
-                        return <button
-                           key={tag}
-                           className="px-3 py-1.5 xs:px-4 xs:py-2 text-nowrap text-xs sm:text-base border border-black rounded-md"
-                        >
-                           {tag}
-                        </button>
-                     })}
+                     {video?.videoTags.map(tag => <TagButton key={tag} tag={tag} handleClose={handleClose} />)}
                   </section>
                </aside>
             </section>

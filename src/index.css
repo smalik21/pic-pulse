@@ -3,13 +3,40 @@
 @tailwind utilities;
 
 @layer utilities {
-      /* Hide scrollbar for Chrome, Safari and Opera */
-      .no-scrollbar::-webkit-scrollbar {
-          display: none;
+   /* Hide scrollbar for Chrome, Safari and Opera */
+   .no-scrollbar::-webkit-scrollbar {
+      display: none;
+   }
+   /* Hide scrollbar for IE, Edge and Firefox */
+   .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+   }
+      /* Thin scrollbar styles */
+      .thin-scrollbar::-webkit-scrollbar {
+         width: 4px;
+         /* Width of the scrollbar */
       }
-     /* Hide scrollbar for IE, Edge and Firefox */
-      .no-scrollbar {
-          -ms-overflow-style: none;  /* IE and Edge */
-          scrollbar-width: none;  /* Firefox */
-    }
-  }
+   
+      /* Track styles */
+      .thin-scrollbar::-webkit-scrollbar-track {
+         background: transparent;
+         margin-top: 10px;
+         margin-bottom: 10px;
+         /* Color of the scrollbar track */
+      }
+   
+      /* Thumb styles */
+      .thin-scrollbar::-webkit-scrollbar-thumb {
+         background: #888;
+         /* Color of the scrollbar thumb */
+         border-radius: 4px;
+         /* Rounded corners for the thumb */
+      }
+   
+      /* Hover styles for thumb */
+      .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+         background: #555;
+         /* Color of the thumb on hover */
+      }
+}

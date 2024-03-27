@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { videoType } from "../contexts/VideoContext"
 import TagButton from "./TagButton"
+import { saveAs } from "file-saver"
 
 type VideoViewerPropTypes = {
    video: videoType | undefined,
@@ -27,6 +28,11 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
       }
    }, [])
 
+   const handleDownload = () => {
+      if (!video) return
+      saveAs(video.normal.videoURL + "&download=1", video.videoId + '-picPulse.mp4')
+   }
+
    return (
       <div id="emptySpace" className="h-dvh w-full top-0 fixed flex flex-col justify-start items-center bg-black bg-opacity-80 z-10">
          <article id="videoViewer" className="w-full max-h-full mt-24 sm:w-2/3 rounded-xl overflow-y-scroll thin-scrollbar bg-light">
@@ -36,7 +42,11 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
             <section className="p-2 mt-2 xs:p-4 xs:px-8 flex flex-col gap-4 sm:gap-8 items-center">
                <section className="w-full flex flex-row justify-between">
                   <button>Save</button>
-                  <button className="w-fit py-2 px-4 text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md">Download</button>
+                  <button
+                     onClick={handleDownload}
+                     className="w-fit py-2 px-4 text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md">
+                     Download
+                  </button>
                </section>
                <figure className="max-w-lg">
                   <div className="aspect-video">

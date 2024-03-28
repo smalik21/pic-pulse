@@ -57,7 +57,7 @@ const MainSection = () => {
                      images.map(image => (
                         <img
                            key={image.imageId}
-                           className='w-full h-full object-cover rounded-xl border border-slate-400'
+                           className='w-full h-full object-cover hover:scale-105 active:scale-100 active:cursor-default transition-all cursor-pointer rounded-xl border border-slate-400'
                            src={image.imageURL}
                            loading='lazy'
                            onClick={() => handleImageClick(image)}
@@ -70,7 +70,7 @@ const MainSection = () => {
                         videos.map(video => (
                            <img
                               key={video.videoId}
-                              className='w-full h-full object-cover rounded-xl border border-slate-400'
+                              className='w-full h-full object-cover hover:scale-105 active:scale-100 active:cursor-default transition-all cursor-pointer rounded-xl border border-slate-400'
                               src={video.small.thumbnail}
                               loading='lazy'
                               onClick={() => handleVideoClick(video)}

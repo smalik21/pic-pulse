@@ -40,7 +40,7 @@ const SearchPage = () => {
             {type === "video" && videoTags.map(tag => <TagButton key={tag} tag={tag} />)}
          </section>
          <h3 className="my-2 sm:my-4 px-2 sm:px-8 sm:text-lg lg:text-xl">Showing results for
-            <span className="font-bold italic"> {query}</span>
+            <span className="sm:text-xl lg:text-2xl font-bold italic"> {query}</span>
          </h3>
          <SearchType page="search" />
          <Filters />

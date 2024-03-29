@@ -1,6 +1,6 @@
-import PageTitle from "./PageTitle"
-import PageOptions from "./PageOptions"
-import Search from "./Search"
+import PageTitle from "../PageTitle"
+import PageOptions from "../PageOptions"
+import Search from "../Search"
 
 const SearchHeader = () => {
    return (

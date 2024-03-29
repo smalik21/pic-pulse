@@ -4,28 +4,35 @@ import { useParameter } from "../hooks/useParameter"
 
 const apiKey: string = import.meta.env.VITE_API_KEY
 
-const ImageInitState = {
-   imageId: "",
-   previewURL: "",
-   imageURL: "",
-   imageTags: [""],
-}
-
-const ImageContextInitState = {
-   images: [ImageInitState],
-   imageTags: [""],
-   loadImages: (_query: string): Promise<void> => Promise.resolve(),
-   imageLoading: false,
-}
-
-export const ImageContext = createContext(ImageContextInitState)
-
 export type imageType = {
    imageId: string,
    previewURL: string,
    imageURL: string,
    imageTags: string[],
 }
+
+const ImageInitState: imageType = {
+   imageId: "",
+   previewURL: "",
+   imageURL: "",
+   imageTags: [""],
+}
+
+type ImageContextType = {
+   images: imageType[],
+   imageTags: string[],
+   loadImages: (_query: string) => Promise<void>,
+   imageLoading: boolean,
+}
+
+const ImageContextInitState: ImageContextType = {
+   images: [ImageInitState],
+   imageTags: [""],
+   loadImages: (_query: string): Promise<void> => Promise.resolve(),
+   imageLoading: false,
+}
+
+export const ImageContext = createContext<ImageContextType>(ImageContextInitState)
 
 function getUniqueTags(images: imageType[]): string[] {
    const uniqueTags: Set<string> = new Set()

@@ -1,14 +1,14 @@
 import { createContext, ReactNode, useReducer, useState } from "react"
 
 type StateType = {
-   query: string,
-   id: string,
-   type: string,
-   orientation: string,
-   category: string,
-   colour: string,
-   order: string,
-   safeSearch: boolean,
+   query: string
+   id: string
+   type: string
+   orientation: string
+   category: string
+   colour: string
+   order: string
+   safeSearch: boolean
 }
 
 const defaultState: StateType = {
@@ -19,22 +19,30 @@ const defaultState: StateType = {
    category: "",
    colour: "",
    order: "popular",
-   safeSearch: false,
+   safeSearch: true,
 }
 
 const initState: StateType = defaultState
 
-const ParameterContextInitState = {
+interface ParameterContextType extends StateType {
+   update: (parameter: REDUCER_ACTION_TYPE, value: string | boolean) => void
+   resetParameters: () => void
+   change: boolean
+   resetChange: () => void
+   reset: boolean
+}
+
+const ParameterContextInitState: ParameterContextType = {
    ...initState,
-   state: initState,
-   update: (_parameter: REDUCER_ACTION_TYPE, _value: string) => { },
+   update: () => { },
    resetParameters: () => { },
    change: false,
    resetChange: () => { },
    reset: true,
 }
 
-export const ParameterContext = createContext(ParameterContextInitState)
+
+export const ParameterContext = createContext<ParameterContextType>(ParameterContextInitState)
 
 export type REDUCER_ACTION_TYPE = "QUERY" | "ID" | "TYPE" | "ORIENTATION" | "CATEGORY" | "COLOUR" | "ORDER" | "SAFESEARCH" | "RESET"
 
@@ -105,7 +113,6 @@ export const ParameterProvider = ({ children }: ParameterProviderPropTypes) => {
             colour: state.colour,
             order: state.order,
             safeSearch: state.safeSearch,
-            state: state,
             update: update,
             resetParameters: resetParameters,
             change: change,

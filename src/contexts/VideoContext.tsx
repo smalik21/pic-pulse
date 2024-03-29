@@ -4,23 +4,6 @@ import { useParameter } from "../hooks/useParameter"
 
 const apiKey: string = import.meta.env.VITE_API_KEY
 
-
-const VideoInitState = {
-   videoId: "",
-   normal: { videoURL: "", thumbnail: "" },
-   small: { videoURL: "", thumbnail: "" },
-   videoTags: [""],
-}
-
-const VideoContextInitState = {
-   videos: [VideoInitState],
-   videoTags: [""],
-   loadVideos: (_query: string): Promise<void> => Promise.resolve(),
-   videoLoading: false,
-}
-
-export const VideoContext = createContext(VideoContextInitState)
-
 export type videoDetailType = {
    videoURL: string,
    thumbnail: string,
@@ -32,6 +15,29 @@ export type videoType = {
    small: videoDetailType,
    videoTags: string[],
 }
+
+const VideoInitState: videoType = {
+   videoId: "",
+   normal: { videoURL: "", thumbnail: "" },
+   small: { videoURL: "", thumbnail: "" },
+   videoTags: [""],
+}
+
+type VideoContextType = {
+   videos: videoType[],
+   videoTags: string[],
+   loadVideos: (_query: string) => Promise<void>,
+   videoLoading: boolean,
+}
+
+const VideoContextInitState: VideoContextType = {
+   videos: [VideoInitState],
+   videoTags: [""],
+   loadVideos: (_query: string): Promise<void> => Promise.resolve(),
+   videoLoading: false,
+}
+
+export const VideoContext = createContext<VideoContextType>(VideoContextInitState)
 
 function getUniqueTags(videos: videoType[]): string[] {
    const uniqueTags: Set<string> = new Set()

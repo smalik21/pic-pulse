@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import HomePage from "./pages/HomePage"
 import SearchPage from "./pages/SearchPage"
+import SignupPage from "./pages/SignupPage"
+import LoginPage from "./pages/LoginPage"
 
 export default function App() {
 
@@ -10,6 +12,8 @@ export default function App() {
             <Routes>
                <Route path="/" element={<HomePage />} />
                <Route path="/search/:q" element={<SearchPage />} />
+               <Route path="/signup" element={<SignupPage />} />
+               <Route path="/login" element={<LoginPage />} />
                <Route path="*" element={<Navigate to={'/'} />} />
             </Routes>
          </Router>

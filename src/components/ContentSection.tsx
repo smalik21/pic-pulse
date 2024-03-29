@@ -7,7 +7,7 @@ import ImageViewer from './ImageViewer'
 import VideoViewer from './VideoViewer'
 import { videoType } from '../contexts/VideoContext'
 
-const MainSection = () => {
+const ContentSection = () => {
    const [showImageViewer, setShowImageViewer] = useState<boolean>(false)
    const [showVideoViewer, setShowVideoViewer] = useState<boolean>(false)
 
@@ -85,4 +85,4 @@ const MainSection = () => {
    )
 }
 
-export default MainSection
+export default ContentSection

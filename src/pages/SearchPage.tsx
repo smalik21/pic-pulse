@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import Filters from "../components/Filters"
-import MainSection from "../components/MainSection"
+import ContentSection from "../components/ContentSection"
 import SearchHeader from "../components/headers/SearchHeader"
 import SearchType from "../components/SearchType"
 import { useParameter } from "../hooks/useParameter"
@@ -44,7 +44,7 @@ const SearchPage = () => {
          </h3>
          <SearchType page="search" />
          <Filters />
-         <MainSection />
+         <ContentSection />
       </>
    )
 }

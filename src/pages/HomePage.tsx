@@ -4,7 +4,7 @@ import { useVideo } from "../hooks/useVideo"
 import { useParameter } from "../hooks/useParameter"
 import MainHeader from "../components/headers/MainHeader"
 import SearchHeader from "../components/headers/SearchHeader"
-import MainSection from "../components/MainSection"
+import ContentSection from "../components/ContentSection"
 import SearchType from "../components/SearchType"
 import ScrollToTopButton from "../components/ScrollToTopButton"
 
@@ -54,7 +54,7 @@ const HomePage = () => {
          <MainHeader />
          {showSearchHeader && <SearchHeader />}
          <SearchType page="home" />
-         <MainSection />
+         <ContentSection />
       </>
    )
 }

@@ -5,15 +5,18 @@ import './index.css'
 import { ParameterProvider } from './contexts/ParameterContext.tsx'
 import { ImageProvider } from './contexts/ImageContext.tsx'
 import { VideoProvider } from './contexts/VideoContext.tsx'
+import { AuthProvider } from './contexts/AuthContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
    <React.StrictMode>
-      <ParameterProvider>
-         <ImageProvider>
-            <VideoProvider>
-               <App />
-            </VideoProvider>
-         </ImageProvider>
-      </ParameterProvider>
+      <AuthProvider>
+         <ParameterProvider>
+            <ImageProvider>
+               <VideoProvider>
+                  <App />
+               </VideoProvider>
+            </ImageProvider>
+         </ParameterProvider>
+      </AuthProvider>
    </React.StrictMode>,
 )

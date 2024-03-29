@@ -1,4 +1,19 @@
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../hooks/useAuth"
+
 const PageOptions = () => {
+
+   const { logout, isAuthenticated } = useAuth()
+   const navigate = useNavigate()
+
+   const handleLogClick = () => {
+      if (isAuthenticated) {
+         logout()
+            .then(() => navigate('/login'))
+      }
+      else navigate('/login')
+   }
+
    return (
       <section className="space-x-8 flex items-center" id="page-options">
          <input
@@ -12,8 +27,10 @@ const PageOptions = () => {
                      transition-colors duration-200"
          />
          <button className="hidden sm:inline">Upload</button>
-         <button className="px-4 py-1 sm:py-2 text-sm rounded-md text-black bg-white hover:bg-slate-200">
-            Login
+         <button
+            onClick={handleLogClick}
+            className="px-4 py-1 sm:py-2 text-sm flex items-center rounded-md text-black bg-white hover:bg-slate-200">
+            {isAuthenticated ? "Logout" : "Login"}
          </button>
       </section>
    )

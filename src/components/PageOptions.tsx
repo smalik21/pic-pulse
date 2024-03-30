@@ -1,17 +1,14 @@
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
+import SettingsDropdown from "./SettingsDropdown"
 
 const PageOptions = () => {
 
-   const { logout, isAuthenticated } = useAuth()
+   const { isAuthenticated } = useAuth()
    const navigate = useNavigate()
 
-   const handleLogClick = () => {
-      if (isAuthenticated) {
-         logout()
-            .then(() => navigate('/login'))
-      }
-      else navigate('/login')
+   const handleLoginClick = () => {
+      navigate('/login')
    }
 
    return (
@@ -27,11 +24,16 @@ const PageOptions = () => {
                      transition-colors duration-200"
          />
          <button className="hidden sm:inline">Upload</button>
-         <button
-            onClick={handleLogClick}
-            className="px-4 py-1 sm:py-2 text-sm flex items-center rounded-md text-black bg-white hover:bg-slate-200">
-            {isAuthenticated ? "Logout" : "Login"}
-         </button>
+         {isAuthenticated
+            ? <SettingsDropdown />
+            : (
+               <button
+                  onClick={handleLoginClick}
+                  className="px-4 py-1 sm:py-2 text-sm flex items-center rounded-md text-black bg-white hover:bg-slate-200">
+                  Login
+               </button>
+            )
+         }
       </section>
    )
 }

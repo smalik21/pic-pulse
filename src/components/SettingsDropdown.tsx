@@ -65,7 +65,6 @@ function SettingsDropdown() {
                         Logout
                      </button>
                   </li>
-
                </ul>
             </section>
          )}

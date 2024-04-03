@@ -57,7 +57,7 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
 
    return (
       <div id="emptySpace" className="h-dvh w-full top-0 fixed flex flex-col justify-start items-center bg-black bg-opacity-90 z-10">
-         <article id="imageViewer" className="w-full max-h-full mt-24 sm:w-2/3 rounded-xl overflow-y-scroll thin-scrollbar bg-light">
+         <article id="imageViewer" className="w-full max-h-full mt-12 sm:w-2/3 rounded-xl overflow-y-scroll thin-scrollbar bg-light">
             <span className="absolute -mt-12 sm:mt-0 sm:-ml-16">
                <button onClick={handleClose} className="size-10 opacity-80 hover:opacity-100 active:opacity-80">
                   <img src={CloseIcon} alt="close-icon" />

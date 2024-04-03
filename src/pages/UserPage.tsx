@@ -2,6 +2,7 @@ import { Route, Routes, useNavigate, NavLink, Navigate } from "react-router-dom"
 import PageTitle from "../components/PageTitle"
 import { useAuth } from "../hooks/useAuth"
 import ProfileDefaultImg from "../assets/profile-image.svg"
+import Saved from "../components/Saved"
 
 const UserPage = () => {
    const { isAuthenticated, logout } = useAuth()
@@ -34,19 +35,31 @@ const UserPage = () => {
                </figure>
             </section>
          </header>
-         <main className="p-2 sm:p-4">
-            <nav className="sm:px-8">
-               <ul className="flex justify-center sm:justify-start gap-4 sm:gap-6">
-                  <li>
+         <main className="pb-4 sm:pb-8">
+            <nav className="mt-4 sm:mt-8">
+               <ul className="px-0 sm:px-16 flex justify-center sm:justify-start gap-4 sm:gap-6">
+                  {/* <li>
                      <NavLink
                         to={`/user/profile`}
                         className={({ isActive }) =>
                            `block px-4 py-2 text-sm sm:text-md sm:px-6 sm:py-3
-                           ${isActive ? 'border border-b-0 rounded-t-lg border-black' : ''
+                           ${isActive ? 'text-white bg-dark rounded-t-lg' : ''
                            }`
                         }
                      >
                         Profile
+                     </NavLink>
+                  </li> */}
+                  <li>
+                     <NavLink
+                        to={`/user/saved`}
+                        className={({ isActive }) =>
+                           `block px-4 py-2 text-sm sm:text-md sm:px-6 sm:py-3
+                           ${isActive ? 'text-white bg-dark rounded-t-lg' : ''
+                           }`
+                        }
+                     >
+                        Saved
                      </NavLink>
                   </li>
                   <li>
@@ -54,32 +67,20 @@ const UserPage = () => {
                         to={`/user/account`}
                         className={({ isActive }) =>
                            `block px-4 py-2 text-sm sm:text-md sm:px-6 sm:py-3
-                           ${isActive ? 'border border-b-0 rounded-t-lg border-black' : ''
+                                    ${isActive ? 'text-white bg-dark rounded-t-lg' : ''
                            }`
                         }
                      >
                         Account
                      </NavLink>
                   </li>
-                  <li>
-                     <NavLink
-                        to={`/user/saved`}
-                        className={({ isActive }) =>
-                           `block px-4 py-2 text-sm sm:text-md sm:px-6 sm:py-3
-                           ${isActive ? 'border border-b-0 rounded-t-lg border-black' : ''
-                           }`
-                        }
-                     >
-                        Saved
-                     </NavLink>
-                  </li>
                </ul>
             </nav>
             <Routes>
-               <Route path="/profile" element={<p className="text-xl text-red-300">profile</p>} />
+               {/* <Route path="/profile" element={<p className="text-xl text-red-300">profile</p>} /> */}
+               <Route path="/saved" element={<Saved />} />
                <Route path="/account" element={<p className="text-xl text-red-300">account</p>} />
-               <Route path="/saved" element={<p className="text-xl text-red-300">saved</p>} />
-               <Route path="*" element={<Navigate to={'/user/profile'} />} />
+               <Route path="*" element={<Navigate to={'/user/saved'} />} />
             </Routes>
          </main>
       </>

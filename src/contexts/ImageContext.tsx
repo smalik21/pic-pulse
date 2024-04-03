@@ -84,7 +84,7 @@ export const ImageProvider = ({ children }: ImageProviderPropTypes) => {
       console.log("image change:", change)
       setimageLoading(true)
       loadImages(query)
-         .then(() => setimageLoading(false))
+         .finally(() => setimageLoading(false))
    }, [change])
 
    const loadImages = async (query: string): Promise<void> => {

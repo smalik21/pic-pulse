@@ -51,7 +51,7 @@ function SettingsDropdown() {
             <section id="dropdownHover" className="absolute right-0 mt-2 mr-2 sm:mr-4 text-black bg-white">
                <ul className="w-32 sm:w-36 text-sm sm:text-md divide-y divide-gray-700">
                   <li>
-                     <a href="/user/profile" className="block px-4 py-2 hover:bg-gray-400">
+                     <a href="/user/saved" className="block px-4 py-2 hover:bg-gray-400">
                         Profile
                      </a>
                   </li>

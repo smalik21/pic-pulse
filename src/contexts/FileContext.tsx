@@ -18,6 +18,7 @@ type FileContextType = {
    deleteFile: (fileId: string) => Promise<void>
    loadFiles: () => void
    files: fileType[] | undefined
+   fileLoading: boolean
 }
 
 const FileContextInitState: FileContextType = {
@@ -26,6 +27,7 @@ const FileContextInitState: FileContextType = {
    deleteFile: (_fileId: string) => Promise.reject(),
    loadFiles: () => { },
    files: [],
+   fileLoading: false,
 }
 
 export const FileContext = createContext(FileContextInitState)
@@ -33,8 +35,8 @@ export const FileContext = createContext(FileContextInitState)
 type FileProviderPropTypes = { children: ReactNode }
 
 export const FileProvider = ({ children }: FileProviderPropTypes) => {
-
    const [files, setFiles] = useState<fileType[]>()
+   const [fileLoading, setFileLoading] = useState<boolean>(false)
    const { currentUser } = useAuth()
 
    const savedCollectionRef = collection(db, "saved")
@@ -86,6 +88,7 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
          setFiles([])
          return
       }
+      setFileLoading(true)
       getFiles()
          .then((querySnapshot) => {
             const newFiles: any[] = []
@@ -94,9 +97,11 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
             console.log(newFiles)
          })
          .catch((error) => console.log(error))
+         .finally(() => setFileLoading(false))
    }
 
    useEffect(() => {
+      console.log(currentUser)
       return loadFiles()
    }, [currentUser])
 
@@ -106,6 +111,7 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
       deleteFile,
       loadFiles,
       files,
+      fileLoading,
    }
 
    return (

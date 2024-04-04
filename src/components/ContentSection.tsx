@@ -48,7 +48,7 @@ const ContentSection = () => {
                setShowVideoViewer={setShowVideoViewer}
             />
          )}
-         <main className='p-2 sm:p-4 mt-4 sm:mt-10 grid gap-2 grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
+         <main className='p-2 sm:p-4 mt-4 sm:mt-10 grid gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-[200px] xs:auto-rows-[300px] lg:auto-rows-[350px]'>
             {(imageLoading || videoLoading) ? (
                <h1>Loading...</h1>
             ) : (

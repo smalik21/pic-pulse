@@ -1,8 +1,13 @@
 import { useEffect, useRef, useState } from "react"
 import { useAuth } from "../hooks/useAuth"
 import { EmailAuthProvider, reauthenticateWithCredential, getIdToken } from "firebase/auth"
+import EditIcon from "../assets/edit-icon.svg"
 
-const Account = () => {
+type AccountPropTypes = {
+   updatedInfo: () => void
+}
+
+const Account = ({ updatedInfo }: AccountPropTypes) => {
 
    const nameRef = useRef<HTMLInputElement>(null)
    const emailRef = useRef<HTMLInputElement>(null)
@@ -11,9 +16,8 @@ const Account = () => {
 
    const [isLoading, setIsLoading] = useState<boolean>(false)
    const [isFormActive, setIsFormActive] = useState<boolean>(false)
-   const { currentUser, update_Profile, update_Email, update_Password } = useAuth()
 
-   // console.log(currentUser)
+   const { currentUser, update_Profile, update_Password } = useAuth()
 
    const handleEdit = () => setIsFormActive(true)
    const handleCancel = () => setIsFormActive(false)
@@ -22,17 +26,8 @@ const Account = () => {
       e.preventDefault()
 
       const name = nameRef.current?.value.trim() || ''
-      const email = emailRef.current?.value.trim() || ''
       const newPassword = newPassRef.current?.value || ''
       const confirmPassword = confirmPassRef.current?.value || ''
-
-      // Email validation
-      const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
-      if (email && !emailRegex.test(email)) {
-         alert('Please enter a valid email address.')
-         emailRef.current?.focus()
-         return
-      }
 
       // Password validation
       if (newPassword && newPassword.length < 8) {
@@ -63,10 +58,10 @@ const Account = () => {
          }
 
          if (name && name !== currentUser?.displayName) await update_Profile({ displayName: name })
-         if (email && email !== currentUser?.email) await update_Email(email)
          if (newPassword) await update_Password(newPassword)
 
          setIsFormActive(false)
+         updatedInfo()
       }
       catch (error) {
          console.log("Error updating profile setting:", error)
@@ -171,7 +166,13 @@ const Account = () => {
             </form>
          ) : (
             <article id="account-info" className="w-full max-w-sm flex flex-col items-start gap-4 sm:gap-4 border-red-600">
-               <button onClick={handleEdit} className="p-2 ml-auto sm:absolute sm:right-16 border border-black">Edit</button>
+               <button
+                  onClick={handleEdit}
+                  className="p-2 ml-auto sm:absolute sm:right-16 flex items-center gap-1 border border-black rounded-lg bg-orange-50 hover:bg-orange-100 active:bg-orange-200"
+               >
+                  <img src={EditIcon} alt="edit-icon" className="size-5" />
+                  Edit
+               </button>
                <section id="user-name" className="w-full px-4 py-1 sm:py-2 border border-slate-400 rounded-lg">
                   <h1 className="font-bold">Full Name</h1>
                   <p className="text-slate-700 truncate">{currentUser?.displayName || 'unknown'}</p>
@@ -182,7 +183,10 @@ const Account = () => {
                </section>
                <section id="password" className="w-full px-4 py-1 sm:py-2 border border-slate-400 rounded-lg">
                   <h1 className="font-bold">Password</h1>
-                  <p className="text-slate-700 truncate">{'*'.repeat((currentUser?.providerData[0].providerId)?.length || 8)}</p>
+                  <p className="text-slate-700 truncate">{'*'.repeat(8)}</p>
+               </section>
+               <section id="delete-account">
+
                </section>
             </article>
          )}

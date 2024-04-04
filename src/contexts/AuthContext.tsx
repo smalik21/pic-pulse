@@ -3,6 +3,7 @@ import { auth } from '../firebase-config'
 import {
    createUserWithEmailAndPassword,
    signInWithEmailAndPassword,
+   updateProfile,
    updateEmail,
    updatePassword,
    sendPasswordResetEmail,
@@ -12,11 +13,17 @@ import {
    UserCredential,
 } from "firebase/auth"
 
+type profileType = {
+   displayName?: string | null | undefined;
+   photoURL?: string | null | undefined;
+}
+
 type AuthContextType = {
    currentUser: User | null
    isAuthenticated: boolean
    signup: (email: string, password: string) => Promise<UserCredential>
    login: (email: string, password: string) => Promise<UserCredential>
+   update_Profile: (profileInfo: profileType) => Promise<void>
    update_Email: (newEmail: string) => Promise<void>
    update_Password: (newPassword: string) => Promise<void>
    resetPassword: (email: string) => Promise<void>
@@ -28,6 +35,7 @@ const AuthContextInitState: AuthContextType = {
    isAuthenticated: false,
    signup: (_email: string, _password: string) => Promise.reject(),
    login: (_email: string, _password: string) => Promise.reject(),
+   update_Profile: (_profileInfo: profileType) => Promise.reject(),
    update_Email: (_newEmail: string) => Promise.reject(),
    update_Password: (_newPassword: string) => Promise.reject(),
    resetPassword: (_email: string) => Promise.reject(),
@@ -49,6 +57,11 @@ export const AuthProvider = ({ children }: AuthProviderPropTypes) => {
    const login = (email: string, password: string) => signInWithEmailAndPassword(auth, email, password)
    const resetPassword = (email: string) => sendPasswordResetEmail(auth, email)
    const logout = () => signOut(auth)
+
+   const update_Profile = (profileInfo: profileType) => {
+      if (currentUser) return updateProfile(currentUser, profileInfo)
+      return Promise.reject()
+   }
 
    const update_Email = (newEmail: string) => {
       if (currentUser) return updateEmail(currentUser, newEmail)
@@ -75,6 +88,7 @@ export const AuthProvider = ({ children }: AuthProviderPropTypes) => {
       isAuthenticated,
       signup,
       login,
+      update_Profile,
       update_Email,
       update_Password,
       resetPassword,

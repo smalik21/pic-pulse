@@ -3,6 +3,7 @@ import PageTitle from "../components/PageTitle"
 import { useAuth } from "../hooks/useAuth"
 import ProfileDefaultImg from "../assets/profile-image.svg"
 import Saved from "../components/Saved"
+import Account from "../components/Account"
 
 const UserPage = () => {
    const { isAuthenticated, logout } = useAuth()
@@ -37,7 +38,7 @@ const UserPage = () => {
          </header>
          <main className="pb-4 sm:pb-8">
             <nav className="mt-4 sm:mt-8">
-               <ul className="px-0 sm:px-16 flex justify-center sm:justify-start gap-4 sm:gap-6">
+               <ul className="px-0 sm:px-16 flex justify-center sm:justify-start gap-4">
                   {/* <li>
                      <NavLink
                         to={`/user/profile`}
@@ -79,7 +80,7 @@ const UserPage = () => {
             <Routes>
                {/* <Route path="/profile" element={<p className="text-xl text-red-300">profile</p>} /> */}
                <Route path="/saved" element={<Saved />} />
-               <Route path="/account" element={<p className="text-xl text-red-300">account</p>} />
+               <Route path="/account" element={<Account />} />
                <Route path="*" element={<Navigate to={'/user/saved'} />} />
             </Routes>
          </main>

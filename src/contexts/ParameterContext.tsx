@@ -70,7 +70,7 @@ const reducer = (state: StateType, action: ReducerAction): StateType => {
       case "SAFESEARCH":
          return { ...state, safeSearch: action.payload as boolean ?? defaultState.order }
       case "RESET":
-         return defaultState
+         return { ...defaultState, type: state.type, safeSearch: state.safeSearch }
       default:
          throw new Error("Reducer action type doesn't match.")
    }
@@ -88,10 +88,8 @@ export const ParameterProvider = ({ children }: ParameterProviderPropTypes) => {
          payload: value,
       })
       console.log("State:", state)
-      if (parameter !== "TYPE") {
-         setChange(!change)
-         setReset(false)
-      }
+      setChange(!change)
+      setReset(false)
    }
 
    const resetParameters = (): void => {

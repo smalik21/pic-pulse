@@ -11,7 +11,6 @@ const Filters = () => {
    const { type, category, colour, orientation, order, update } = useParameter()
 
    const handleParameterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      // console.log("change:")
       const parameterName: REDUCER_ACTION_TYPE = e.target.name as REDUCER_ACTION_TYPE
       let parameterValue: string = e.target.value.toLowerCase()
       parameterValue = parameterValue === "all" ? "" : parameterValue

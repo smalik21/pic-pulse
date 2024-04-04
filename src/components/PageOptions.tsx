@@ -29,7 +29,8 @@ const PageOptions = () => {
             : (
                <button
                   onClick={handleLoginClick}
-                  className="px-4 py-1 sm:py-2 text-sm flex items-center rounded-md text-black bg-white hover:bg-slate-200">
+                  className="px-4 py-1 sm:py-2 text-sm flex items-center rounded-md text-black bg-white hover:bg-slate-200"
+               >
                   Login
                </button>
             )

@@ -144,25 +144,25 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
 
       try {
          if (type === "image") {
-            storeImage(file as imageType, id)
+            await storeImage(file as imageType, id)
                .then((newFile: fileType) => {
                   console.log("image:", newFile)
                   const fileRef = doc(userFilesRef, id.toString())
                   // setFiles((prevFiles) => [...prevFiles, newFile])
                   setDoc(fileRef, newFile)
                      .then(() => loadFiles())
-                  Promise.resolve()
+                  // Promise.resolve()
                })
          }
          else {
-            storeVideo(file as videoType, id)
+            await storeVideo(file as videoType, id)
                .then((newFile: fileType) => {
                   console.log("video:", newFile)
                   const fileRef = doc(userFilesRef, id.toString())
                   // setFiles((prevFiles) => [...prevFiles, newFile])
                   setDoc(fileRef, newFile)
                      .then(() => loadFiles())
-                  Promise.resolve()
+                  // Promise.resolve()
                })
          }
       }
@@ -178,13 +178,13 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
       return getDocs(userFilesRef)
    }
 
-   const deleteFile = (fileId: string) => {
+   const deleteFile = async (fileId: string) => {
       if (!currentUser) return Promise.reject()
       const userFilesRef = getUserFilesRef(currentUser.uid)
       if (!userFilesRef) return Promise.reject()
       const fileRef = doc(userFilesRef, fileId.toString())
 
-      deleteDoc(fileRef)
+      await deleteDoc(fileRef)
          .then(() => loadFiles())
       return Promise.resolve()
    }

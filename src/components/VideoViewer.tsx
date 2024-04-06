@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useState, useEffect } from "react"
 import { videoType } from "../contexts/VideoContext"
 import TagButton from "./TagButton"
 import CloseIcon from "../assets/close-icon.svg"
@@ -13,35 +13,44 @@ type VideoViewerPropTypes = {
 
 const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
 
+   const [saved, setSaved] = useState<boolean>(false)
+   const [saving, setSaving] = useState<boolean>(false)
+   const [removing, setRemoving] = useState<boolean>(false)
+   const [downloading, setDownloading] = useState<boolean>(false)
    const { files, addFile, deleteFile, loadFiles } = useFile()
 
-   const saved: boolean = files?.find(file => file.type === "video" && file.id === video?.videoId.toString()) ? true : false
+   // const saved: boolean = files?.find(file => file.type === "video" && file.id === video?.videoId.toString()) ? true : false
 
    const handleClose = () => setShowVideoViewer(false)
 
    const handleSave = () => {
       if (!video) return
+      setSaving(true)
       addFile("video", video, video.videoId)
          .then(() => {
-            loadFiles()
             console.log("video saved")
+            setSaved(true)
          })
          .catch(error => console.log("error saving file:", error))
+         .finally(() => setSaving(false))
    }
 
    const handleRemove = () => {
       if (!video) return
+      setRemoving(true)
       deleteFile(video.videoId)
          .then(() => {
-            loadFiles()
             console.log("video removed")
+            setSaved(false)
          })
          .catch(error => console.log("error removing file:", error))
+         .finally(() => setRemoving(false))
    }
 
    const handleDownload = async () => {
       if (!video) return
       console.log("downloading...")
+      setDownloading(true)
       try {
          const response = await fetch(video.small.videoURL)
          const blob = await response.blob()
@@ -55,9 +64,16 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
          window.URL.revokeObjectURL(url)
       } catch {
          console.log("unable to download.")
+      } finally {
+         setDownloading(false)
       }
       // saveAs(video.normal.videoURL + "&download=1", video.videoId + '-picPulse.mp4')
    }
+
+   useEffect(() => {
+      console.log("updated files:", files)
+      setSaved(files?.find(file => file.type === "image" && file.id === video?.videoId.toString()) ? true : false)
+   }, [files, video])
 
    useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
@@ -83,19 +99,20 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
                <section className="w-full flex flex-row justify-between">
                   {(saved)
                      ? (
-                        <button id="bookmark-filled" onClick={handleRemove} className="size-10 invert opacity-80 hover:opacity-100 active:opacity-80">
+                        <button id="bookmark-filled" onClick={handleRemove} disabled={removing} className="size-10 invert opacity-80 hover:opacity-100 active:opacity-80 disabled:cursor-wait">
                            <img src={BookmarkFilledIcon} alt="bookmark-filled-icon" />
                         </button>
                      )
                      : (
-                        <button id="bookmark" onClick={handleSave} className="size-10 invert opacity-80 hover:opacity-100 active:opacity-80">
+                        <button id="bookmark" onClick={handleSave} disabled={saving} className="size-10 invert opacity-80 hover:opacity-100 active:opacity-80 disabled:cursor-wait">
                            <img src={BookmarkIcon} alt="bookmark-icon" />
                         </button>
                      )
                   }
                   <button
                      onClick={handleDownload}
-                     className="w-fit py-2 px-4 text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md"
+                     className="w-fit py-2 px-4 text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md disabled:cursor-wait"
+                     disabled={downloading}
                   >
                      Download
                   </button>

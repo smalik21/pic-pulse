@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { imageType } from "../contexts/ImageContext"
 import { saveAs } from "file-saver"
 import { useFile } from "../hooks/useFile"
@@ -14,24 +14,37 @@ type ImageViewerPropTypes = {
 
 const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
 
+   const [saved, setSaved] = useState<boolean>(false)
+   const [saving, setSaving] = useState<boolean>(false)
+   const [removing, setRemoving] = useState<boolean>(false)
    const { files, addFile, deleteFile } = useFile()
 
-   const saved: boolean = files?.find(file => file.type === "image" && file.id === image?.imageId.toString()) ? true : false
+   // const saved: boolean = files?.find(file => file.type === "image" && file.id === image?.imageId.toString()) ? true : false
 
    const handleClose = () => setShowImageViewer(false)
 
    const handleSave = () => {
       if (!image) return
+      setSaving(true)
       addFile("image", image, image.imageId)
-         .then(() => console.log("image saved"))
+         .then(() => {
+            console.log("image saved")
+            setSaved(true)
+         })
          .catch(error => console.log("error saving file:", error))
+         .finally(() => setSaving(false))
    }
 
    const handleRemove = () => {
       if (!image) return
+      setRemoving(true)
       deleteFile(image.imageId)
-         .then(() => console.log("image removed"))
+         .then(() => {
+            console.log("image removed")
+            setSaved(false)
+         })
          .catch(error => console.log("error removing file:", error))
+         .finally(() => setRemoving(false))
    }
 
    const handleDownload = () => {
@@ -41,7 +54,8 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
 
    useEffect(() => {
       console.log("updated files:", files)
-   }, [files])
+      setSaved(files?.find(file => file.type === "image" && file.id === image?.imageId.toString()) ? true : false)
+   }, [files, image])
 
    useEffect(() => {
       // console.log("image:", image)
@@ -69,12 +83,12 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
                <section className="w-full flex flex-row justify-between">
                   {(saved)
                      ? (
-                        <button id="bookmark-filled" onClick={handleRemove} className="size-10 invert opacity-80 hover:opacity-100 active:opacity-80">
+                        <button id="bookmark-filled" onClick={handleRemove} disabled={removing} className="size-10 invert opacity-80 hover:opacity-100 active:opacity-80 disabled:cursor-wait">
                            <img src={BookmarkFilledIcon} alt="bookmark-filled-icon" />
                         </button>
                      )
                      : (
-                        <button id="bookmark" onClick={handleSave} className="size-10 invert opacity-80 hover:opacity-100 active:opacity-80">
+                        <button id="bookmark" onClick={handleSave} disabled={saving} className="size-10 invert opacity-80 hover:opacity-100 active:opacity-80 disabled:cursor-wait">
                            <img src={BookmarkIcon} alt="bookmark-icon" />
                         </button>
                      )

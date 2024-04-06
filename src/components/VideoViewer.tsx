@@ -1,6 +1,5 @@
 import { useEffect } from "react"
 import { videoType } from "../contexts/VideoContext"
-import { saveAs } from "file-saver"
 import TagButton from "./TagButton"
 import CloseIcon from "../assets/close-icon.svg"
 import BookmarkIcon from "../assets/bookmark-icon.svg"
@@ -15,6 +14,8 @@ type VideoViewerPropTypes = {
 const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
 
    const { files, addFile, deleteFile, loadFiles } = useFile()
+
+   const saved: boolean = files?.find(file => file.type === "video" && file.id === video?.videoId.toString()) ? true : false
 
    const handleClose = () => setShowVideoViewer(false)
 
@@ -38,9 +39,24 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
          .catch(error => console.log("error removing file:", error))
    }
 
-   const handleDownload = () => {
+   const handleDownload = async () => {
       if (!video) return
-      saveAs(video.normal.videoURL + "&download=1", video.videoId + '-picPulse.mp4')
+      console.log("downloading...")
+      try {
+         const response = await fetch(video.small.videoURL)
+         const blob = await response.blob()
+         const url = window.URL.createObjectURL(blob)
+         const link = document.createElement('a')
+         link.href = url
+         link.setAttribute('download', `${video.videoId}.mp4`)
+         document.body.appendChild(link)
+         link.click()
+         document.body.removeChild(link)
+         window.URL.revokeObjectURL(url)
+      } catch {
+         console.log("unable to download.")
+      }
+      // saveAs(video.normal.videoURL + "&download=1", video.videoId + '-picPulse.mp4')
    }
 
    useEffect(() => {
@@ -65,7 +81,7 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
             </span>
             <section className="p-2 mt-2 xs:p-4 xs:px-8 flex flex-col gap-4 sm:gap-8 items-center">
                <section className="w-full flex flex-row justify-between">
-                  {files?.find(file => file.type === "video" && file.id === video?.videoId.toString())
+                  {(saved)
                      ? (
                         <button id="bookmark-filled" onClick={handleRemove} className="size-10 invert opacity-80 hover:opacity-100 active:opacity-80">
                            <img src={BookmarkFilledIcon} alt="bookmark-filled-icon" />
@@ -79,7 +95,8 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
                   }
                   <button
                      onClick={handleDownload}
-                     className="w-fit py-2 px-4 text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md">
+                     className="w-fit py-2 px-4 text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md"
+                  >
                      Download
                   </button>
                </section>

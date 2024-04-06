@@ -53,7 +53,7 @@ const UserPage = () => {
                      <NavLink
                         to={`/user/saved`}
                         className={({ isActive }) =>
-                           `block px-4 py-2 text-sm sm:text-md sm:px-6 sm:py-3
+                           `block px-4 py-2 text-sm sm:text-md sm:px-6 sm:py-3 font-bold
                            ${isActive ? 'text-white bg-dark rounded-t-lg' : ''
                            }`
                         }
@@ -65,7 +65,7 @@ const UserPage = () => {
                      <NavLink
                         to={`/user/account`}
                         className={({ isActive }) =>
-                           `block px-4 py-2 text-sm sm:text-md sm:px-6 sm:py-3
+                           `block px-4 py-2 text-sm sm:text-md sm:px-6 sm:py-3 font-bold
                                     ${isActive ? 'text-white bg-dark rounded-t-lg' : ''
                            }`
                         }

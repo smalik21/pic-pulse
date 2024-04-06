@@ -14,27 +14,23 @@ type ImageViewerPropTypes = {
 
 const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
 
-   const { files, addFile, deleteFile, loadFiles } = useFile()
+   const { files, addFile, deleteFile } = useFile()
+
+   const saved: boolean = files?.find(file => file.type === "image" && file.id === image?.imageId.toString()) ? true : false
 
    const handleClose = () => setShowImageViewer(false)
 
    const handleSave = () => {
       if (!image) return
       addFile("image", image, image.imageId)
-         .then(() => {
-            loadFiles()
-            console.log("image saved")
-         })
+         .then(() => console.log("image saved"))
          .catch(error => console.log("error saving file:", error))
    }
 
    const handleRemove = () => {
       if (!image) return
       deleteFile(image.imageId)
-         .then(() => {
-            loadFiles()
-            console.log("image removed")
-         })
+         .then(() => console.log("image removed"))
          .catch(error => console.log("error removing file:", error))
    }
 
@@ -44,6 +40,12 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
    }
 
    useEffect(() => {
+      console.log("updated files:", files)
+   }, [files])
+
+   useEffect(() => {
+      // console.log("image:", image)
+      // console.log("files:", files)
       const handleClickOutside = (event: MouseEvent) => {
          const space = document.getElementById("emptySpace")
          const imageViewer = document.getElementById("imageViewer")
@@ -65,8 +67,7 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
             </span>
             <section className="p-2 mt-2 xs:p-4 xs:px-8 flex flex-col gap-4 sm:gap-8 items-center">
                <section className="w-full flex flex-row justify-between">
-                  {/* use check-box */}
-                  {files?.find(file => file.type === "image" && file.id === image?.imageId.toString())
+                  {(saved)
                      ? (
                         <button id="bookmark-filled" onClick={handleRemove} className="size-10 invert opacity-80 hover:opacity-100 active:opacity-80">
                            <img src={BookmarkFilledIcon} alt="bookmark-filled-icon" />

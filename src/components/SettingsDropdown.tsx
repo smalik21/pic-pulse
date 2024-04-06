@@ -59,7 +59,7 @@ function SettingsDropdown() {
 
          {/* Dropdown menu */}
          {isOpen && (
-            <section id="dropdownHover" className="absolute right-0 mt-2 mr-2 sm:mr-6 text-black bg-white rounded-md">
+            <section id="dropdownHover" className="absolute right-0 mt-2 mr-2 sm:mr-6 text-black bg-light rounded-md">
                <ul className="w-44 sm:w-48 text-sm divide-y divide-slate-400">
                   <li>
                      <a href="/user/saved" className="px-2 sm:px-4 py-2 sm:py-3 flex items-center gap-2 hover:bg-slate-300 rounded-t-md">

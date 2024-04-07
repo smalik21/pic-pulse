@@ -11,7 +11,7 @@ function SettingsDropdown() {
    const [isOpen, setIsOpen] = useState<boolean>(false)
    const timeout = useRef<number | null>(null)
 
-   const { logout, isAuthenticated } = useAuth()
+   const { currentUser, logout, isAuthenticated } = useAuth()
    const { safeSearch, update } = useParameter()
 
    const navigate = useNavigate()
@@ -42,7 +42,7 @@ function SettingsDropdown() {
 
    return (
       <section
-         className="-mb-2 sm:pr-2"
+         className="-mb-2 pr-1 sm:pr-2"
          onMouseEnter={handleMouseEnter}
          onMouseLeave={handleMouseLeave}
       >
@@ -52,23 +52,23 @@ function SettingsDropdown() {
             className=""
             type="button"
          >
-            <div className="relative size-8 sm:size-9 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-               <img src={ProfileImage} alt="profile-img" className='' />
+            <div className="relative size-8 sm:size-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+               <img src={currentUser?.photoURL ?? ProfileImage} alt="profile-img" className='border rounded-full' />
             </div>
          </button>
 
          {/* Dropdown menu */}
          {isOpen && (
-            <section id="dropdownHover" className="absolute right-0 mt-2 mr-2 sm:mr-6 text-black bg-light rounded-md">
+            <section id="dropdownHover" className="absolute right-0 mt-2 mr-3 sm:mr-6 text-black bg-light border border-black rounded-md">
                <ul className="w-44 sm:w-48 text-sm divide-y divide-slate-400">
                   <li>
-                     <a href="/user/saved" className="px-2 sm:px-4 py-2 sm:py-3 flex items-center gap-2 hover:bg-slate-300 rounded-t-md">
+                     <a href="/user/saved" className="px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 flex items-center gap-2 hover:bg-slate-300 rounded-t-md">
                         <img src={ProfileIcon} alt="profile-icon" className='size-5' />
                         Profile
                      </a>
                   </li>
                   <li>
-                     <div className="px-2 sm:px-4 py-2 sm:py-3 flex items-center gap-2 cursor-default">
+                     <div className="px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 flex items-center gap-2 cursor-default">
                         <img src={SafeIcon} alt="safe-icon" className='size-5' />
                         SafeSearch
                         <input
@@ -86,7 +86,7 @@ function SettingsDropdown() {
                      </div>
                   </li>
                   <li>
-                     <button onClick={handleLogoutClick} className="w-full text-left flex items-center gap-2 px-2 sm:px-4 py-2 sm:py-3 hover:bg-red-300 rounded-b-md">
+                     <button onClick={handleLogoutClick} className="w-full text-left flex items-center gap-2 px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 hover:bg-red-300 rounded-b-md">
                         <img src={LogoutIcon} alt="logout-icon" className='size-5' />
                         Logout
                      </button>

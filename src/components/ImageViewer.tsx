@@ -73,7 +73,7 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
 
    return (
       <div id="emptySpace" className="h-dvh w-full top-0 fixed flex flex-col justify-start items-center bg-black bg-opacity-90 z-10">
-         <article id="imageViewer" className="w-full max-h-full mt-12 sm:w-2/3 rounded-xl overflow-y-scroll thin-scrollbar bg-light">
+         <article id="imageViewer" className="w-full max-h-full mt-24 sm:mt-12 sm:w-2/3 rounded-xl overflow-y-scroll thin-scrollbar bg-light">
             <span className="absolute -mt-12 sm:mt-0 sm:-ml-16">
                <button onClick={handleClose} className="size-10 opacity-80 hover:opacity-100 active:opacity-80">
                   <img src={CloseIcon} alt="close-icon" />
@@ -83,17 +83,17 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
                <section className="w-full flex flex-row justify-between">
                   {(saved)
                      ? (
-                        <button id="bookmark-filled" onClick={handleRemove} disabled={removing} className="size-10 invert opacity-80 hover:opacity-100 active:opacity-80 disabled:cursor-wait">
+                        <button id="bookmark-filled" onClick={handleRemove} disabled={removing} className="size-8 sm:size-10 invert opacity-80 hover:opacity-100 active:opacity-80 disabled:cursor-wait">
                            <img src={BookmarkFilledIcon} alt="bookmark-filled-icon" />
                         </button>
                      )
                      : (
-                        <button id="bookmark" onClick={handleSave} disabled={saving} className="size-10 invert opacity-80 hover:opacity-100 active:opacity-80 disabled:cursor-wait">
+                        <button id="bookmark" onClick={handleSave} disabled={saving} className="size-8 sm:size-10 invert opacity-80 hover:opacity-100 active:opacity-80 disabled:cursor-wait">
                            <img src={BookmarkIcon} alt="bookmark-icon" />
                         </button>
                      )
                   }
-                  <button onClick={handleDownload} className="w-fit py-2 px-4 text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md">
+                  <button onClick={handleDownload} className="w-fit py-2 px-4 text-sm sm:text-base text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md">
                      Download
                   </button>
                </section>

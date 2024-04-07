@@ -18,6 +18,7 @@ type FileContextType = {
    getFiles: () => Promise<QuerySnapshot<DocumentData, DocumentData>>
    deleteFile: (fileId: string) => Promise<void>
    loadFiles: () => void
+   storeProfile: (profilePic: File) => Promise<string>
    files: fileType[] | undefined
    fileLoading: boolean
 }
@@ -27,6 +28,7 @@ const FileContextInitState: FileContextType = {
    getFiles: () => Promise.reject(),
    deleteFile: (_fileId: string) => Promise.reject(),
    loadFiles: () => { },
+   storeProfile: (_profilePic: File) => Promise.reject(),
    files: [],
    fileLoading: false,
 }
@@ -51,6 +53,19 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
    const getUserFilesRef = (userId: string) => {
       const userRef = getUserRef(userId)
       return userRef ? collection(userRef, "files") : null
+   }
+
+   const storeProfile = async (profilePic: File): Promise<string> => {
+      if (!currentUser) return Promise.reject()
+      try {
+         const storageRef = ref(storage, 'profile_pictures/' + currentUser.uid + '.jpg')
+         const snapshot = await uploadBytes(storageRef, profilePic)
+         const profilePicUrl = await getDownloadURL(storageRef)
+         return profilePicUrl
+      } catch (error) {
+         console.log("error while storing profile pic")
+         return Promise.reject(error)
+      }
    }
 
    const storeImage = async (file: imageType, id: string): Promise<fileType> => {
@@ -213,6 +228,7 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
       getFiles,
       deleteFile,
       loadFiles,
+      storeProfile,
       files,
       fileLoading,
    }

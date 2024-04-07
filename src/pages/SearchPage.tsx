@@ -18,6 +18,13 @@ const SearchPage = () => {
    const { q } = useParams()
    const navigate = useNavigate()
 
+   const scrollToTop = () => {
+      window.scrollTo({
+         top: 0,
+         behavior: 'smooth'
+      })
+   }
+
    const load = (q: string) => {
       loadImages(q)
       loadVideos(q)
@@ -27,6 +34,7 @@ const SearchPage = () => {
       if (q) {
          load(q)
          update("QUERY", q)
+         scrollToTop()
       }
       else navigate('/')
    }, [q])

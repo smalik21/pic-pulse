@@ -52,7 +52,7 @@ const Saved = () => {
             />
          )}
 
-         <main className="sm:pb-8 sm:mx-8 border-t-2 sm:border-2 border-black sm:rounded-xl">
+         <main className="sm:pb-8 sm:mx-8 border-t-2 sm:border-2 border-dark sm:rounded-xl">
 
             <section id="search-type" className={`flex px-2 sm:px-8 py-6 sm:py-8 gap-2 sm:gap-4 justify-center`}>
                {searchTypes.map(searchType => {

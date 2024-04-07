@@ -22,8 +22,9 @@ const PageOptions = () => {
                      before:transition-all before:duration-200 before:ease-linear
                      checked:before:translate-x-full checked:bg-dark checked:before:bg-light
                      transition-colors duration-200"
+            disabled
          />
-         <button className="hidden sm:inline">Upload</button>
+         <button className="hidden sm:inline" disabled>Upload</button>
          {isAuthenticated
             ? <SettingsDropdown />
             : (

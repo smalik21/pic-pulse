@@ -13,6 +13,7 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
    const emailRef = useRef<HTMLInputElement>(null)
    const newPassRef = useRef<HTMLInputElement>(null)
    const confirmPassRef = useRef<HTMLInputElement>(null)
+   const bottomRef = useRef<HTMLDivElement>(null)
 
    const [isLoading, setIsLoading] = useState<boolean>(false)
    const [isFormActive, setIsFormActive] = useState<boolean>(false)
@@ -78,6 +79,10 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
    };
 
    useEffect(() => console.log(currentUser))
+
+   useEffect(() => {
+      if (isFormActive) bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+   }, [isFormActive])
 
    return (
       <main className="p-4 sm:p-8 sm:mx-8 flex justify-center border-t-2 sm:border-2 border-black sm:rounded-xl">
@@ -162,7 +167,7 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
                      Save Changes
                   </button>
                </section>
-
+               <div ref={bottomRef}></div>
             </form>
          ) : (
             <article id="account-info" className="w-full max-w-sm flex flex-col items-start gap-4 sm:gap-4 border-red-600">

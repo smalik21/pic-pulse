@@ -173,14 +173,14 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
             <article id="account-info" className="w-full max-w-sm flex flex-col items-start gap-4 sm:gap-4 border-red-600">
                <button
                   onClick={handleEdit}
-                  className="p-2 ml-auto sm:absolute sm:right-16 flex items-center gap-1 border border-black rounded-lg bg-orange-50 hover:bg-orange-100 active:bg-orange-200"
+                  className="p-2 ml-auto sm:absolute sm:right-16 flex items-center gap-1 border border-black rounded-lg hover:bg-orange-50 active:bg-orange-100"
                >
                   <img src={EditIcon} alt="edit-icon" className="size-5" />
                   Edit
                </button>
                <section id="user-name" className="w-full px-4 py-1 sm:py-2 border border-slate-400 rounded-lg">
                   <h1 className="font-bold">Full Name</h1>
-                  <p className="text-slate-700 truncate">{currentUser?.displayName || 'unknown'}</p>
+                  <p className="text-slate-700 truncate">{currentUser?.displayName || <em className="text-red-400">unknown</em>}</p>
                </section>
                <section id="email" className="w-full px-4 py-1 sm:py-2 border border-slate-400 rounded-lg">
                   <h1 className="font-bold">Email</h1>

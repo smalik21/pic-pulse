@@ -1,31 +1,44 @@
 import { useEffect, useRef, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
 import AuthHeader from "../components/headers/AuthHeader"
 
 const SignupPage = () => {
 
    const [error, setError] = useState<string>('')
-   // const nameRef = useRef<HTMLInputElement>(null)
+   const [name, setName] = useState<string>('')
+   const [loading, setLoading] = useState<boolean>(false)
+
+   const nameRef = useRef<HTMLInputElement>(null)
    const emailRef = useRef<HTMLInputElement>(null)
    const passRef = useRef<HTMLInputElement>(null)
    const confirmPassRef = useRef<HTMLInputElement>(null)
 
    const navigate = useNavigate()
-   const { signup, isAuthenticated } = useAuth()
+   const { signup, isAuthenticated, update_Profile } = useAuth()
 
    useEffect(() => {
-      if (isAuthenticated) navigate('/')
+      if (isAuthenticated) {
+         if (name) update_Profile({ displayName: name })
+         navigate('/')
+      }
    }, [isAuthenticated])
+
+   const resetFormFields = () => {
+      nameRef.current!.value = ''
+      emailRef.current!.value = ''
+      passRef.current!.value = ''
+      confirmPassRef.current!.value = ''
+   }
 
    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      // const name = nameRef.current?.value.trim()
+      const name = nameRef.current?.value.trim()
       const email = emailRef.current?.value.trim()
-      const password = passRef.current?.value
-      const confirmPassword = confirmPassRef.current?.value
+      const password = passRef.current?.value.trim()
+      const confirmPassword = confirmPassRef.current?.value.trim()
 
-      if (!email || !password) return
+      if (!name || !email || !password) return
 
       // Password validation
       if (password && password.length < 8) {
@@ -39,86 +52,109 @@ const SignupPage = () => {
          return
       }
 
+      console.log("name:", name)
       console.log("username:", email)
       console.log("password:", password)
 
+      setLoading(true)
+
       signup(email, password)
-         .then(() => navigate('/login'))
+         .then(() => setName(name))
          .catch((error) => setError(error))
+         .finally(() => {
+            resetFormFields()
+            setLoading(false)
+         })
    }
 
    return (
       <>
-         <AuthHeader page="signup" />
-         <main className="w-full h-dvh flex justify-center items-center bg-blue-400">
+         <AuthHeader />
+         <main className="w-full h-dvh flex justify-center items-center bg-blue-400 bg-heroSection">
             <form
                onSubmit={handleSubmit}
-               className="w-full max-w-sm flex flex-col sm:gap-2 border-black"
+               className="p-8 w-full max-w-sm mx-auto flex flex-col gap-5 text-dark bg-white rounded-lg"
             >
-               <h1 className="w-full text-center border">Sign Up</h1>
-               {error && <p>{error.toString()}</p>}
-               {/* <div className="mb-4">
-                  <label htmlFor="fullName" className="block font-bold mb-2">
-                     Full Name
-                  </label>
+               <h1 className="mb-6 font-bold text-center text-2xl">Sign Up</h1>
+               <div className="relative z-0 w-full group">
                   <input
                      type="text"
-                     id="fullName"
-                     className="w-full px-4 py-2 border border-slate-400 rounded-lg"
-                     placeholder="Enter your name"
+                     name="floating_name"
+                     id="floating_name"
+                     className="block rounded-md py-3 px-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                     placeholder=""
                      ref={nameRef}
+                     disabled={loading}
                      required
                   />
-               </div> */}
-               <div className="mb-4">
-                  <label htmlFor="email" className="block font-bold mb-2">
-                     Email
+                  <label htmlFor="floating_name" className="ml-3 px-1 hover:cursor-text bg-white peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-2 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                     Name
                   </label>
+               </div>
+               <div className="relative z-0 w-full group">
                   <input
                      type="email"
-                     id="email"
-                     className="w-full px-4 py-2 border border-slate-400 rounded-lg"
-                     placeholder="Enter your email"
+                     name="floating_email"
+                     id="floating_email"
+                     className="block rounded-md py-3 px-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                     placeholder=""
                      ref={emailRef}
+                     disabled={loading}
                      required
                   />
-               </div>
-
-               <div className="mb-4">
-                  <label htmlFor="new-password" className="block font-bold mb-2">
-                     New Password
+                  <label htmlFor="floating_email" className="ml-3 px-1 hover:cursor-text bg-white peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-2 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                     Email address
                   </label>
+               </div>
+               <div className="relative z-0 w-full group">
                   <input
                      type="password"
-                     id="new-password"
-                     className="w-full px-4 py-2 border border-slate-400 rounded-lg"
-                     placeholder="Enter your password"
+                     name="floating_password"
+                     id="floating_password"
+                     className="block rounded-md py-3 px-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                     placeholder=""
                      ref={passRef}
+                     disabled={loading}
                      required
                   />
-               </div>
-
-               <div className="mb-4">
-                  <label htmlFor="confirm-password" className="block font-bold mb-2">
-                     Confirm Password
+                  <label htmlFor="floating_password" className="ml-3 px-1 hover:cursor-text bg-white peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-2 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                     Password
                   </label>
+               </div>
+               <div className="relative z-0 w-full group">
                   <input
                      type="password"
-                     id="confirm-password"
-                     className="w-full px-4 py-2 border border-slate-400 rounded-lg"
-                     placeholder="Confirm your password"
+                     name="repeat_password"
+                     id="floating_repeat_password"
+                     className="block rounded-md py-3 px-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                     placeholder=""
                      ref={confirmPassRef}
+                     disabled={loading}
                      required
                   />
+                  <label htmlFor="floating_repeat_password" className="ml-3 px-1 hover:cursor-text bg-white peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-2 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                     Confirm password
+                  </label>
                </div>
 
                <button
                   type="submit"
-                  className="bg-green-600 hover:bg-green-400 active:bg-green-800 border"
+                  className="w-full mt-2 py-2.5 text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md disabled:hover:bg-green-700"
+                  disabled={loading}
                >
-                  Submit
+                  {!loading
+                     ? <>Signup</>
+                     : <>Signing up...</>
+                  }
                </button>
-
+               <p className="text-sm text-center text-gray-500">Already have an account?
+                  <Link
+                     to={'/login'}
+                     className="px-1 font-semibold hover:underline text-green-600 hover:text-green-500 active:text-green-700"
+                  >
+                     Login
+                  </Link>
+               </p>
             </form>
          </main>
       </>

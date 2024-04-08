@@ -31,7 +31,7 @@ const Search = () => {
 
    return (
       <div id="search" className="w-full p-1 sms:p-0 flex gap-4 flex-col items-center">
-         <form id="search-bar" onSubmit={handleSubmit} className="p-1 sm:pl-2 w-full text-black flex gap-2 items-center bg-light rounded-xl">
+         <form id="search-bar" onSubmit={handleSubmit} className="px-1 py-1 sm:py-1.5 sm:pl-2 w-full text-black flex gap-2 items-center bg-light rounded-xl">
             <div className="p-1 sm:pl-2 sm:gap-1 flex items-center text-xs sm:text-sm bg-gray-1 rounded-md">
                <img
                   className="size-4 sm:size-5 absolute"

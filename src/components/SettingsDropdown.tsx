@@ -52,7 +52,7 @@ function SettingsDropdown() {
             className=""
             type="button"
          >
-            <div className="relative size-8 sm:size-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+            <div className="relative size-8 sm:size-10 flex overflow-hidden rounded-full bg-light">
                <img src={currentUser?.photoURL ?? ProfileImage} alt="profile-img" className='border rounded-full' />
             </div>
          </button>

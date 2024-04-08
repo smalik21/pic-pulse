@@ -28,6 +28,7 @@ const UserPage = () => {
    useEffect(() => {
       setUserName(currentUser?.displayName || '')
       setUserProfile(currentUser?.photoURL || '')
+      // console.log(userProfile)
    }, [currentUser?.displayName, currentUser?.photoURL])
 
    const updatedInfo = () => setUserName(currentUser?.displayName || '')
@@ -45,8 +46,8 @@ const UserPage = () => {
                   Logout
                </button>
             </section>
-            <section id="profile" className="w-full py-4 sm:py-8 flex justify-center">
-               <figure className="flex flex-col gap-2 sm:gap-4 sm:text-lg items-center">
+            <section id="profile" className="w-full pt-8 pb-3 sm:pb-6 flex justify-center">
+               <figure className="flex flex-col gap-5 sm:gap-6 sm:text-lg items-center">
                   <ProfilePictureUpload
                      setUserProfile={setUserProfile}
                      setUploading={setUploading}
@@ -55,8 +56,8 @@ const UserPage = () => {
                   <span className="rounded-full">
                      <img
                         id="profile-img"
-                        src={userProfile ?? ProfileDefaultImg}
-                        className="size-28 sm:size-32 border rounded-full aria-disabled:animate-pulse"
+                        src={userProfile || ProfileDefaultImg}
+                        className="size-24 sm:size-32 border rounded-full aria-disabled:animate-pulse"
                         aria-disabled={uploading}
                      />
                   </span>

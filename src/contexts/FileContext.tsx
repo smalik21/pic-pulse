@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from "react"
 import { useAuth } from "../hooks/useAuth"
 import { collection, doc, setDoc, getDocs, deleteDoc, DocumentData, QuerySnapshot } from "firebase/firestore"
-import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "firebase/storage"
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
 import { db } from "../firebase-config"
 import { imageType } from "./ImageContext"
 import { videoType } from "./VideoContext"
@@ -59,7 +59,7 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
       if (!currentUser) return Promise.reject()
       try {
          const storageRef = ref(storage, 'profile_pictures/' + currentUser.uid + '.jpg')
-         const snapshot = await uploadBytes(storageRef, profilePic)
+         await uploadBytes(storageRef, profilePic)
          const profilePicUrl = await getDownloadURL(storageRef)
          return profilePicUrl
       } catch (error) {
@@ -126,8 +126,8 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
             newVideoUrl = await getDownloadURL(videoStorageRef)
             console.log("File already exists in storage", newVideoUrl)
          } catch {
-            const thumbnailSnapshot = await uploadBytes(thumbnailStorageRef, thumbnailData)
-            const videoSnapshot = await uploadBytes(videoStorageRef, videoData)
+            await uploadBytes(thumbnailStorageRef, thumbnailData)
+            await uploadBytes(videoStorageRef, videoData)
             newThumbnailUrl = await getDownloadURL(thumbnailStorageRef)
             newVideoUrl = await getDownloadURL(videoStorageRef)
          }
@@ -194,6 +194,7 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
    }
 
    const deleteFile = async (type: "image" | "video", fileId: string) => {
+      console.log("type:", type)
       if (!currentUser) return Promise.reject()
       const userFilesRef = getUserFilesRef(currentUser.uid)
       if (!userFilesRef) return Promise.reject()

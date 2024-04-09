@@ -19,7 +19,7 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
    const [saving, setSaving] = useState<boolean>(false)
    const [removing, setRemoving] = useState<boolean>(false)
    const [downloading, setDownloading] = useState<boolean>(false)
-   const { files, addFile, deleteFile, loadFiles } = useFile()
+   const { files, addFile, deleteFile } = useFile()
    const { onSuccess, onError } = useAlert()
    const { isAuthenticated } = useAuth()
 

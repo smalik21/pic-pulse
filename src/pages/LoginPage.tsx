@@ -6,13 +6,13 @@ import AuthHeader from "../components/headers/AuthHeader"
 
 const LoginPage = () => {
 
-   const [error, setError] = useState<string>('')
+   // const [error, setError] = useState<string>('')
    const [loading, setLoading] = useState<boolean>(false)
 
    const usernameRef = useRef<HTMLInputElement>(null)
    const passwordRef = useRef<HTMLInputElement>(null)
 
-   const { currentUser, isAuthenticated, login } = useAuth()
+   const { isAuthenticated, login } = useAuth()
    const { onSuccess, onError } = useAlert()
    const navigate = useNavigate()
 

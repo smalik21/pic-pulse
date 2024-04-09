@@ -13,7 +13,7 @@ const PageOptions = () => {
 
    return (
       <section className="space-x-8 flex items-center" id="page-options">
-         <input
+         {/* <input
             type="checkbox"
             name="theme-toggle"
             id="theme-toggle"
@@ -23,8 +23,8 @@ const PageOptions = () => {
                      checked:before:translate-x-full checked:bg-dark checked:before:bg-light
                      transition-colors duration-200"
             disabled
-         />
-         <button className="hidden sm:inline" disabled>Upload</button>
+         /> */}
+         {/* <button className="hidden sm:inline" disabled>Upload</button> */}
          {isAuthenticated
             ? <SettingsDropdown />
             : (

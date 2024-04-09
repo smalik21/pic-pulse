@@ -6,7 +6,9 @@ import ProfileIcon from "../assets/profile-icon.svg"
 import SafeIcon from "../assets/safe-icon.svg"
 import LogoutIcon from "../assets/logout-icon.svg"
 import DarkModeIcon from "../assets/dark-mode-icon.svg"
+import MenuIcon from "../assets/menu-icon.svg"
 import { useParameter } from '../hooks/useParameter'
+import { useAlert } from '../hooks/useAlert'
 
 function SettingsDropdown() {
    const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -14,6 +16,7 @@ function SettingsDropdown() {
 
    const { currentUser, logout, isAuthenticated } = useAuth()
    const { safeSearch, update } = useParameter()
+   const { onWarn } = useAlert()
 
    const navigate = useNavigate()
 
@@ -43,7 +46,7 @@ function SettingsDropdown() {
 
    return (
       <section
-         className="-mb-2 pr-1 sm:pr-2"
+         className="pr-1 sm:pr-2"
          onMouseEnter={handleMouseEnter}
          onMouseLeave={handleMouseLeave}
       >
@@ -53,21 +56,24 @@ function SettingsDropdown() {
             className=""
             type="button"
          >
-            <div className="relative size-8 sm:size-10 flex overflow-hidden rounded-full bg-light">
-               <img src={currentUser?.photoURL ?? ProfileImage} alt="profile-img" className='border rounded-full' />
+            <div className="relative size-8 sm:size-10 flex justify-center items-center overflow-hidden rounded-full bg-white bg-opacity-70">
+               {isAuthenticated
+                  ? <img src={currentUser?.photoURL ?? ProfileImage} alt="profile-icon" className='border rounded-full' />
+                  : <img src={MenuIcon} alt='menu-icon' className='size-6' />
+               }
             </div>
          </button>
 
          {/* Dropdown menu */}
          {isOpen && (
-            <section id="dropdownHover" className="absolute right-0 mt-2 mr-3 sm:mr-6 text-black bg-light border border-black rounded-md">
+            <section id="dropdownHover" className="absolute right-0 mt-4 mr-3 sm:mr-6 text-black bg-light border border-black rounded-md">
                <ul className="w-44 sm:w-48 text-sm divide-y divide divide-slate-400">
-                  <li>
+                  {isAuthenticated && <li>
                      <a href="/user/saved" className="px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 flex items-center gap-2 hover:bg-slate-300 rounded-t-md">
                         <img src={ProfileIcon} alt="profile-icon" className='size-5' />
                         Profile
                      </a>
-                  </li>
+                  </li>}
                   <li>
                      <div className="px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 flex items-center gap-2 cursor-default">
                         <img src={SafeIcon} alt="safe-icon" className='size-5' />
@@ -99,17 +105,18 @@ function SettingsDropdown() {
                            before:transition-all before:duration-200 before:ease-linear
                            checked:before:translate-x-full checked:bg-light checked:before:bg-dark
                            transition-colors duration-200"
-                        // disabled
+                           // disabled
+                           onClick={() => onWarn('Dark mode isn\'t available right now')}
                         />
                      </div>
 
                   </li>
-                  <li>
+                  {isAuthenticated && <li>
                      <button onClick={handleLogoutClick} className="w-full text-left flex items-center gap-2 px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 hover:bg-red-300 rounded-b-md">
                         <img src={LogoutIcon} alt="logout-icon" className='size-5' />
                         Logout
                      </button>
-                  </li>
+                  </li>}
                </ul>
             </section>
          )}

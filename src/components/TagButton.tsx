@@ -16,7 +16,8 @@ const TagButton = ({ tag, handleClose }: TagButtonPropTypes) => {
    return (
       <button
          onClick={() => handleQueryChange(tag)}
-         className="px-3 py-1.5 xs:px-4 xs:py-2 text-nowrap text-xs sm:text-base border border-black rounded-md">
+         className="px-3 py-1.5 xs:px-4 xs:py-2 text-nowrap text-xs sm:text-base border border-black rounded-md hover:shadow-md shadow-black active:shadow-none"
+      >
          {tag}
       </button>
    )

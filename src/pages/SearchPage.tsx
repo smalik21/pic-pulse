@@ -43,7 +43,7 @@ const SearchPage = () => {
       <>
          <ScrollToTopButton />
          <SearchHeader />
-         <section id="similar-queries" className="w-full px-2 sm:px-8 flex gap-4 sm:gap-8 py-4 sm:py-8 overflow-scroll no-scrollbar">
+         <section id="similar-queries" className="w-full px-2 sm:px-8 flex gap-4 sm:gap-8 pt-6 pb-4 sm:pt-8 overflow-scroll no-scrollbar">
             {type === "image" && imageTags.map(tag => <TagButton key={tag} tag={tag} />)}
             {type === "video" && videoTags.map(tag => <TagButton key={tag} tag={tag} />)}
          </section>

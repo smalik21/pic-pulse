@@ -16,14 +16,18 @@ function SettingsDropdown() {
 
    const { currentUser, logout, isAuthenticated } = useAuth()
    const { safeSearch, update } = useParameter()
-   const { onWarn } = useAlert()
+   const { onWarn, onSuccess, onError } = useAlert()
 
    const navigate = useNavigate()
 
    const handleLogoutClick = () => {
       if (isAuthenticated) {
          logout()
-            .then(() => navigate('/login'))
+            .then(() => {
+               navigate('/login')
+               onSuccess('Logged out successfully!')
+            })
+            .catch(() => onError('Error logging out.'))
       }
    }
 

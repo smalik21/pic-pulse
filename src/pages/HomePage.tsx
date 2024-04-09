@@ -55,6 +55,7 @@ const HomePage = () => {
          {showSearchHeader && <SearchHeader />}
          <SearchType page="home" />
          <ContentSection />
+
       </>
    )
 }

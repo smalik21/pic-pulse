@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from "react"
 import { useAuth } from "../hooks/useAuth"
 import { collection, doc, setDoc, getDocs, deleteDoc, DocumentData, QuerySnapshot } from "firebase/firestore"
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
+import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "firebase/storage"
 import { db } from "../firebase-config"
 import { imageType } from "./ImageContext"
 import { videoType } from "./VideoContext"
@@ -16,7 +16,7 @@ type fileType = {
 type FileContextType = {
    addFile: (type: "image" | "video", file: imageType | videoType, id: string) => Promise<void>
    getFiles: () => Promise<QuerySnapshot<DocumentData, DocumentData>>
-   deleteFile: (fileId: string) => Promise<void>
+   deleteFile: (type: "image" | "video", fileId: string) => Promise<void>
    loadFiles: () => void
    storeProfile: (profilePic: File) => Promise<string>
    files: fileType[] | undefined
@@ -26,7 +26,7 @@ type FileContextType = {
 const FileContextInitState: FileContextType = {
    addFile: (_type: "image" | "video", _file: imageType | videoType, _id: string) => Promise.reject(),
    getFiles: () => Promise.reject(),
-   deleteFile: (_fileId: string) => Promise.reject(),
+   deleteFile: (_type: "image" | "video", _fileId: string) => Promise.reject(),
    loadFiles: () => { },
    storeProfile: (_profilePic: File) => Promise.reject(),
    files: [],
@@ -159,30 +159,30 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
 
       try {
          if (type === "image") {
+            const imageFileCount = files.filter(file => file.type === "image").length
+            if (imageFileCount >= 5) return Promise.reject('Image saving limit reached! (5)')
             await storeImage(file as imageType, id)
                .then((newFile: fileType) => {
                   console.log("image:", newFile)
                   const fileRef = doc(userFilesRef, id.toString())
-                  // setFiles((prevFiles) => [...prevFiles, newFile])
                   setDoc(fileRef, newFile)
                      .then(() => loadFiles())
-                  // Promise.resolve()
                })
          }
          else {
+            const videoFileCount = files.filter(file => file.type === "video").length
+            if (videoFileCount >= 3) return Promise.reject('Video saving limit reached! (3)')
             await storeVideo(file as videoType, id)
                .then((newFile: fileType) => {
                   console.log("video:", newFile)
                   const fileRef = doc(userFilesRef, id.toString())
-                  // setFiles((prevFiles) => [...prevFiles, newFile])
                   setDoc(fileRef, newFile)
                      .then(() => loadFiles())
-                  // Promise.resolve()
                })
          }
       }
       catch {
-         return Promise.reject()
+         return Promise.reject('Error saving file.')
       }
    }
 
@@ -193,15 +193,34 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
       return getDocs(userFilesRef)
    }
 
-   const deleteFile = async (fileId: string) => {
+   const deleteFile = async (type: "image" | "video", fileId: string) => {
       if (!currentUser) return Promise.reject()
       const userFilesRef = getUserFilesRef(currentUser.uid)
       if (!userFilesRef) return Promise.reject()
       const fileRef = doc(userFilesRef, fileId.toString())
 
       await deleteDoc(fileRef)
-         .then(() => loadFiles())
+      loadFiles()
       return Promise.resolve()
+      // CODE FOR DELETING THE FILES FROM STORAGE TOO
+
+      // try {
+      //    if (type === "image") {
+      //       const storageRef = ref(storage, 'images/' + fileId + '.jpg')
+      //       await deleteObject(storageRef)
+      //    }
+      //    else {
+      //       const thumbnailStorageRef = ref(storage, 'videos/' + fileId + '-thumbnail.jpg')
+      //       const videoStorageRef = ref(storage, 'videos/' + fileId + '.mp4')
+      //       await deleteObject(thumbnailStorageRef)
+      //       await deleteObject(videoStorageRef)
+      //    }
+
+      //    return Promise.resolve()
+      // }
+      // catch {
+      //    return Promise.reject('Error deleting file from storage.')
+      // }
    }
 
    const loadFiles = () => {

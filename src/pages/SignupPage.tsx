@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
+import { useAlert } from "../hooks/useAlert"
 import AuthHeader from "../components/headers/AuthHeader"
 
 const SignupPage = () => {
 
-   const [error, setError] = useState<string>('')
    const [name, setName] = useState<string>('')
    const [loading, setLoading] = useState<boolean>(false)
 
@@ -16,6 +16,7 @@ const SignupPage = () => {
 
    const navigate = useNavigate()
    const { signup, isAuthenticated, update_Profile } = useAuth()
+   const { onSuccess, onError } = useAlert()
 
    useEffect(() => {
       if (isAuthenticated) {
@@ -42,12 +43,12 @@ const SignupPage = () => {
 
       // Password validation
       if (password && password.length < 8) {
-         alert('New password should be at least 8 characters long.')
+         onError('Password should be at least 8 characters long.')
          passRef.current?.focus()
          return
       }
       if (password && confirmPassword !== password) {
-         alert('Passwords do not match.')
+         onError('Passwords do not match.')
          passRef.current?.focus()
          return
       }
@@ -59,8 +60,16 @@ const SignupPage = () => {
       setLoading(true)
 
       signup(email, password)
-         .then(() => setName(name))
-         .catch((error) => setError(error))
+         .then(() => {
+            setName(name)
+            onSuccess('Signed up successfully!')
+         })
+         .catch((error) => {
+            console.log("error:", error)
+            if (error.toString() === "FirebaseError: Firebase: Error (auth/email-already-in-use).")
+               onError('Username already taken.')
+            else onError('Failed to signup.')
+         })
          .finally(() => {
             resetFormFields()
             setLoading(false)

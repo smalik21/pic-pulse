@@ -6,6 +6,8 @@ import TagButton from "./TagButton"
 import CloseIcon from "../assets/close-icon.svg"
 import BookmarkIcon from "../assets/bookmark-icon.svg"
 import BookmarkFilledIcon from "../assets/bookmark-filled-icon.svg"
+import { useAlert } from "../hooks/useAlert"
+import { useAuth } from "../hooks/useAuth"
 
 type ImageViewerPropTypes = {
    image: imageType | undefined,
@@ -17,9 +19,10 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
    const [saved, setSaved] = useState<boolean>(false)
    const [saving, setSaving] = useState<boolean>(false)
    const [removing, setRemoving] = useState<boolean>(false)
-   const { files, addFile, deleteFile } = useFile()
 
-   // const saved: boolean = files?.find(file => file.type === "image" && file.id === image?.imageId.toString()) ? true : false
+   const { isAuthenticated } = useAuth()
+   const { files, addFile, deleteFile } = useFile()
+   const { onSuccess, onError } = useAlert()
 
    const handleClose = () => setShowImageViewer(false)
 
@@ -30,20 +33,31 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
          .then(() => {
             console.log("image saved")
             setSaved(true)
+            onSuccess('Image saved succesfully!')
          })
-         .catch(error => console.log("error saving file:", error))
+         .catch(error => {
+            console.log("error saving file:", error)
+            if (!isAuthenticated)
+               onError('User needs to be logged in!')
+            else
+               onError(error)
+         })
          .finally(() => setSaving(false))
    }
 
    const handleRemove = () => {
       if (!image) return
       setRemoving(true)
-      deleteFile(image.imageId)
+      deleteFile("image", image.imageId)
          .then(() => {
             console.log("image removed")
             setSaved(false)
+            onSuccess('Image removed succesfully!')
          })
-         .catch(error => console.log("error removing file:", error))
+         .catch(error => {
+            console.log("error removing file:", error)
+            onError('Error removing image!')
+         })
          .finally(() => setRemoving(false))
    }
 

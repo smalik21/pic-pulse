@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
+import { useAlert } from "../hooks/useAlert"
 import AuthHeader from "../components/headers/AuthHeader"
 
 const LoginPage = () => {
@@ -12,6 +13,7 @@ const LoginPage = () => {
    const passwordRef = useRef<HTMLInputElement>(null)
 
    const { currentUser, isAuthenticated, login } = useAuth()
+   const { onSuccess, onError } = useAlert()
    const navigate = useNavigate()
 
    useEffect(() => {
@@ -37,8 +39,8 @@ const LoginPage = () => {
       setLoading(true)
 
       login(username, password)
-         .then(() => setError(''))
-         .catch(error => setError(error))
+         .then(() => onSuccess('Logged in successfully!'))
+         .catch(() => onError('Invalid Credentials.'))
          .finally(() => {
             resetFormFields()
             setLoading(false)

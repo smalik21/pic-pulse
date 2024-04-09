@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { useAuth } from "../hooks/useAuth"
+import { useAlert } from "../hooks/useAlert"
 import { EmailAuthProvider, reauthenticateWithCredential, getIdToken } from "firebase/auth"
 import EditIcon from "../assets/edit-icon.svg"
 
@@ -19,6 +20,7 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
    const [isFormActive, setIsFormActive] = useState<boolean>(false)
 
    const { currentUser, update_Profile, update_Password } = useAuth()
+   const { onSuccess, onError } = useAlert()
 
    const handleEdit = () => setIsFormActive(true)
    const handleCancel = () => setIsFormActive(false)
@@ -32,13 +34,13 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
 
       // Password validation
       if (newPassword && newPassword.length < 8) {
-         alert('New password should be at least 8 characters long.')
+         onError('New password should be at least 8 characters long.')
          newPassRef.current?.focus()
          return
       }
 
       if (newPassword && confirmPassword !== newPassword) {
-         alert('New passwords do not match.')
+         onError('New passwords do not match.')
          newPassRef.current?.focus()
          return
       }
@@ -63,9 +65,11 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
 
          setIsFormActive(false)
          updatedInfo()
+         onSuccess('Profile updated successfully!')
       }
       catch (error) {
          console.log("Error updating profile setting:", error)
+         onError('Error updating profile.')
       }
       finally {
          setIsLoading(false)

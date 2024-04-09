@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Route, Routes, useNavigate, NavLink, Navigate } from "react-router-dom"
 import PageTitle from "../components/PageTitle"
 import { useAuth } from "../hooks/useAuth"
+import { useAlert } from "../hooks/useAlert"
 import ProfileDefaultImg from "../assets/profile-image.svg"
 import Saved from "../components/Saved"
 import Account from "../components/Account"
@@ -16,12 +17,17 @@ const UserPage = () => {
    const [userProfile, setUserProfile] = useState<string>('')
 
    const { currentUser, isAuthenticated, logout } = useAuth()
+   const { onSuccess, onError } = useAlert()
    const navigate = useNavigate()
 
    const handleLogoutClick = () => {
       if (isAuthenticated) {
          logout()
-            .then(() => navigate('/login'))
+            .then(() => {
+               navigate('/login')
+               onSuccess('Logged out successfully!')
+            })
+            .catch(() => onError('Error logging out.'))
       }
    }
 
@@ -40,7 +46,7 @@ const UserPage = () => {
                <PageTitle />
                <button
                   onClick={handleLogoutClick}
-                  className="px-3 pl-2 sm:px-4 sm:pl-3 py-1 sm:py-2 text-xs sm:text-sm flex items-center gap-1 rounded-md text-white bg-red-700 hover:bg-red-600 active:bg-red-800"
+                  className="px-3 pl-2 sm:px-4 sm:pl-3 py-1 sm:py-2 text-xs sm:text-sm flex items-center gap-1 rounded-md text-white border border-white hover:border-none hover:bg-red-600 active:bg-red-800"
                >
                   <img src={LogoutIcon} alt="logout-icon" className="invert size-5" />
                   Logout
@@ -53,11 +59,11 @@ const UserPage = () => {
                      setUploading={setUploading}
                      uploading={uploading}
                   />
-                  <span className="rounded-full">
+                  <span className="size-24 sm:size-32 rounded-full">
                      <img
                         id="profile-img"
                         src={userProfile || ProfileDefaultImg}
-                        className="size-24 sm:size-32 border rounded-full aria-disabled:animate-pulse"
+                        className="w-full h-full border rounded-full aria-disabled:animate-pulse"
                         aria-disabled={uploading}
                      />
                   </span>

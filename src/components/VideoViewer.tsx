@@ -5,6 +5,8 @@ import CloseIcon from "../assets/close-icon.svg"
 import BookmarkIcon from "../assets/bookmark-icon.svg"
 import BookmarkFilledIcon from "../assets/bookmark-filled-icon.svg"
 import { useFile } from "../hooks/useFile"
+import { useAlert } from "../hooks/useAlert"
+import { useAuth } from "../hooks/useAuth"
 
 type VideoViewerPropTypes = {
    video: videoType | undefined,
@@ -18,8 +20,8 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
    const [removing, setRemoving] = useState<boolean>(false)
    const [downloading, setDownloading] = useState<boolean>(false)
    const { files, addFile, deleteFile, loadFiles } = useFile()
-
-   // const saved: boolean = files?.find(file => file.type === "video" && file.id === video?.videoId.toString()) ? true : false
+   const { onSuccess, onError } = useAlert()
+   const { isAuthenticated } = useAuth()
 
    const handleClose = () => setShowVideoViewer(false)
 
@@ -30,20 +32,31 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
          .then(() => {
             console.log("video saved")
             setSaved(true)
+            onSuccess('Video saved succesfully!')
          })
-         .catch(error => console.log("error saving file:", error))
+         .catch(error => {
+            console.log("error saving file:", error)
+            if (!isAuthenticated)
+               onError('User needs to be logged in!')
+            else
+               onError(error)
+         })
          .finally(() => setSaving(false))
    }
 
    const handleRemove = () => {
       if (!video) return
       setRemoving(true)
-      deleteFile(video.videoId)
+      deleteFile("video", video.videoId)
          .then(() => {
             console.log("video removed")
             setSaved(false)
+            onSuccess('Video removed succesfully!')
          })
-         .catch(error => console.log("error removing file:", error))
+         .catch(error => {
+            console.log("error removing file:", error)
+            onError('Error removing video!')
+         })
          .finally(() => setRemoving(false))
    }
 
@@ -64,6 +77,7 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
          window.URL.revokeObjectURL(url)
       } catch {
          console.log("unable to download.")
+         onError('Error downloading video!')
       } finally {
          setDownloading(false)
       }
@@ -72,7 +86,7 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
 
    useEffect(() => {
       console.log("updated files:", files)
-      setSaved(files?.find(file => file.type === "image" && file.id === video?.videoId.toString()) ? true : false)
+      setSaved(files?.find(file => file.type === "video" && file.id === video?.videoId.toString()) ? true : false)
    }, [files, video])
 
    useEffect(() => {
@@ -120,7 +134,7 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
                <figure className="max-w-lg">
                   <div className="aspect-video">
                      <video className="w-full h-full object-contain" controls>
-                        <source src={video?.normal.videoURL} />
+                        <source src={video?.small.videoURL} />
                         Your browser does not support the video tag.
                      </video>
                   </div>

@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage"
 import UserPage from "./pages/UserPage"
 import PrivateWrapper from "./components/PrivateWrapper"
 import { ToastContainer } from "react-toastify"
+import PasswordReset from "./pages/PasswordReset"
 
 export default function App() {
 
@@ -20,6 +21,7 @@ export default function App() {
                <Route path="/search/:q" element={<SearchPage />} />
                <Route path="/signup" element={<SignupPage />} />
                <Route path="/login" element={<LoginPage />} />
+               <Route path="/password-reset" element={<PasswordReset />} />
                <Route path="*" element={<Navigate to={'/'} />} />
             </Routes>
          </Router>

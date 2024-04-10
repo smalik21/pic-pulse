@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
 import { useAlert } from "../hooks/useAlert"
-import AuthHeader from "../components/headers/AuthHeader"
+import DefaultHeader from "../components/headers/DefaultHeader"
 
 const LoginPage = () => {
 
@@ -49,7 +49,7 @@ const LoginPage = () => {
 
    return (
       <>
-         <AuthHeader />
+         <DefaultHeader />
          <main className="w-full h-dvh flex justify-center items-center bg-blue-400 bg-heroSection">
             <form
                onSubmit={handleSubmit}
@@ -86,6 +86,7 @@ const LoginPage = () => {
                      Password
                   </label>
                </div>
+               <Link to={'/password-reset'} className="text-sm text-gray-500 hover:text-gray-800 hover:font-semibold text-center">Forgot Password?</Link>
                <button
                   type="submit"
                   className="w-full mt-2 py-2.5 text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md disabled:hover:bg-green-700"

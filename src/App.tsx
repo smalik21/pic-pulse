@@ -23,7 +23,19 @@ export default function App() {
                <Route path="*" element={<Navigate to={'/'} />} />
             </Routes>
          </Router>
-         <ToastContainer />
+         <ToastContainer
+            position="top-right"
+            autoClose={2000}
+            limit={1}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable
+            pauseOnHover={false}
+            theme="light"
+         />
       </div>
    )
 }

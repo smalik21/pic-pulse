@@ -19,7 +19,7 @@ export const AlertContext = createContext<AlertContextType>(AlertContextInitStat
 
 const onSuccess = (message: string) => toast.success(message, {
    position: "top-right",
-   autoClose: 3000,
+   autoClose: 2000,
    hideProgressBar: false,
    closeOnClick: true,
    pauseOnHover: false,
@@ -31,7 +31,7 @@ const onSuccess = (message: string) => toast.success(message, {
 
 const onError = (message: string) => toast.error(message, {
    position: "top-right",
-   autoClose: 3000,
+   autoClose: 2000,
    hideProgressBar: false,
    closeOnClick: true,
    pauseOnHover: false,
@@ -43,7 +43,7 @@ const onError = (message: string) => toast.error(message, {
 
 const onInfo = (message: string) => toast.info(message, {
    position: "top-right",
-   autoClose: 3000,
+   autoClose: 2000,
    hideProgressBar: false,
    closeOnClick: true,
    pauseOnHover: false,
@@ -55,7 +55,7 @@ const onInfo = (message: string) => toast.info(message, {
 
 const onWarn = (message: string) => toast.warn(message, {
    position: "top-right",
-   autoClose: 3000,
+   autoClose: 2000,
    hideProgressBar: false,
    closeOnClick: true,
    pauseOnHover: false,

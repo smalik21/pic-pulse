@@ -2,7 +2,7 @@ import { ReactNode, createContext, useState, useEffect } from "react"
 import { fetchVideos } from "../api/videosApi"
 import { useParameter } from "../hooks/useParameter"
 
-const apiKey: string = import.meta.env.VITE_API_KEY
+const apiKey: string = import.meta.env.VITE_PIXABAY_API_KEY
 
 export type videoDetailType = {
    videoURL: string,

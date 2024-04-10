@@ -3,12 +3,12 @@ import { getAuth } from "firebase/auth"
 import { getFirestore } from "firebase/firestore"
 
 const firebaseConfig = {
-   apiKey: "AIzaSyAZES1OHhN46Ys-NVFWevBHOt7ezc9orbg",
-   authDomain: "picpulse-ace4a.firebaseapp.com",
-   projectId: "picpulse-ace4a",
-   storageBucket: "picpulse-ace4a.appspot.com",
-   messagingSenderId: "1040987623359",
-   appId: "1:1040987623359:web:0d4c8635884425a0621b0a"
+   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+   appId: import.meta.env.VITE_FIREBASE_API_ID
 }
 
 const app = initializeApp(firebaseConfig)

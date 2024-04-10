@@ -2,7 +2,7 @@ import { ReactNode, createContext, useEffect, useState } from "react"
 import { fetchImages } from "../api/imagesApi"
 import { useParameter } from "../hooks/useParameter"
 
-const apiKey: string = import.meta.env.VITE_API_KEY
+const apiKey: string = import.meta.env.VITE_PIXABAY_API_KEY
 
 export type imageType = {
    imageId: string,

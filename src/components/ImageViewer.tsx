@@ -29,7 +29,7 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
    const handleSave = () => {
       if (!image) return
       setSaving(true)
-      onInfo('Image saving, please wait.')
+      onInfo('Saving...')
       addFile("image", image, image.imageId)
          .then(() => {
             console.log("image saved")
@@ -49,7 +49,7 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
    const handleRemove = () => {
       if (!image) return
       setRemoving(true)
-      onInfo('Image Removing, please wait.')
+      onInfo('Removing...')
       deleteFile("image", image.imageId)
          .then(() => {
             console.log("image removed")

@@ -28,7 +28,7 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
    const handleSave = () => {
       if (!video) return
       setSaving(true)
-      onInfo('Video saving, please wait.')
+      onInfo('Saving...')
       addFile("video", video, video.videoId)
          .then(() => {
             console.log("video saved")
@@ -48,7 +48,7 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
    const handleRemove = () => {
       if (!video) return
       setRemoving(true)
-      onInfo('Video removing, please wait.')
+      onInfo('Removing...')
       deleteFile("video", video.videoId)
          .then(() => {
             console.log("video removed")

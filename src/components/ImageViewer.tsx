@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { imageType } from "../contexts/ImageContext"
-import { saveAs } from "file-saver"
 import { useFile } from "../hooks/useFile"
 import TagButton from "./TagButton"
 import CloseIcon from "../assets/close-icon.svg"
@@ -19,16 +18,18 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
    const [saved, setSaved] = useState<boolean>(false)
    const [saving, setSaving] = useState<boolean>(false)
    const [removing, setRemoving] = useState<boolean>(false)
+   const [downloading, setDownloading] = useState<boolean>(false)
 
    const { isAuthenticated } = useAuth()
    const { files, addFile, deleteFile } = useFile()
-   const { onSuccess, onError } = useAlert()
+   const { onSuccess, onError, onInfo } = useAlert()
 
    const handleClose = () => setShowImageViewer(false)
 
    const handleSave = () => {
       if (!image) return
       setSaving(true)
+      onInfo('Image saving, please wait.')
       addFile("image", image, image.imageId)
          .then(() => {
             console.log("image saved")
@@ -48,6 +49,7 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
    const handleRemove = () => {
       if (!image) return
       setRemoving(true)
+      onInfo('Image Removing, please wait.')
       deleteFile("image", image.imageId)
          .then(() => {
             console.log("image removed")
@@ -61,9 +63,28 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
          .finally(() => setRemoving(false))
    }
 
-   const handleDownload = () => {
+   const handleDownload = async () => {
       if (!image) return
-      saveAs(image.imageURL, image.imageId + '-picPulse.jpg')
+      console.log("downloading...")
+      setDownloading(true)
+      try {
+         const response = await fetch(image.imageURL)
+         const blob = await response.blob()
+         const url = window.URL.createObjectURL(blob)
+         const link = document.createElement('a')
+         link.href = url
+         link.setAttribute('download', `${image.imageId}-picPulse.jpg`)
+         document.body.appendChild(link)
+         link.click()
+         document.body.removeChild(link)
+         window.URL.revokeObjectURL(url)
+         onSuccess('Image downloaded.')
+      } catch {
+         console.log("unable to download.")
+         onError('Error downloading image!')
+      } finally {
+         setDownloading(false)
+      }
    }
 
    useEffect(() => {
@@ -107,8 +128,12 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
                         </button>
                      )
                   }
-                  <button onClick={handleDownload} className="w-fit py-2 px-4 text-sm sm:text-base text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md">
-                     Download
+                  <button
+                     onClick={handleDownload}
+                     className="w-fit py-2 px-4 text-sm sm:text-base text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md"
+                     disabled={downloading}
+                  >
+                     {!downloading ? "Download" : <span className="px-7">...</span>}
                   </button>
                </section>
                <figure className="max-w-lg">

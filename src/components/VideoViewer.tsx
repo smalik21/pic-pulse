@@ -20,7 +20,7 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
    const [removing, setRemoving] = useState<boolean>(false)
    const [downloading, setDownloading] = useState<boolean>(false)
    const { files, addFile, deleteFile } = useFile()
-   const { onSuccess, onError } = useAlert()
+   const { onSuccess, onError, onInfo } = useAlert()
    const { isAuthenticated } = useAuth()
 
    const handleClose = () => setShowVideoViewer(false)
@@ -28,6 +28,7 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
    const handleSave = () => {
       if (!video) return
       setSaving(true)
+      onInfo('Video saving, please wait.')
       addFile("video", video, video.videoId)
          .then(() => {
             console.log("video saved")
@@ -47,6 +48,7 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
    const handleRemove = () => {
       if (!video) return
       setRemoving(true)
+      onInfo('Video removing, please wait.')
       deleteFile("video", video.videoId)
          .then(() => {
             console.log("video removed")
@@ -70,18 +72,18 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
          const url = window.URL.createObjectURL(blob)
          const link = document.createElement('a')
          link.href = url
-         link.setAttribute('download', `${video.videoId}.mp4`)
+         link.setAttribute('download', `${video.videoId}-picPulse.mp4`)
          document.body.appendChild(link)
          link.click()
          document.body.removeChild(link)
          window.URL.revokeObjectURL(url)
+         onSuccess('Video downloaded.')
       } catch {
          console.log("unable to download.")
          onError('Error downloading video!')
       } finally {
          setDownloading(false)
       }
-      // saveAs(video.normal.videoURL + "&download=1", video.videoId + '-picPulse.mp4')
    }
 
    useEffect(() => {
@@ -128,7 +130,7 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
                      className="w-fit py-2 px-4 text-sm sm:text-base text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md disabled:cursor-wait"
                      disabled={downloading}
                   >
-                     Download
+                     {!downloading ? "Download" : <span className="px-7">...</span>}
                   </button>
                </section>
                <figure className="max-w-lg">

@@ -1,8 +1,8 @@
 import PageTitle from "../PageTitle"
 
-const AuthHeader = () => {
+const DefaultHeader = () => {
    return (
-      <header id="authHeader" className="absolute w-full py-3 p-2 sm:p-4 text-white bg-cover">
+      <header id="defaultHeader" className="absolute w-full py-3 p-2 sm:p-4 text-white bg-cover">
          <section className="w-full flex justify-between">
             <PageTitle />
          </section>
@@ -10,4 +10,4 @@ const AuthHeader = () => {
    )
 }
 
-export default AuthHeader
+export default DefaultHeader

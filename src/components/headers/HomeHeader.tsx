@@ -2,9 +2,9 @@ import PageTitle from "../PageTitle"
 import PageOptions from "../PageOptions"
 import Search from "../Search"
 
-const MainHeader = () => {
+const HomeHeader = () => {
    return (
-      <header id="mainHeader" className="py-3 p-2 sm:p-4 text-white bg-heroSection bg-cover sm:rounded-b-3xl shadow-md shadow-gray-700">
+      <header id="HomeHeader" className="py-3 p-2 sm:p-4 text-white bg-heroSection bg-cover sm:rounded-b-3xl shadow-md shadow-gray-700">
          <section className="w-full flex justify-between">
             <PageTitle />
             <PageOptions />
@@ -17,4 +17,4 @@ const MainHeader = () => {
    )
 }
 
-export default MainHeader
+export default HomeHeader

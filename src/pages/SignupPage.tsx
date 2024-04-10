@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
 import { useAlert } from "../hooks/useAlert"
-import AuthHeader from "../components/headers/AuthHeader"
+import AuthHeader from "../components/headers/DefaultHeader"
 
 const SignupPage = () => {
 

@@ -24,8 +24,8 @@ function SettingsDropdown() {
       if (isAuthenticated) {
          logout()
             .then(() => {
-               onSuccess('Logged out successfully!')
                navigate('/login')
+               onSuccess('Logged out successfully!')
             })
             .catch(() => onError('Error logging out.'))
       }

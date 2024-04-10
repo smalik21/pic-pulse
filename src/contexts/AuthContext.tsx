@@ -8,6 +8,7 @@ import {
    updatePassword,
    sendPasswordResetEmail,
    onAuthStateChanged,
+   deleteUser,
    signOut,
    User,
    UserCredential,
@@ -26,6 +27,7 @@ type AuthContextType = {
    update_Profile: (profileInfo: profileType) => Promise<void>
    update_Email: (newEmail: string) => Promise<void>
    update_Password: (newPassword: string) => Promise<void>
+   delete_User: () => Promise<void>
    resetPassword: (email: string) => Promise<void>
    logout: () => Promise<void>
 }
@@ -38,6 +40,7 @@ const AuthContextInitState: AuthContextType = {
    update_Profile: (_profileInfo: profileType) => Promise.reject(),
    update_Email: (_newEmail: string) => Promise.reject(),
    update_Password: (_newPassword: string) => Promise.reject(),
+   delete_User: () => Promise.reject(),
    resetPassword: (_email: string) => Promise.reject(),
    logout: () => Promise.reject(),
 }
@@ -73,6 +76,11 @@ export const AuthProvider = ({ children }: AuthProviderPropTypes) => {
       return Promise.reject()
    }
 
+   const delete_User = () => {
+      if (currentUser) return deleteUser(currentUser)
+      return Promise.reject()
+   }
+
    useEffect(() => {
       const unsubscribe = onAuthStateChanged(auth, (user) => {
          setCurrentUser(user)
@@ -91,6 +99,7 @@ export const AuthProvider = ({ children }: AuthProviderPropTypes) => {
       update_Profile,
       update_Email,
       update_Password,
+      delete_User,
       resetPassword,
       logout,
    }

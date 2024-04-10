@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
 import { useAlert } from "../hooks/useAlert"
 import { EmailAuthProvider, reauthenticateWithCredential, getIdToken } from "firebase/auth"
@@ -19,7 +20,9 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
    const [isLoading, setIsLoading] = useState<boolean>(false)
    const [isFormActive, setIsFormActive] = useState<boolean>(false)
 
-   const { currentUser, update_Profile, update_Password } = useAuth()
+   const navigate = useNavigate()
+
+   const { currentUser, update_Profile, update_Password, delete_User } = useAuth()
    const { onSuccess, onError } = useAlert()
 
    const handleEdit = () => setIsFormActive(true)
@@ -74,6 +77,18 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
       finally {
          setIsLoading(false)
       }
+   }
+
+   const handleDeleteAccount = () => {
+      const accept = window.confirm('Are you sure you want to delete your account?')
+      if (!accept) return
+
+      delete_User()
+         .then(() => {
+            navigate('/signup')
+            onSuccess('Account deleted successfully!')
+         })
+         .catch(() => onError('Error deleting account.'))
    }
 
    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -177,7 +192,7 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
             <article id="account-info" className="w-full max-w-sm flex flex-col items-start gap-4 sm:gap-4 border-red-600">
                <button
                   onClick={handleEdit}
-                  className="p-2 ml-auto sm:absolute sm:right-16 flex items-center gap-1 border border-black rounded-lg hover:bg-orange-50 active:bg-orange-100"
+                  className="py-1 px-2 sm:p-2 ml-auto sm:absolute sm:right-16 flex items-center gap-1 border border-black rounded-lg hover:bg-orange-50 active:bg-orange-100"
                >
                   <img src={EditIcon} alt="edit-icon" className="size-5" />
                   Edit
@@ -194,8 +209,10 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
                   <h1 className="font-bold">Password</h1>
                   <p className="text-slate-700 truncate">{'*'.repeat(8)}</p>
                </section>
-               <section id="delete-account">
-
+               <section id="delete-account" className="w-full mt-8 flex">
+                  <button onClick={handleDeleteAccount} className="mx-auto px-6 py-2 text-sm sm:text-base text-white bg-red-700 hover:bg-red-600 active:bg-red-800 rounded-md">
+                     Delete my account
+                  </button>
                </section>
             </article>
          )}

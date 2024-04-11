@@ -1,8 +1,9 @@
 import { ReactNode, createContext, useEffect, useState } from 'react'
-import { auth } from '../firebase-config'
+import { auth, googleProvider } from '../firebase-config'
 import {
    createUserWithEmailAndPassword,
    signInWithEmailAndPassword,
+   signInWithPopup,
    updateProfile,
    updateEmail,
    updatePassword,
@@ -24,6 +25,7 @@ type AuthContextType = {
    isAuthenticated: boolean
    signup: (email: string, password: string) => Promise<UserCredential>
    login: (email: string, password: string) => Promise<UserCredential>
+   signInWithGoogle: () => Promise<UserCredential>
    update_Profile: (profileInfo: profileType) => Promise<void>
    update_Email: (newEmail: string) => Promise<void>
    update_Password: (newPassword: string) => Promise<void>
@@ -37,6 +39,7 @@ const AuthContextInitState: AuthContextType = {
    isAuthenticated: false,
    signup: (_email: string, _password: string) => Promise.reject(),
    login: (_email: string, _password: string) => Promise.reject(),
+   signInWithGoogle: () => Promise.reject(),
    update_Profile: (_profileInfo: profileType) => Promise.reject(),
    update_Email: (_newEmail: string) => Promise.reject(),
    update_Password: (_newPassword: string) => Promise.reject(),
@@ -59,6 +62,7 @@ export const AuthProvider = ({ children }: AuthProviderPropTypes) => {
    const signup = (email: string, password: string) => createUserWithEmailAndPassword(auth, email, password)
    const login = (email: string, password: string) => signInWithEmailAndPassword(auth, email, password)
    const resetPassword = (email: string) => sendPasswordResetEmail(auth, email)
+   const signInWithGoogle = () => signInWithPopup(auth, googleProvider)
    const logout = () => signOut(auth)
 
    const update_Profile = (profileInfo: profileType) => {
@@ -96,6 +100,7 @@ export const AuthProvider = ({ children }: AuthProviderPropTypes) => {
       isAuthenticated,
       signup,
       login,
+      signInWithGoogle,
       update_Profile,
       update_Email,
       update_Password,

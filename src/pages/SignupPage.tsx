@@ -99,7 +99,7 @@ const SignupPage = () => {
                className="p-8 w-full max-w-sm mx-auto flex flex-col gap-6 text-dark bg-white rounded-lg"
             >
                <h1 className="font-bold text-center text-2xl">Sign Up</h1>
-               <section id="username-password-signup" className="space-y-3">
+               <section id="username-password-signup" className="gap-3 flex flex-col">
                   <div className="relative z-0 w-full group">
                      <input
                         type="text"
@@ -160,10 +160,9 @@ const SignupPage = () => {
                         Confirm password
                      </label>
                   </div>
-
                   <button
                      type="submit"
-                     className="w-full mt-2 py-2.5 text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md disabled:hover:bg-green-700"
+                     className="w-full mt-4 py-2.5 text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md disabled:hover:bg-green-700"
                      disabled={loading || googleLoading}
                   >
                      {!loading

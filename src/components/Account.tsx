@@ -149,7 +149,7 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
                      className="w-full px-4 py-2 border border-slate-400 rounded-lg"
                      placeholder="Enter new password"
                      ref={newPassRef}
-                     disabled={isLoading}
+                     disabled={isLoading || currentUser?.emailVerified}
                      onKeyDown={handleKeyDown}
                   />
                </div>
@@ -164,7 +164,7 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
                      className="w-full px-4 py-2 border border-slate-400 rounded-lg"
                      placeholder="Confirm new password"
                      ref={confirmPassRef}
-                     disabled={isLoading}
+                     disabled={isLoading || currentUser?.emailVerified}
                      onKeyDown={handleKeyDown}
                   />
                </div>

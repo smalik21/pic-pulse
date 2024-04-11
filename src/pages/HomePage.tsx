@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useImage } from "../hooks/useImage"
 import { useVideo } from "../hooks/useVideo"
 import { useParameter } from "../hooks/useParameter"
-import MainHeader from "../components/headers/HomeHeader"
+import HomeHeader from "../components/headers/HomeHeader"
 import SearchHeader from "../components/headers/SearchHeader"
 import ContentSection from "../components/ContentSection"
 import SearchType from "../components/SearchType"
@@ -18,12 +18,12 @@ const HomePage = () => {
 
    useEffect(() => {
       const handleScroll = () => {
-         // Check if MainHeader is scrolled out of view
-         const mainHeaderHeight = document.getElementById('mainHeader')!.offsetHeight
+         // Check if homeHeader is scrolled out of view
+         const homeHeaderHeight = document.getElementById('homeHeader')!.offsetHeight
 
-         if (!mainHeaderHeight) return
+         if (!homeHeaderHeight) return
 
-         if (window.scrollY >= mainHeaderHeight) {
+         if (window.scrollY >= homeHeaderHeight) {
             setShowSearchHeader(true)
          } else {
             setShowSearchHeader(false)
@@ -51,7 +51,7 @@ const HomePage = () => {
    return (
       <>
          {showSearchHeader && <ScrollToTopButton />}
-         <MainHeader />
+         <HomeHeader />
          {showSearchHeader && <SearchHeader />}
          <SearchType page="home" />
          <ContentSection />

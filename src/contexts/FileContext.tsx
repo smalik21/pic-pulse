@@ -1,8 +1,8 @@
 import { createContext, ReactNode, useEffect, useState } from "react"
 import { useAuth } from "../hooks/useAuth"
 import { collection, doc, setDoc, getDocs, deleteDoc, DocumentData, QuerySnapshot } from "firebase/firestore"
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
-import { db } from "../firebase-config"
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
+import { db, storage } from "../firebase-config"
 import { imageType } from "./ImageContext"
 import { videoType } from "./VideoContext"
 
@@ -43,7 +43,7 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
    const { currentUser } = useAuth()
 
    const savedCollectionRef = collection(db, "saved")
-   const storage = getStorage()
+   // const storage = getStorage()
 
    const getUserRef = (userId: string) => {
       if (!userId) return

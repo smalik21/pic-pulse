@@ -27,13 +27,12 @@ export default function App() {
          </Router>
          <ToastContainer
             position="top-right"
-            autoClose={2000}
-            limit={1}
+            autoClose={1000}
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick
             rtl={false}
-            pauseOnFocusLoss={false}
+            pauseOnFocusLoss
             draggable
             pauseOnHover={false}
             theme="light"

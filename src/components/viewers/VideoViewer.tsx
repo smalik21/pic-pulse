@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react"
-import { videoType } from "../contexts/VideoContext"
-import TagButton from "./TagButton"
-import CloseIcon from "../assets/close-icon.svg"
-import BookmarkIcon from "../assets/bookmark-icon.svg"
-import BookmarkFilledIcon from "../assets/bookmark-filled-icon.svg"
-import { useFile } from "../hooks/useFile"
-import { useAlert } from "../hooks/useAlert"
-import { useAuth } from "../hooks/useAuth"
+import { videoType } from "../../contexts/VideoContext"
+import TagButton from "../TagButton"
+import CloseIcon from "../../assets/close-icon.svg"
+import BookmarkIcon from "../../assets/bookmark-icon.svg"
+import BookmarkFilledIcon from "../../assets/bookmark-filled-icon.svg"
+import { useFile } from "../../hooks/useFile"
+import { useAuth } from "../../hooks/useAuth"
+import { toast } from "react-toastify"
+import Spinner from "../Spinner"
 
 type VideoViewerPropTypes = {
    video: videoType | undefined,
@@ -20,7 +21,6 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
    const [removing, setRemoving] = useState<boolean>(false)
    const [downloading, setDownloading] = useState<boolean>(false)
    const { files, addFile, deleteFile } = useFile()
-   const { onSuccess, onError, onInfo } = useAlert()
    const { isAuthenticated } = useAuth()
 
    const handleClose = () => setShowVideoViewer(false)
@@ -28,66 +28,84 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
    const handleSave = () => {
       if (!video) return
       setSaving(true)
-      onInfo('Saving...')
-      addFile("video", video, video.videoId)
-         .then(() => {
-            console.log("video saved")
-            setSaved(true)
-            onSuccess('Video saved succesfully!')
-         })
-         .catch(error => {
-            console.log("error saving file:", error)
-            if (!isAuthenticated)
-               onError('User needs to be logged in!')
-            else
-               onError(error)
-         })
-         .finally(() => setSaving(false))
+
+      const addVideoPromise = new Promise<void>((resolve, reject) => {
+         addFile("video", video, video.videoId)
+            .then(() => {
+               setSaved(true)
+               resolve()
+            })
+            .catch(() => reject())
+            .finally(() => setSaving(false))
+      })
+
+      toast.promise(
+         addVideoPromise,
+         {
+            pending: 'Saving video...',
+            success: 'Video saved succesfully!',
+            error: (isAuthenticated) ? 'Error saving file' : 'User needs to be logged in'
+         }
+      )
    }
 
    const handleRemove = () => {
       if (!video) return
       setRemoving(true)
-      onInfo('Removing...')
-      deleteFile("video", video.videoId)
-         .then(() => {
-            console.log("video removed")
-            setSaved(false)
-            onSuccess('Video removed succesfully!')
-         })
-         .catch(error => {
-            console.log("error removing file:", error)
-            onError('Error removing video!')
-         })
-         .finally(() => setRemoving(false))
+
+      const removeVideoPromise = new Promise<void>((resolve, reject) => {
+         deleteFile(video.videoId)
+            .then(() => {
+               setSaved(false)
+               resolve()
+            })
+            .catch(() => reject())
+            .finally(() => setRemoving(false))
+      })
+
+      toast.promise(
+         removeVideoPromise,
+         {
+            pending: 'Removing video...',
+            success: 'Video removed succesfully!',
+            error: 'Error removing file'
+         }
+      )
    }
 
-   const handleDownload = async () => {
+   const handleDownload = () => {
       if (!video) return
-      console.log("downloading...")
       setDownloading(true)
-      try {
-         const response = await fetch(video.small.videoURL)
-         const blob = await response.blob()
-         const url = window.URL.createObjectURL(blob)
-         const link = document.createElement('a')
-         link.href = url
-         link.setAttribute('download', `${video.videoId}-picPulse.mp4`)
-         document.body.appendChild(link)
-         link.click()
-         document.body.removeChild(link)
-         window.URL.revokeObjectURL(url)
-         onSuccess('Video downloaded.')
-      } catch {
-         console.log("unable to download.")
-         onError('Error downloading video!')
-      } finally {
-         setDownloading(false)
-      }
+
+      const downloadVideoPromise = new Promise<void>(async (resolve, reject) => {
+         try {
+            const response = await fetch(video.small.videoURL)
+            const blob = await response.blob()
+            const url = window.URL.createObjectURL(blob)
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', `${video.videoId}-picPulse.mp4`)
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+            window.URL.revokeObjectURL(url)
+            resolve()
+         }
+         catch { reject() }
+         finally { setDownloading(false) }
+      })
+
+      toast.promise(
+         downloadVideoPromise,
+         {
+            pending: 'Downloading video...',
+            success: 'Video downloaded succesfully!',
+            error: 'Error downloading file'
+         }
+      )
    }
 
    useEffect(() => {
-      console.log("updated files:", files)
       setSaved(files?.find(file => file.type === "video" && file.id === video?.videoId.toString()) ? true : false)
    }, [files, video])
 
@@ -130,7 +148,7 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
                      className="w-fit py-2 px-4 text-sm sm:text-base text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md disabled:cursor-wait"
                      disabled={downloading}
                   >
-                     {!downloading ? "Download" : <span className="px-7">...</span>}
+                     {!downloading ? "Download" : <span className="px-6 sm:px-7"><Spinner /></span>}
                   </button>
                </section>
                <figure className="max-w-lg">

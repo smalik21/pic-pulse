@@ -1,4 +1,4 @@
-import { useParameter } from "../hooks/useParameter"
+import { useParameter } from "../../hooks/useParameter"
 
 type SearchTypePropTypes = { page: string }
 

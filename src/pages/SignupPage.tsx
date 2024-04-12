@@ -4,6 +4,8 @@ import { useAuth } from "../hooks/useAuth"
 import { useAlert } from "../hooks/useAlert"
 import AuthHeader from "../components/headers/DefaultHeader"
 import GoogleIcon from "../assets/google-icon.svg"
+import { toast } from "react-toastify"
+import Spinner from "../components/Spinner"
 
 const SignupPage = () => {
 
@@ -23,6 +25,7 @@ const SignupPage = () => {
    useEffect(() => {
       if (isAuthenticated) {
          if (name) update_Profile({ displayName: name })
+         onSuccess('Logged in successfully!')
          navigate('/')
       }
    }, [isAuthenticated])
@@ -35,15 +38,25 @@ const SignupPage = () => {
    }
 
    const handleGoogleSignIn = () => {
-      console.log("google sign in")
       setGoogleLoading(true)
-      signInWithGoogle()
-         .then(() => onSuccess('Logged in successfully!'))
-         .catch(() => onError('Error signing up.'))
-         .finally(() => {
-            resetFormFields()
-            setGoogleLoading(false)
-         })
+
+      const googleSignupPromise = new Promise<void>((resolve, reject) => {
+         signInWithGoogle()
+            .then(() => resolve())
+            .catch(() => reject())
+            .finally(() => {
+               resetFormFields()
+               setGoogleLoading(false)
+            })
+      })
+
+      toast.promise(
+         googleSignupPromise,
+         {
+            pending: 'Signing in with Google...',
+            error: 'Error signing in.'
+         }
+      )
    }
 
    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -67,19 +80,13 @@ const SignupPage = () => {
          return
       }
 
-      console.log("name:", name)
-      console.log("username:", email)
-      console.log("password:", password)
-
       setLoading(true)
 
       signup(email, password)
          .then(() => {
             setName(name)
-            onSuccess('Signed up successfully!')
          })
          .catch((error) => {
-            console.log("error:", error)
             if (error.toString() === "FirebaseError: Firebase: Error (auth/email-already-in-use).")
                onError('Username already taken.')
             else onError('Failed to signup.')
@@ -167,7 +174,7 @@ const SignupPage = () => {
                   >
                      {!loading
                         ? <>Signup</>
-                        : <>Signing up...</>
+                        : <Spinner />
                      }
                   </button>
                   <p className="text-sm text-center text-gray-500">Already have an account?

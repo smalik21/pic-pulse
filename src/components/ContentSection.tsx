@@ -1,10 +1,10 @@
 import { useParameter } from '../hooks/useParameter'
 import { useImage } from '../hooks/useImage'
 import { useVideo } from '../hooks/useVideo'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { imageType } from '../contexts/ImageContext'
-import ImageViewer from './ImageViewer'
-import VideoViewer from './VideoViewer'
+import ImageViewer from './viewers/ImageViewer'
+import VideoViewer from './viewers/VideoViewer'
 import { videoType } from '../contexts/VideoContext'
 
 const ContentSection = () => {
@@ -17,10 +17,6 @@ const ContentSection = () => {
    const { type } = useParameter()
    const { images, imageLoading } = useImage()
    const { videos, videoLoading } = useVideo()
-
-   useEffect(() => {
-      console.log("Loaded...")
-   }, [images, videos, type])
 
    const handleImageClick = (image: imageType) => {
       setSelectedImage(image)

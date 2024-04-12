@@ -1,5 +1,5 @@
-import { useParameter } from "../hooks/useParameter"
-import { REDUCER_ACTION_TYPE } from "../contexts/ParameterContext"
+import { useParameter } from "../../hooks/useParameter"
+import { REDUCER_ACTION_TYPE } from "../../contexts/ParameterContext"
 
 const categories: string[] = ["all", "backgrounds", "fashion", "nature", "science", "education", "feelings", "health", "people", "religion", "places", "animals", "industry", "computer", "food", "sports", "transportation", "travel", "buildings", "business", "music"]
 const colours: string[] = ["all", "grayscale", "transparent", "red", "orange", "yellow", "green", "turquoise", "blue", "lilac", "pink", "white", "gray", "black", "brown"]

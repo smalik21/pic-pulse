@@ -8,13 +8,10 @@ export const fetchVideos = async (url: string): Promise<videoType[]> => {
    try {
 
       if (cache[url]) {
-         console.log("Cached response found for URL:", url)
          return cache[url]
       }
 
       const response = await axios.get(url)
-
-      console.log("response:", response.data.hits)
 
       const videos: videoType[] = response.data.hits.map((video: any) => {
          const normal: videoDetailType = {
@@ -37,7 +34,6 @@ export const fetchVideos = async (url: string): Promise<videoType[]> => {
 
       return videos
    } catch (error) {
-      // console.error('Error fetching videos:', error)
       throw new Error('Error fetching videos')
    }
 }

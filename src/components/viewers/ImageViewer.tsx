@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
-import { imageType } from "../contexts/ImageContext"
-import { useFile } from "../hooks/useFile"
-import TagButton from "./TagButton"
-import CloseIcon from "../assets/close-icon.svg"
-import BookmarkIcon from "../assets/bookmark-icon.svg"
-import BookmarkFilledIcon from "../assets/bookmark-filled-icon.svg"
-import { useAlert } from "../hooks/useAlert"
-import { useAuth } from "../hooks/useAuth"
+import { imageType } from "../../contexts/ImageContext"
+import { useFile } from "../../hooks/useFile"
+import TagButton from "../TagButton"
+import CloseIcon from "../../assets/close-icon.svg"
+import BookmarkIcon from "../../assets/bookmark-icon.svg"
+import BookmarkFilledIcon from "../../assets/bookmark-filled-icon.svg"
+import { useAuth } from "../../hooks/useAuth"
+import { toast } from "react-toastify"
+import Spinner from "../Spinner"
 
 type ImageViewerPropTypes = {
    image: imageType | undefined,
@@ -22,79 +23,94 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
 
    const { isAuthenticated } = useAuth()
    const { files, addFile, deleteFile } = useFile()
-   const { onSuccess, onError, onInfo } = useAlert()
 
    const handleClose = () => setShowImageViewer(false)
 
    const handleSave = () => {
       if (!image) return
       setSaving(true)
-      onInfo('Saving...')
-      addFile("image", image, image.imageId)
-         .then(() => {
-            console.log("image saved")
-            setSaved(true)
-            onSuccess('Image saved succesfully!')
-         })
-         .catch(error => {
-            console.log("error saving file:", error)
-            if (!isAuthenticated)
-               onError('User needs to be logged in!')
-            else
-               onError(error)
-         })
-         .finally(() => setSaving(false))
+
+      const addImagePromise = new Promise<void>((resolve, reject) => {
+         addFile("image", image, image.imageId)
+            .then(() => {
+               setSaved(true)
+               resolve()
+            })
+            .catch(() => reject())
+            .finally(() => setSaving(false))
+      })
+
+      toast.promise(
+         addImagePromise,
+         {
+            pending: 'Saving image...',
+            success: 'Image saved succesfully!',
+            error: (isAuthenticated) ? 'Error saving file' : 'User needs to be logged in'
+         }
+      )
    }
 
    const handleRemove = () => {
       if (!image) return
       setRemoving(true)
-      onInfo('Removing...')
-      deleteFile("image", image.imageId)
-         .then(() => {
-            console.log("image removed")
-            setSaved(false)
-            onSuccess('Image removed succesfully!')
-         })
-         .catch(error => {
-            console.log("error removing file:", error)
-            onError('Error removing image!')
-         })
-         .finally(() => setRemoving(false))
+
+      const removeImagePromise = new Promise<void>((resolve, reject) => {
+         deleteFile(image.imageId)
+            .then(() => {
+               setSaved(false)
+               resolve()
+            })
+            .catch(() => reject())
+            .finally(() => setRemoving(false))
+      })
+
+      toast.promise(
+         removeImagePromise,
+         {
+            pending: 'Removing image...',
+            success: 'Image removed succesfully!',
+            error: 'Error removing file'
+         }
+      )
    }
 
-   const handleDownload = async () => {
+   const handleDownload = () => {
       if (!image) return
-      console.log("downloading...")
       setDownloading(true)
-      try {
-         const response = await fetch(image.imageURL)
-         const blob = await response.blob()
-         const url = window.URL.createObjectURL(blob)
-         const link = document.createElement('a')
-         link.href = url
-         link.setAttribute('download', `${image.imageId}-picPulse.jpg`)
-         document.body.appendChild(link)
-         link.click()
-         document.body.removeChild(link)
-         window.URL.revokeObjectURL(url)
-         onSuccess('Image downloaded.')
-      } catch {
-         console.log("unable to download.")
-         onError('Error downloading image!')
-      } finally {
-         setDownloading(false)
-      }
+
+      const downloadImagePromise = new Promise<void>(async (resolve, reject) => {
+         try {
+            const response = await fetch(image.imageURL)
+            const blob = await response.blob()
+            const url = window.URL.createObjectURL(blob)
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', `${image.imageId}-picPulse.jpg`)
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+            window.URL.revokeObjectURL(url)
+            resolve()
+         }
+         catch { reject() }
+         finally { setDownloading(false) }
+      })
+
+      toast.promise(
+         downloadImagePromise,
+         {
+            pending: 'Downloading image...',
+            success: 'Image downloaded succesfully!',
+            error: 'Error downloading file'
+         }
+      )
    }
 
    useEffect(() => {
-      console.log("updated files:", files)
       setSaved(files?.find(file => file.type === "image" && file.id === image?.imageId.toString()) ? true : false)
    }, [files, image])
 
    useEffect(() => {
-      // console.log("image:", image)
-      // console.log("files:", files)
       const handleClickOutside = (event: MouseEvent) => {
          const space = document.getElementById("emptySpace")
          const imageViewer = document.getElementById("imageViewer")
@@ -130,10 +146,10 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
                   }
                   <button
                      onClick={handleDownload}
-                     className="w-fit py-2 px-4 text-sm sm:text-base text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md"
+                     className="w-fit py-2 px-4 text-sm sm:text-base text-center flex items-center text-white bg-green-700 hover:bg-green-600 active:bg-green-800 rounded-md"
                      disabled={downloading}
                   >
-                     {!downloading ? "Download" : <span className="px-7">...</span>}
+                     {!downloading ? "Download" : <span className="px-6 sm:px-7"><Spinner /></span>}
                   </button>
                </section>
                <figure className="max-w-lg">

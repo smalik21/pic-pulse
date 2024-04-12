@@ -1,9 +1,9 @@
-import photosIcon from "../assets/photos-icon.svg"
-import videosIcon from "../assets/videos-icon.svg"
-import searchIcon from "../assets/search-icon.svg"
+import photosIcon from "../../assets/photos-icon.svg"
+import videosIcon from "../../assets/videos-icon.svg"
+import searchIcon from "../../assets/search-icon.svg"
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { useParameter } from "../hooks/useParameter"
+import { useParameter } from "../../hooks/useParameter"
 
 const Search = () => {
    const [searchType, setSearchType] = useState<string>("photo")
@@ -12,7 +12,6 @@ const Search = () => {
    const { type, update } = useParameter()
    const navigate = useNavigate()
 
-   useEffect(() => console.log(searchType), [searchType])
    useEffect(() => setSearchType(type), [type])
 
    const onSearchTypeChange = (e: ChangeEvent<HTMLSelectElement>) => setSearchType(e.target.value)

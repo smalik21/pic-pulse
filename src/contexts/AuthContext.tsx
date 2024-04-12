@@ -16,8 +16,8 @@ import {
 } from "firebase/auth"
 
 type profileType = {
-   displayName?: string | null | undefined;
-   photoURL?: string | null | undefined;
+   displayName?: string | null | undefined
+   photoURL?: string | null | undefined
 }
 
 type AuthContextType = {
@@ -91,7 +91,6 @@ export const AuthProvider = ({ children }: AuthProviderPropTypes) => {
          setIsAuthenticated(!!user)
          setLoading(false)
       })
-
       return unsubscribe
    }, [])
 

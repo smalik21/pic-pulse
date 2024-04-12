@@ -4,10 +4,11 @@ import { useAuth } from "../hooks/useAuth"
 import { useAlert } from "../hooks/useAlert"
 import DefaultHeader from "../components/headers/DefaultHeader"
 import GoogleIcon from "../assets/google-icon.svg"
+import { toast } from "react-toastify"
+import Spinner from "../components/Spinner"
 
 const LoginPage = () => {
 
-   // const [error, setError] = useState<string>('')
    const [loading, setLoading] = useState<boolean>(false)
    const [googleLoading, setGoogleLoading] = useState<boolean>(false)
 
@@ -19,7 +20,10 @@ const LoginPage = () => {
    const navigate = useNavigate()
 
    useEffect(() => {
-      if (isAuthenticated) navigate('/')
+      if (isAuthenticated) {
+         onSuccess('Logged in successfully!')
+         navigate('/')
+      }
    }, [isAuthenticated])
 
    const resetFormFields = () => {
@@ -28,15 +32,25 @@ const LoginPage = () => {
    }
 
    const handleGoogleSignIn = () => {
-      console.log("google sign in")
       setGoogleLoading(true)
-      signInWithGoogle()
-         .then(() => onSuccess('Logged in successfully!'))
-         .catch(() => onError('Error logging in.'))
-         .finally(() => {
-            resetFormFields()
-            setGoogleLoading(false)
-         })
+
+      const googleSignupPromise = new Promise<void>((resolve, reject) => {
+         signInWithGoogle()
+            .then(() => resolve())
+            .catch(() => reject())
+            .finally(() => {
+               resetFormFields()
+               setGoogleLoading(false)
+            })
+      })
+
+      toast.promise(
+         googleSignupPromise,
+         {
+            pending: 'Signing in with Google...',
+            error: 'Error signing in.'
+         }
+      )
    }
 
    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -45,15 +59,12 @@ const LoginPage = () => {
       const username = usernameRef.current?.value.trim()
       const password = passwordRef.current?.value.trim()
 
-      console.log("username:", username)
-      console.log("password:", password)
-
       if (!username || !password) return
 
       setLoading(true)
 
       login(username, password)
-         .then(() => onSuccess('Logged in successfully!'))
+         .then(() => { })
          .catch(() => onError('Invalid Credentials.'))
          .finally(() => {
             resetFormFields()
@@ -109,7 +120,7 @@ const LoginPage = () => {
                   >
                      {!loading
                         ? <>Login</>
-                        : <>Logging in...</>
+                        : <Spinner />
                      }
                   </button>
                   <p className="text-sm text-center text-gray-500">Don't have an account?

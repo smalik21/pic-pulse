@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { useAuth } from "../hooks/useAuth"
-import { useAlert } from "../hooks/useAlert"
+import { useAuth } from "../../hooks/useAuth"
+import { useAlert } from "../../hooks/useAlert"
 import { EmailAuthProvider, reauthenticateWithCredential, getIdToken } from "firebase/auth"
-import EditIcon from "../assets/edit-icon.svg"
+import EditIcon from "../../assets/edit-icon.svg"
+import { toast } from "react-toastify"
+import Spinner from "../Spinner"
 
 type AccountPropTypes = {
    updatedInfo: () => void
@@ -23,7 +25,7 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
    const navigate = useNavigate()
 
    const { currentUser, update_Profile, update_Password, delete_User } = useAuth()
-   const { onSuccess, onError } = useAlert()
+   const { onError } = useAlert()
 
    const handleEdit = () => setIsFormActive(true)
    const handleCancel = () => setIsFormActive(false)
@@ -50,54 +52,69 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
 
       setIsLoading(true)
 
-      try {
-         if (!currentUser || !currentUser.email) return
+      const profileUpdatePromise = new Promise<void>(async (resolve, reject) => {
+         try {
+            if (!currentUser || !currentUser.email) return
 
-         const token = await getIdToken(currentUser, true);
+            const token = await getIdToken(currentUser, true)
 
-         // Re-authenticate the user if required
-         if (!token) {
-            const currentPassword = prompt('Please enter your current password:');
-            if (!currentPassword) return
-            const credential = EmailAuthProvider.credential(currentUser.email, currentPassword);
-            await reauthenticateWithCredential(currentUser, credential);
+            // Re-authenticate the user if required
+            if (!token) {
+               const currentPassword = prompt('Please enter your current password:')
+               if (!currentPassword) return
+               const credential = EmailAuthProvider.credential(currentUser.email, currentPassword)
+               await reauthenticateWithCredential(currentUser, credential)
+            }
+
+            if (name && name !== currentUser?.displayName) await update_Profile({ displayName: name })
+            if (newPassword) await update_Password(newPassword)
+
+            setIsFormActive(false)
+            updatedInfo()
+            resolve()
          }
+         catch { reject() }
+         finally { setIsLoading(false) }
+      })
 
-         if (name && name !== currentUser?.displayName) await update_Profile({ displayName: name })
-         if (newPassword) await update_Password(newPassword)
-
-         setIsFormActive(false)
-         updatedInfo()
-         onSuccess('Profile updated successfully!')
-      }
-      catch (error) {
-         console.log("Error updating profile setting:", error)
-         onError('Error updating profile.')
-      }
-      finally {
-         setIsLoading(false)
-      }
+      toast.promise(
+         profileUpdatePromise,
+         {
+            pending: 'Saving changes...',
+            success: 'Profile updated successfully!',
+            error: 'Error updating profile.'
+         }
+      )
    }
 
    const handleDeleteAccount = () => {
       const accept = window.confirm('Are you sure you want to delete your account?')
       if (!accept) return
 
-      delete_User()
-         .then(() => {
-            navigate('/signup')
-            onSuccess('Account deleted successfully!')
-         })
-         .catch(() => onError('Error deleting account.'))
+      const accountDeletePromise = new Promise<void>((resolve, reject) => {
+         delete_User()
+            .then(() => {
+               navigate('/signup')
+               resolve()
+            })
+            .catch(() => reject())
+      })
+
+      toast.promise(
+         accountDeletePromise,
+         {
+            pending: 'Deleting account...',
+            success: 'Account deleted successfully!',
+            error: 'Error deleting account.'
+         }
+      )
    }
 
    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
-         handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
+         handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>)
       }
-   };
-
-   useEffect(() => console.log(currentUser))
+   }
 
    useEffect(() => {
       if (isFormActive) bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -172,7 +189,7 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
                <section className="py-4 flex flex-col sm:flex-row gap-4 sm:gap-8">
                   <button
                      onClick={handleCancel}
-                     className="w-full disabled:cursor-wait disabled:opacity-50 bg-gray-500 hover:bg-gray-600 active:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                     className="w-full disabled:cursor-default disabled:opacity-50 bg-gray-500 hover:bg-gray-600 active:bg-gray-700 text-white font-bold py-2 px-4 rounded"
                      disabled={isLoading}
                   >
                      Cancel
@@ -180,10 +197,10 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
 
                   <button
                      type="submit"
-                     className="w-full disabled:cursor-wait disabled:opacity-50 bg-green-700 hover:bg-green-800 active:bg-green-900 text-white font-bold py-2 px-4 rounded"
+                     className="w-full disabled:cursor-default bg-green-700 hover:bg-green-800 active:bg-green-900 text-white font-bold py-2 px-4 rounded"
                      disabled={isLoading}
                   >
-                     Save Changes
+                     {!isLoading ? <>Save Changes</> : <Spinner />}
                   </button>
                </section>
                <div ref={bottomRef}></div>

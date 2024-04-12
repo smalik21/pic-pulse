@@ -16,7 +16,7 @@ type fileType = {
 type FileContextType = {
    addFile: (type: "image" | "video", file: imageType | videoType, id: string) => Promise<void>
    getFiles: () => Promise<QuerySnapshot<DocumentData, DocumentData>>
-   deleteFile: (type: "image" | "video", fileId: string) => Promise<void>
+   deleteFile: (fileId: string) => Promise<void>
    loadFiles: () => void
    storeProfile: (profilePic: File) => Promise<string>
    files: fileType[] | undefined
@@ -26,7 +26,7 @@ type FileContextType = {
 const FileContextInitState: FileContextType = {
    addFile: (_type: "image" | "video", _file: imageType | videoType, _id: string) => Promise.reject(),
    getFiles: () => Promise.reject(),
-   deleteFile: (_type: "image" | "video", _fileId: string) => Promise.reject(),
+   deleteFile: (_fileId: string) => Promise.reject(),
    loadFiles: () => { },
    storeProfile: (_profilePic: File) => Promise.reject(),
    files: [],
@@ -43,7 +43,6 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
    const { currentUser } = useAuth()
 
    const savedCollectionRef = collection(db, "saved")
-   // const storage = getStorage()
 
    const getUserRef = (userId: string) => {
       if (!userId) return
@@ -63,7 +62,6 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
          const profilePicUrl = await getDownloadURL(storageRef)
          return profilePicUrl
       } catch (error) {
-         console.log("error while storing profile pic")
          return Promise.reject(error)
       }
    }
@@ -80,12 +78,9 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
 
          try {
             url = await getDownloadURL(storageRef)
-            console.log("File already exists in storage:", url)
          } catch (error) {
-            const snapshot = await uploadBytes(storageRef, imageData)
-            console.log('Uploaded a blob or file!', snapshot)
+            await uploadBytes(storageRef, imageData)
             url = await getDownloadURL(storageRef)
-            console.log("New URL:", url)
          }
 
          const newFile: fileType = {
@@ -98,7 +93,6 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
          return newFile
 
       } catch (error) {
-         console.log("error occurred!")
          return Promise.reject(error)
       }
    }
@@ -124,7 +118,6 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
          try {
             newThumbnailUrl = await getDownloadURL(thumbnailStorageRef)
             newVideoUrl = await getDownloadURL(videoStorageRef)
-            console.log("File already exists in storage", newVideoUrl)
          } catch {
             await uploadBytes(thumbnailStorageRef, thumbnailData)
             await uploadBytes(videoStorageRef, videoData)
@@ -146,7 +139,6 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
          return newFile
 
       } catch (error) {
-         console.log("error occurred!")
          return Promise.reject(error)
       }
    }
@@ -163,7 +155,6 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
             if (imageFileCount >= 5) return Promise.reject('Image saving limit reached! (5)')
             await storeImage(file as imageType, id)
                .then((newFile: fileType) => {
-                  console.log("image:", newFile)
                   const fileRef = doc(userFilesRef, id.toString())
                   setDoc(fileRef, newFile)
                      .then(() => loadFiles())
@@ -174,7 +165,6 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
             if (videoFileCount >= 3) return Promise.reject('Video saving limit reached! (3)')
             await storeVideo(file as videoType, id)
                .then((newFile: fileType) => {
-                  console.log("video:", newFile)
                   const fileRef = doc(userFilesRef, id.toString())
                   setDoc(fileRef, newFile)
                      .then(() => loadFiles())
@@ -193,8 +183,8 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
       return getDocs(userFilesRef)
    }
 
-   const deleteFile = async (type: "image" | "video", fileId: string) => {
-      console.log("type:", type)
+   const deleteFile = async (fileId: string) => {
+
       if (!currentUser) return Promise.reject()
       const userFilesRef = getUserFilesRef(currentUser.uid)
       if (!userFilesRef) return Promise.reject()
@@ -203,8 +193,8 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
       await deleteDoc(fileRef)
       loadFiles()
       return Promise.resolve()
-      // CODE FOR DELETING THE FILES FROM STORAGE TOO
 
+      // CODE FOR DELETING THE FILES FROM STORAGE TOO
       // try {
       //    if (type === "image") {
       //       const storageRef = ref(storage, 'images/' + fileId + '.jpg')
@@ -232,14 +222,11 @@ export const FileProvider = ({ children }: FileProviderPropTypes) => {
             const newFiles: any[] = []
             querySnapshot.forEach(file => newFiles.push(file.data() as fileType))
             setFiles(newFiles)
-            console.log("files:", newFiles)
          })
-         .catch((error) => console.log(error))
          .finally(() => setFileLoading(false))
    }
 
    useEffect(() => {
-      console.log(currentUser)
       return loadFiles()
    }, [currentUser])
 

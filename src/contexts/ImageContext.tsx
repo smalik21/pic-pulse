@@ -81,7 +81,6 @@ export const ImageProvider = ({ children }: ImageProviderPropTypes) => {
    const { id, query, orientation, category, colour, order, safeSearch, change } = useParameter()
 
    useEffect(() => {
-      console.log("image change:", change)
       setimageLoading(true)
       loadImages(query)
          .finally(() => setimageLoading(false))
@@ -89,7 +88,6 @@ export const ImageProvider = ({ children }: ImageProviderPropTypes) => {
 
    const loadImages = async (query: string): Promise<void> => {
       const url = computeURL(query, id, orientation, category, colour, order, safeSearch)
-      console.log("url:", url)
 
       return new Promise((resolve, reject) => {
          fetchImages(url)
@@ -97,8 +95,6 @@ export const ImageProvider = ({ children }: ImageProviderPropTypes) => {
                setImages(newImages)
                const uniqueTags: string[] = getUniqueTags(newImages)
                setImageTags(uniqueTags)
-               console.log("images:", newImages)
-               console.log("tags:", uniqueTags)
                resolve()
             })
             .catch(error => reject(error))

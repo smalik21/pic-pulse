@@ -1,6 +1,6 @@
 import PageTitle from "../PageTitle"
 import PageOptions from "../PageOptions"
-import Search from "../Search"
+import Search from "../search/Search"
 
 const HomeHeader = () => {
    return (

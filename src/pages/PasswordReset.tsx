@@ -1,8 +1,9 @@
 import { useRef, useState } from "react"
 import { useAuth } from "../hooks/useAuth"
-import { useAlert } from "../hooks/useAlert"
 import { useNavigate, Link } from "react-router-dom"
 import DefaultHeader from "../components/headers/DefaultHeader"
+import { toast } from "react-toastify"
+import Spinner from "../components/Spinner"
 
 const PasswordReset = () => {
 
@@ -12,7 +13,6 @@ const PasswordReset = () => {
    const navigate = useNavigate()
 
    const { resetPassword } = useAuth()
-   const { onSuccess, onError } = useAlert()
 
    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
@@ -21,16 +21,28 @@ const PasswordReset = () => {
       if (!email) return
 
       setLoading(true)
-      resetPassword(email)
-         .then(() => {
-            onSuccess('Password reset email sent.')
-            navigate('/login')
-         })
-         .catch(() => onError('Error sending email.'))
-         .finally(() => {
-            emailRef.current!.value = ''
-            setLoading(false)
-         })
+
+      const passwordResetPromise = new Promise<void>((resolve, reject) => {
+         resetPassword(email)
+            .then(() => {
+               resolve()
+               navigate('/login')
+            })
+            .catch(() => reject())
+            .finally(() => {
+               emailRef.current!.value = ''
+               setLoading(false)
+            })
+      })
+
+      toast.promise(
+         passwordResetPromise,
+         {
+            pending: 'Sending password reset email...',
+            success: 'Password reset email sent.',
+            error: 'Error sending email.'
+         }
+      )
    }
 
    return (
@@ -41,7 +53,7 @@ const PasswordReset = () => {
                onSubmit={handleSubmit}
                className="p-8 w-full max-w-sm mx-auto flex flex-col items-center gap-5 text-dark bg-white rounded-lg"
             >
-               <h1 className="mb-6 font-bold text-center text-2xl">Reset Password</h1>
+               <h1 className="mb-4 font-bold text-center text-2xl">Reset Password</h1>
                <div className="relative z-0 w-full group">
                   <input
                      type="email"
@@ -59,12 +71,12 @@ const PasswordReset = () => {
                </div>
                <button
                   type="submit"
-                  className="w-full mt-6 mb-2 py-2 sm:py-2.5 text-white bg-blue-700 hover:bg-blue-600 active:bg-blue-800 rounded-md border border-black"
+                  className="w-full mt-3 mb-6 py-3 sm:py-2.5 font-light text-sm sm:text-base text-white bg-orange-600 hover:bg-orange-700 active:bg-orange-800 rounded-md"
                   disabled={loading}
                >
-                  Send Password Reset Email
+                  {!loading ? <>Send Password Reset Email</> : <Spinner />}
                </button>
-               <Link to={'/login'} className="py-1 px-2 sm:px-4 text-green-700 border border-green-700 hover:bg-green-700 hover:text-white rounded-md">Back to Login</Link>
+               <Link to={'/login'} className="py-1 px-2 sm:px-4 text-sm text-green-700 border border-green-700 hover:bg-green-700 hover:text-white rounded-md">Back to Login</Link>
             </form>
          </main>
       </>

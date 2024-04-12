@@ -4,10 +4,10 @@ import PageTitle from "../components/PageTitle"
 import { useAuth } from "../hooks/useAuth"
 import { useAlert } from "../hooks/useAlert"
 import ProfileDefaultImg from "../assets/profile-image.svg"
-import Saved from "../components/Saved"
-import Account from "../components/Account"
+import Saved from "../components/user/Saved"
+import Account from "../components/user/Account"
 import LogoutIcon from "../assets/logout-icon.svg"
-import ProfilePictureUpload from "../components/ProfilePictureUpload"
+import ProfilePictureUpload from "../components/user/ProfilePictureUpload"
 
 const UserPage = () => {
 
@@ -34,7 +34,6 @@ const UserPage = () => {
    useEffect(() => {
       setUserName(currentUser?.displayName || '')
       setUserProfile(currentUser?.photoURL || '')
-      // console.log(userProfile)
    }, [currentUser?.displayName, currentUser?.photoURL])
 
    const updatedInfo = () => setUserName(currentUser?.displayName || '')

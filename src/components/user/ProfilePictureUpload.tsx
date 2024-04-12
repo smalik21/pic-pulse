@@ -1,7 +1,7 @@
-import EditIcon from "../assets/edit-icon.svg"
-import { useAuth } from "../hooks/useAuth"
-import { useFile } from "../hooks/useFile"
-import { useAlert } from "../hooks/useAlert"
+import EditIcon from "../../assets/edit-icon.svg"
+import { useAuth } from "../../hooks/useAuth"
+import { useFile } from "../../hooks/useFile"
+import { toast } from "react-toastify"
 
 type PropTypes = {
    setUserProfile: React.Dispatch<React.SetStateAction<string>>
@@ -13,27 +13,31 @@ const ProfilePictureUpload = ({ setUserProfile, setUploading, uploading }: PropT
 
    const { storeProfile } = useFile()
    const { update_Profile } = useAuth()
-   const { onSuccess, onError, onInfo } = useAlert()
 
    const handleProfilePictureChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
       const profilePicture: File = e.target.files![0]
       if (!profilePicture) return
 
-      onInfo('Picture uploading, please wait...')
+      const pictureUploadPromise = new Promise<void>(async (resolve, reject) => {
+         try {
+            setUploading(true)
+            const profilePicURL: string = await storeProfile(profilePicture)
+            setUserProfile(profilePicURL)
+            await update_Profile({ photoURL: profilePicURL })
+            setUploading(false)
+            resolve()
+         }
+         catch { reject() }
+      })
 
-      try {
-         setUploading(true)
-         console.log("uploading...")
-         const profilePicURL: string = await storeProfile(profilePicture)
-         setUserProfile(profilePicURL)
-         await update_Profile({ photoURL: profilePicURL })
-         setUploading(false)
-         console.log("uploaded.")
-         onSuccess('Profile picture updated!')
-      }
-      catch {
-         onError('Error updating profile picture.')
-      }
+      toast.promise(
+         pictureUploadPromise,
+         {
+            pending: 'Picture uploading...',
+            success: 'Profile picture updated!',
+            error: 'Error updating profile picture'
+         }
+      )
    }
 
    return (

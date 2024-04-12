@@ -7,13 +7,10 @@ export const fetchImages = async (url: string): Promise<imageType[]> => {
    try {
 
       if (cache[url]) {
-         console.log("Cached response found for URL:", url)
          return cache[url]
       }
 
       const response = await axios.get(url)
-
-      console.log("response:", response.data.hits)
 
       const images: imageType[] = response.data.hits.map((image: any) => ({
          imageId: image.id,
@@ -25,7 +22,6 @@ export const fetchImages = async (url: string): Promise<imageType[]> => {
 
       return images
    } catch (error) {
-      // console.error('Error fetching images:', error)
       throw new Error('Error fetching images')
    }
 }

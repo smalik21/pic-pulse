@@ -1,9 +1,9 @@
 import { useState } from "react"
-import { useFile } from "../hooks/useFile"
-import { imageType } from "../contexts/ImageContext"
-import { videoType } from "../contexts/VideoContext"
-import ImageViewer from './ImageViewer'
-import VideoViewer from './VideoViewer'
+import { useFile } from "../../hooks/useFile"
+import { imageType } from "../../contexts/ImageContext"
+import { videoType } from "../../contexts/VideoContext"
+import ImageViewer from '../viewers/ImageViewer'
+import VideoViewer from '../viewers/VideoViewer'
 
 const searchTypes = ['All', 'Photos', 'Videos']
 

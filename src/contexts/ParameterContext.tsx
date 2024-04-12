@@ -87,7 +87,6 @@ export const ParameterProvider = ({ children }: ParameterProviderPropTypes) => {
          type: parameter,
          payload: value,
       })
-      console.log("State:", state)
       setChange(!change)
       setReset(false)
    }

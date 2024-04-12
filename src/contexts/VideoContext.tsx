@@ -82,7 +82,6 @@ export const VideoProvider = ({ children }: VideoProviderPropTypes) => {
    const { id, query, order, category, safeSearch, change } = useParameter()
 
    useEffect(() => {
-      console.log("video change:", change)
       setVideoLoading(true)
       loadVideos(query)
          .then(() => setVideoLoading(false))
@@ -90,7 +89,6 @@ export const VideoProvider = ({ children }: VideoProviderPropTypes) => {
 
    const loadVideos = async (query: string): Promise<void> => {
       const url = computeURL(query, id, category, order, safeSearch)
-      console.log("url:", url)
 
       return new Promise((resolve, reject) => {
          fetchVideos(url)
@@ -98,8 +96,6 @@ export const VideoProvider = ({ children }: VideoProviderPropTypes) => {
                setvideos(newVideos)
                const uniqueTags: string[] = getUniqueTags(newVideos)
                setvideoTags(uniqueTags)
-               console.log("videos:", newVideos)
-               console.log("tags:", uniqueTags)
                resolve()
             })
             .catch(error => reject(error))

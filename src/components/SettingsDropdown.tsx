@@ -62,7 +62,7 @@ function SettingsDropdown() {
          >
             <div className="relative size-8 sm:size-10 flex justify-center items-center overflow-hidden rounded-full bg-white bg-opacity-70">
                {isAuthenticated
-                  ? <img src={currentUser?.photoURL ?? ProfileImage} alt="profile-icon" className='border rounded-full' />
+                  ? <img src={currentUser?.photoURL ?? ProfileImage} alt="profile-icon" className='border rounded-full w-full h-full' />
                   : <img src={MenuIcon} alt='menu-icon' className='size-6' />
                }
             </div>
@@ -109,15 +109,14 @@ function SettingsDropdown() {
                            before:transition-all before:duration-200 before:ease-linear
                            checked:before:translate-x-full checked:bg-light checked:before:bg-dark
                            transition-colors duration-200"
-                           // disabled
                            onClick={() => onWarn('Dark mode isn\'t available right now')}
                         />
                      </div>
 
                   </li>
                   {isAuthenticated && <li>
-                     <button onClick={handleLogoutClick} className="w-full text-left flex items-center gap-2 px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 hover:bg-red-300 rounded-b-md">
-                        <img src={LogoutIcon} alt="logout-icon" className='size-5' />
+                     <button onClick={handleLogoutClick} className="group w-full text-left flex items-center gap-2 px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 hover:text-white hover:bg-red-600 rounded-b-md">
+                        <img src={LogoutIcon} alt="logout-icon" className='size-5 group-hover:invert' />
                         Logout
                      </button>
                   </li>}

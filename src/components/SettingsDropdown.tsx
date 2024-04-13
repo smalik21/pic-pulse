@@ -9,6 +9,7 @@ import DarkModeIcon from "../assets/dark-mode-icon.svg"
 import MenuIcon from "../assets/menu-icon.svg"
 import { useParameter } from '../hooks/useParameter'
 import { useAlert } from '../hooks/useAlert'
+import { useTheme } from '../hooks/useTheme'
 
 function SettingsDropdown() {
    const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -16,7 +17,8 @@ function SettingsDropdown() {
 
    const { currentUser, logout, isAuthenticated } = useAuth()
    const { safeSearch, update } = useParameter()
-   const { onWarn, onSuccess, onError } = useAlert()
+   const { onSuccess, onError } = useAlert()
+   const { theme, setTheme } = useTheme()
 
    const navigate = useNavigate()
 
@@ -48,6 +50,10 @@ function SettingsDropdown() {
       }, 200)
    }
 
+   const handleThemeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setTheme(e.target.checked ? "dark" : "light")
+   }
+
    return (
       <section
          className="pr-1 sm:pr-2"
@@ -70,14 +76,16 @@ function SettingsDropdown() {
 
          {/* Dropdown menu */}
          {isOpen && (
-            <section id="dropdownHover" className="absolute right-0 mt-4 mr-3 sm:mr-6 text-black bg-light border border-black rounded-md">
+            <section id="dropdownHover" className="absolute right-0 mt-4 mr-3 sm:mr-6 text-black bg-light dark:bg-dark border border-black rounded-md">
                <ul className="w-44 sm:w-48 text-sm divide-y divide divide-slate-400">
-                  {isAuthenticated && <li>
-                     <a href="/user/saved" className="px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 flex items-center gap-2 hover:bg-slate-300 rounded-t-md">
-                        <img src={ProfileIcon} alt="profile-icon" className='size-5' />
-                        Profile
-                     </a>
-                  </li>}
+                  {isAuthenticated && (
+                     <li>
+                        <a href="/user/saved" className="px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 flex items-center gap-2 hover:bg-slate-300 rounded-t-md">
+                           <img src={ProfileIcon} alt="profile-icon" className='size-5' />
+                           Profile
+                        </a>
+                     </li>
+                  )}
                   <li>
                      <div className="px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 flex items-center gap-2 cursor-default">
                         <img src={SafeIcon} alt="safe-icon" className='size-5' />
@@ -109,17 +117,20 @@ function SettingsDropdown() {
                            before:transition-all before:duration-200 before:ease-linear
                            checked:before:translate-x-full checked:bg-light checked:before:bg-dark
                            transition-colors duration-200"
-                           onClick={() => onWarn('Dark mode isn\'t available right now')}
+                           checked={theme === "dark"}
+                           onChange={handleThemeChange}
                         />
                      </div>
 
                   </li>
-                  {isAuthenticated && <li>
-                     <button onClick={handleLogoutClick} className="group w-full text-left flex items-center gap-2 px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 hover:text-white hover:bg-red-600 rounded-b-md">
-                        <img src={LogoutIcon} alt="logout-icon" className='size-5 group-hover:invert' />
-                        Logout
-                     </button>
-                  </li>}
+                  {isAuthenticated && (
+                     <li>
+                        <button onClick={handleLogoutClick} className="group w-full text-left flex items-center gap-2 px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 hover:text-white hover:bg-red-600 rounded-b-md">
+                           <img src={LogoutIcon} alt="logout-icon" className='size-5 group-hover:invert' />
+                           Logout
+                        </button>
+                     </li>
+                  )}
                </ul>
             </section>
          )}

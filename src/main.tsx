@@ -9,21 +9,24 @@ import { VideoProvider } from './contexts/VideoContext.tsx'
 import { AuthProvider } from './contexts/AuthContext.tsx'
 import { FileProvider } from './contexts/FileContext.tsx'
 import { AlertProvider } from './contexts/AlertContext.tsx'
+import { ThemeProvider } from './contexts/ThemeContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
    <React.StrictMode>
-      <AuthProvider>
-         <FileProvider>
-            <ParameterProvider>
-               <ImageProvider>
-                  <VideoProvider>
-                     <AlertProvider>
-                        <App />
-                     </AlertProvider>
-                  </VideoProvider>
-               </ImageProvider>
-            </ParameterProvider>
-         </FileProvider>
-      </AuthProvider>
+      <ThemeProvider>
+         <AuthProvider>
+            <FileProvider>
+               <ParameterProvider>
+                  <ImageProvider>
+                     <VideoProvider>
+                        <AlertProvider>
+                           <App />
+                        </AlertProvider>
+                     </VideoProvider>
+                  </ImageProvider>
+               </ParameterProvider>
+            </FileProvider>
+         </AuthProvider>
+      </ThemeProvider>
    </React.StrictMode>,
 )

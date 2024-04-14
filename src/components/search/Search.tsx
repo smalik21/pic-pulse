@@ -34,7 +34,7 @@ const Search = () => {
             <div className="p-1 sm:pl-2 sm:gap-1 flex items-center text-xs sm:text-sm bg-gray-1 dark:bg-dark dark:border border-gray-600 rounded-md">
                <img
                   className="size-4 sm:size-5 absolute dark:invert"
-                  src={searchType === "photo" ? photosIcon : videosIcon}
+                  src={searchType === "video" ? videosIcon : photosIcon}
                   alt={`${searchType}-icon`}
                />
                <select

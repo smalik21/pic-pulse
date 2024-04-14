@@ -28,8 +28,9 @@ const SearchType = ({ page }: SearchTypePropTypes) => {
                   />
                   <label
                      htmlFor={searchType}
-                     className="flex px-6 py-3 sm:px-8 sm:py-4 border border-black rounded-full font-semibold text-sm sm:text-base 
-                                        peer-checked:bg-black peer-checked:text-white cursor-pointer">
+                     className="flex px-6 py-3 sm:px-8 sm:py-4 border border-black dark:border-gray-1 rounded-full font-semibold text-sm sm:text-base 
+                                        peer-checked:bg-black peer-checked:text-white dark:peer-checked:bg-gray-1 dark:peer-checked:text-black cursor-pointer"
+                  >
                      {searchType}
                   </label>
                </span>

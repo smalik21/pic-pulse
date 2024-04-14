@@ -32,7 +32,7 @@ const Saved = () => {
    }
 
    const fallback = (
-      <section className="py-8 border-black sm:rounded-xl">
+      <section className="py-8 border-black dark:border-gray-2 sm:rounded-xl">
          <h1 className='text-center text-lg sm:text-3xl text-gray-500'>No results to display!</h1>
       </section>
    )
@@ -52,7 +52,7 @@ const Saved = () => {
             />
          )}
 
-         <main className="sm:pb-8 sm:mx-8 border-t-2 sm:border-2 border-dark sm:rounded-xl">
+         <main className="sm:pb-8 sm:mx-8 border-t-2 sm:border-2 border-dark dark:border-gray-2 sm:rounded-xl">
 
             <section id="search-type" className={`flex px-2 sm:px-8 py-6 sm:py-8 gap-2 sm:gap-4 justify-center`}>
                {searchTypes.map(searchType => {
@@ -69,8 +69,8 @@ const Saved = () => {
                         />
                         <label
                            htmlFor={searchType}
-                           className="flex px-4 py-2 sm:px-6 sm:py-3 border border-black rounded-full text-sm sm:text-base 
-                                        peer-checked:bg-black peer-checked:text-white cursor-pointer">
+                           className="flex px-4 py-2 sm:px-6 sm:py-3 border dark:text-gray-1 border-black dark:border-gray-1 rounded-full text-sm sm:text-base 
+                                        peer-checked:bg-black peer-checked:text-white dark:peer-checked:bg-gray-1 dark:peer-checked:text-dark cursor-pointer">
                            {searchType}
                         </label>
                      </span>

@@ -4,7 +4,7 @@ import Search from "../search/Search"
 
 const HomeHeader = () => {
    return (
-      <header id="homeHeader" className="py-3 p-2 sm:p-4 text-white bg-heroSection bg-cover sm:rounded-b-3xl shadow-md shadow-gray-700">
+      <header id="homeHeader" className="py-3 p-2 sm:p-4 text-white bg-heroSection bg-cover sm:rounded-b-3xl shadow-md shadow-gray-700 dark:shadow-none dark:border-b border-gray-700">
          <section className="w-full flex justify-between">
             <PageTitle />
             <PageOptions />

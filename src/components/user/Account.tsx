@@ -121,17 +121,17 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
    }, [isFormActive])
 
    return (
-      <main className="p-4 sm:p-8 sm:mx-8 flex justify-center border-t-2 sm:border-2 border-black sm:rounded-xl">
+      <main className="p-4 sm:p-8 sm:mx-8 flex justify-center border-t-2 sm:border-2 border-black dark:border-gray-2 sm:rounded-xl">
          {isFormActive ? (
-            <form onSubmit={handleSubmit} className="w-full max-w-sm flex flex-col sm:gap-2 border-black">
+            <form onSubmit={handleSubmit} className="w-full max-w-sm flex flex-col sm:gap-2">
                <div className="mb-4">
-                  <label htmlFor="fullName" className="block font-bold mb-2">
+                  <label htmlFor="fullName" className="block font-bold mb-2 text-dark dark:text-gray-1">
                      Full Name
                   </label>
                   <input
                      type="text"
                      id="fullName"
-                     className="w-full px-4 py-2 border border-slate-400 rounded-lg"
+                     className="w-full px-4 py-2 border border-slate-400 dark:bg-dark dark:border-gray-1 rounded-lg disabled:text-gray-2 disabled:border-gray-2 disabled:placeholder:text-gray-2"
                      placeholder="Enter full name"
                      defaultValue={currentUser?.displayName || ''}
                      ref={nameRef}
@@ -141,13 +141,13 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
                </div>
 
                <div className="mb-4">
-                  <label htmlFor="email" className="block font-bold mb-2">
+                  <label htmlFor="email" className="block font-bold mb-2 text-dark dark:text-gray-1">
                      Email
                   </label>
                   <input
                      type="email"
                      id="email"
-                     className="w-full px-4 py-2 border border-slate-400 rounded-lg"
+                     className="w-full px-4 py-2 border border-slate-400 dark:bg-dark dark:border-gray-1 rounded-lg disabled:text-gray-2 disabled:border-gray-2 disabled:placeholder:text-gray-2"
                      placeholder="Enter email"
                      defaultValue={currentUser?.email || ''}
                      ref={emailRef}
@@ -157,13 +157,13 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
                </div>
 
                <div className="mb-4">
-                  <label htmlFor="new-password" className="block font-bold mb-2">
+                  <label htmlFor="new-password" className="block font-bold mb-2 text-dark dark:text-gray-1">
                      New Password
                   </label>
                   <input
                      type="password"
                      id="new-password"
-                     className="w-full px-4 py-2 border border-slate-400 rounded-lg"
+                     className="w-full px-4 py-2 border border-slate-400 dark:bg-dark dark:border-gray-1 rounded-lg disabled:text-gray-2 disabled:border-gray-2 disabled:placeholder:text-gray-2"
                      placeholder="Enter new password"
                      ref={newPassRef}
                      disabled={isLoading || currentUser?.emailVerified}
@@ -172,13 +172,13 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
                </div>
 
                <div className="mb-4">
-                  <label htmlFor="confirm-password" className="block font-bold mb-2">
+                  <label htmlFor="confirm-password" className="block font-bold mb-2 text-dark dark:text-gray-1">
                      Confirm Password
                   </label>
                   <input
                      type="password"
                      id="confirm-password"
-                     className="w-full px-4 py-2 border border-slate-400 rounded-lg"
+                     className="w-full px-4 py-2 border border-slate-400 dark:bg-dark dark:border-gray-1 rounded-lg disabled:text-gray-2 disabled:border-gray-2 disabled:placeholder:text-gray-2"
                      placeholder="Confirm new password"
                      ref={confirmPassRef}
                      disabled={isLoading || currentUser?.emailVerified}
@@ -206,28 +206,28 @@ const Account = ({ updatedInfo }: AccountPropTypes) => {
                <div ref={bottomRef}></div>
             </form>
          ) : (
-            <article id="account-info" className="w-full max-w-sm flex flex-col items-start gap-4 sm:gap-4 border-red-600">
+            <article id="account-info" className="w-full max-w-sm flex flex-col items-start gap-4 sm:gap-4">
                <button
                   onClick={handleEdit}
-                  className="py-1 px-2 sm:p-2 ml-auto sm:absolute sm:right-16 flex items-center gap-1 border border-black rounded-lg hover:bg-orange-50 active:bg-orange-100"
+                  className="py-1 px-2 sm:p-2 ml-auto sm:absolute sm:right-16 flex items-center gap-1 border border-black dark:text-gray-1 dark:border-gray-1 rounded-lg hover:bg-orange-50 active:bg-orange-100 dark:hover:bg-dark dark:active:bg-dark dark:hover:text-white dark:hover:border-white"
                >
-                  <img src={EditIcon} alt="edit-icon" className="size-5" />
+                  <img src={EditIcon} alt="edit-icon" className="size-5 dark:invert" />
                   Edit
                </button>
-               <section id="user-name" className="w-full px-4 py-1 sm:py-2 border border-slate-400 rounded-lg">
-                  <h1 className="font-bold">Full Name</h1>
-                  <p className="text-slate-700 truncate">{currentUser?.displayName || <em className="text-red-400">unknown</em>}</p>
+               <section id="user-name" className="w-full px-4 py-1 sm:py-2 border border-slate-400 dark:border-gray-2 rounded-lg">
+                  <h1 className="font-bold dark:text-gray-1">Full Name</h1>
+                  <p className="text-slate-700 dark:text-slate-400 truncate">{currentUser?.displayName || <em className="text-red-400">unknown</em>}</p>
                </section>
-               <section id="email" className="w-full px-4 py-1 sm:py-2 border border-slate-400 rounded-lg">
-                  <h1 className="font-bold">Email</h1>
-                  <p className="text-slate-700 truncate">{currentUser?.email || 'unknown'}</p>
+               <section id="email" className="w-full px-4 py-1 sm:py-2 border border-slate-400 dark:border-gray-2 rounded-lg">
+                  <h1 className="font-bold dark:text-gray-1">Email</h1>
+                  <p className="text-slate-700 dark:text-slate-400 truncate">{currentUser?.email || 'unknown'}</p>
                </section>
-               <section id="password" className="w-full px-4 py-1 sm:py-2 border border-slate-400 rounded-lg">
-                  <h1 className="font-bold">Password</h1>
-                  <p className="text-slate-700 truncate">{'*'.repeat(8)}</p>
+               <section id="password" className="w-full px-4 py-1 sm:py-2 border border-slate-400 dark:border-gray-2 rounded-lg">
+                  <h1 className="font-bold dark:text-gray-1">Password</h1>
+                  <p className="text-slate-700 dark:text-slate-400 truncate">{'*'.repeat(8)}</p>
                </section>
                <section id="delete-account" className="w-full mt-8 flex">
-                  <button onClick={handleDeleteAccount} className="mx-auto px-6 py-2 text-sm sm:text-base text-white bg-red-700 hover:bg-red-600 active:bg-red-800 rounded-md">
+                  <button onClick={handleDeleteAccount} className="mx-auto w-full px-6 py-2 text-sm sm:text-base text-white bg-red-700 hover:bg-red-600 active:bg-red-800 rounded-md">
                      Delete my account
                   </button>
                </section>

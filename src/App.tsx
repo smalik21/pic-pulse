@@ -11,7 +11,7 @@ import PasswordReset from "./pages/PasswordReset"
 export default function App() {
 
    return (
-      <div className="min-h-dvh max-w-screen-2xl font-body bg-light">
+      <div className="min-h-dvh max-w-screen-2xl font-body dark:text-white bg-light dark:bg-dark">
          <Router>
             <Routes>
                <Route element={<PrivateWrapper />}>

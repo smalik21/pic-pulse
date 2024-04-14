@@ -40,12 +40,12 @@ const UserPage = () => {
 
    return (
       <>
-         <header id="authHeader" className="py-3 p-2 sm:p-4 text-white bg-heroSection bg-cover">
+         <header id="authHeader" className="py-3 p-2 sm:p-4 text-white bg-heroSection bg-cover dark:shadow-none dark:border-b border-gray-700">
             <section className="w-full flex justify-between">
                <PageTitle />
                <button
                   onClick={handleLogoutClick}
-                  className="px-3 pl-2 sm:px-4 sm:pl-3 py-1 sm:py-2 text-xs sm:text-sm flex items-center gap-1 rounded-md text-white border border-white hover:border-none hover:bg-red-600 active:bg-red-800"
+                  className="px-3 pl-2 sm:px-4 sm:pl-3 py-1 sm:py-2 text-xs sm:text-sm flex items-center gap-1 rounded-md text-white border border-white hover:border-red-600 hover:bg-red-600 active:bg-red-800"
                >
                   <img src={LogoutIcon} alt="logout-icon" className="invert size-5" />
                   Logout
@@ -77,8 +77,8 @@ const UserPage = () => {
                      <NavLink
                         to={`/user/saved`}
                         className={({ isActive }) =>
-                           `block px-4 py-2 text-sm sm:text-base sm:px-6 sm:py-3 font-semibold border border-b-0 border-dark rounded-t-lg
-                           ${isActive ? 'text-white bg-dark' : ''
+                           `block px-4 py-2 text-sm sm:text-base sm:px-6 sm:py-3 font-semibold border border-b-0 border-dark dark:border-gray-2 rounded-t-lg
+                           ${isActive ? 'text-white bg-dark dark:text-dark dark:bg-gray-1' : ''
                            }`
                         }
                      >
@@ -89,8 +89,8 @@ const UserPage = () => {
                      <NavLink
                         to={`/user/account`}
                         className={({ isActive }) =>
-                           `block px-4 py-2 text-sm sm:text-base sm:px-6 sm:py-3 font-semibold border border-b-0 border-dark rounded-t-lg
-                           ${isActive ? 'text-white bg-dark' : ''
+                           `block px-4 py-2 text-sm sm:text-base sm:px-6 sm:py-3 font-semibold border border-b-0 border-dark dark:border-gray-2 rounded-t-lg
+                           ${isActive ? 'text-white bg-dark dark:text-dark dark:bg-gray-1' : ''
                            }`
                         }
                      >

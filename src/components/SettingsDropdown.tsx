@@ -76,19 +76,19 @@ function SettingsDropdown() {
 
          {/* Dropdown menu */}
          {isOpen && (
-            <section id="dropdownHover" className="absolute right-0 mt-4 mr-3 sm:mr-6 text-black bg-light dark:bg-dark border border-black rounded-md">
-               <ul className="w-44 sm:w-48 text-sm divide-y divide divide-slate-400">
+            <section id="dropdownHover" className="absolute right-0 mt-4 mr-3 sm:mr-6 text-black bg-light dark:text-light dark:bg-dark border border-black dark:border-gray-700 rounded-md">
+               <ul className="w-44 sm:w-48 text-sm divide-y divide divide-slate-400 dark:divide-gray-700">
                   {isAuthenticated && (
                      <li>
-                        <a href="/user/saved" className="px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 flex items-center gap-2 hover:bg-slate-300 rounded-t-md">
-                           <img src={ProfileIcon} alt="profile-icon" className='size-5' />
+                        <a href="/user/saved" className="px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 flex items-center gap-2 hover:bg-slate-300 dark:hover:bg-black rounded-t-md">
+                           <img src={ProfileIcon} alt="profile-icon" className='size-5 dark:invert' />
                            Profile
                         </a>
                      </li>
                   )}
                   <li>
                      <div className="px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 flex items-center gap-2 cursor-default">
-                        <img src={SafeIcon} alt="safe-icon" className='size-5' />
+                        <img src={SafeIcon} alt="safe-icon" className='size-5 dark:invert' />
                         SafeSearch
                         <input
                            type="checkbox"
@@ -106,7 +106,7 @@ function SettingsDropdown() {
                   </li>
                   <li>
                      <div className="px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 flex items-center gap-2 cursor-default">
-                        <img src={DarkModeIcon} alt="dark-mode-icon" className='size-5' />
+                        <img src={DarkModeIcon} alt="dark-mode-icon" className='size-5 dark:invert' />
                         Dark Mode
                         <input
                            type="checkbox"
@@ -126,7 +126,7 @@ function SettingsDropdown() {
                   {isAuthenticated && (
                      <li>
                         <button onClick={handleLogoutClick} className="group w-full text-left flex items-center gap-2 px-2 sm:px-4 sm:pl-3 sm:gap-3 py-2 sm:py-3 hover:text-white hover:bg-red-600 rounded-b-md">
-                           <img src={LogoutIcon} alt="logout-icon" className='size-5 group-hover:invert' />
+                           <img src={LogoutIcon} alt="logout-icon" className='size-5 dark:invert group-hover:invert' />
                            Logout
                         </button>
                      </li>

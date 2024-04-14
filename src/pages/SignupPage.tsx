@@ -100,25 +100,25 @@ const SignupPage = () => {
    return (
       <>
          <AuthHeader />
-         <main className="w-full h-dvh flex justify-center items-center bg-blue-400 bg-heroSection">
+         <main className="w-full h-dvh flex justify-center items-center bg-heroSection">
             <form
                onSubmit={handleSubmit}
-               className="p-8 w-full max-w-sm mx-auto flex flex-col gap-6 text-dark bg-white rounded-lg"
+               className="p-8 w-full max-w-sm mx-auto flex flex-col gap-6 text-dark bg-white dark:bg-dark rounded-lg"
             >
-               <h1 className="font-bold text-center text-2xl">Sign Up</h1>
+               <h1 className="font-bold text-center dark:text-white text-2xl">Sign Up</h1>
                <section id="username-password-signup" className="gap-3 flex flex-col">
                   <div className="relative z-0 w-full group">
                      <input
                         type="text"
                         name="floating_name"
                         id="floating_name"
-                        className="block rounded-md py-3 px-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        className="block rounded-md py-3 px-4 w-full text-sm text-gray-900 dark:text-gray-100 bg-transparent border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 dark:focus:blue-400 peer"
                         placeholder=""
                         ref={nameRef}
                         disabled={loading || googleLoading}
                         required
                      />
-                     <label htmlFor="floating_name" className="ml-3 px-1 hover:cursor-text bg-white peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-2 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                     <label htmlFor="floating_name" className="ml-3 px-1 hover:cursor-text bg-white dark:bg-dark peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-2 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 dark:peer-focus:text-blue-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                         Name
                      </label>
                   </div>
@@ -127,13 +127,13 @@ const SignupPage = () => {
                         type="email"
                         name="floating_email"
                         id="floating_email"
-                        className="block rounded-md py-3 px-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        className="block rounded-md py-3 px-4 w-full text-sm text-gray-900 dark:text-gray-100 bg-transparent border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 dark:focus:blue-400 peer"
                         placeholder=""
                         ref={emailRef}
                         disabled={loading || googleLoading}
                         required
                      />
-                     <label htmlFor="floating_email" className="ml-3 px-1 hover:cursor-text bg-white peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-2 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                     <label htmlFor="floating_email" className="ml-3 px-1 hover:cursor-text bg-white dark:bg-dark peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-2 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 dark:peer-focus:text-blue-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                         Email address
                      </label>
                   </div>
@@ -142,13 +142,13 @@ const SignupPage = () => {
                         type="password"
                         name="floating_password"
                         id="floating_password"
-                        className="block rounded-md py-3 px-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        className="block rounded-md py-3 px-4 w-full text-sm text-gray-900 dark:text-gray-100 bg-transparent border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 dark:focus:blue-400 peer"
                         placeholder=""
                         ref={passRef}
                         disabled={loading || googleLoading}
                         required
                      />
-                     <label htmlFor="floating_password" className="ml-3 px-1 hover:cursor-text bg-white peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-2 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                     <label htmlFor="floating_password" className="ml-3 px-1 hover:cursor-text bg-white dark:bg-dark peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-2 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 dark:peer-focus:text-blue-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                         Password
                      </label>
                   </div>
@@ -157,13 +157,13 @@ const SignupPage = () => {
                         type="password"
                         name="repeat_password"
                         id="floating_repeat_password"
-                        className="block rounded-md py-3 px-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        className="block rounded-md py-3 px-4 w-full text-sm text-gray-900 dark:text-gray-100 bg-transparent border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 dark:focus:blue-400 peer"
                         placeholder=""
                         ref={confirmPassRef}
                         disabled={loading || googleLoading}
                         required
                      />
-                     <label htmlFor="floating_repeat_password" className="ml-3 px-1 hover:cursor-text bg-white peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-2 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                     <label htmlFor="floating_repeat_password" className="ml-3 px-1 hover:cursor-text bg-white dark:bg-dark peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-2 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 dark:peer-focus:text-blue-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                         Confirm password
                      </label>
                   </div>
@@ -188,16 +188,16 @@ const SignupPage = () => {
                </section>
                <div
                   id="section-seperator"
-                  className="mx-auto my-3 w-11/12 h-px bg-gray-300 flex justify-center
+                  className="mx-auto my-3 w-11/12 h-px bg-gray-300 dark:bg-gray-400 flex justify-center
                   before:content-['OR'] before:text-xs before:text-gray-400 before:flex before:size-fit before:px-2
-                  before:-mt-2  before:bg-white"
+                  before:-mt-2  before:bg-white dark:before:bg-dark"
                >
                </div>
                <section id="external-provider-signup" className="mb-2">
                   <button
                      type="button"
                      onClick={handleGoogleSignIn}
-                     className="w-full flex items-center p-2 sm:p-2.5 rounded-lg border text-sm text-gray-500 border-gray-500 hover:text-gray-800 hover:border-gray-800 active:cursor-default"
+                     className="w-full flex items-center p-2 sm:p-2.5 rounded-lg border text-sm text-gray-500 border-gray-500 hover:text-gray-800 hover:border-gray-800 dark:hover:text-gray-300 dark:hover:border-gray-300 active:cursor-default"
                      disabled={googleLoading}
                   >
                      <img src={GoogleIcon} alt="google-icon" className="absolute size-6" />

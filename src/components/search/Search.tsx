@@ -30,25 +30,25 @@ const Search = () => {
 
    return (
       <div id="search" className="w-full p-1 sms:p-0 flex gap-4 flex-col items-center">
-         <form id="search-bar" onSubmit={handleSubmit} className="px-1 py-1 sm:py-1.5 sm:pl-2 w-full text-black flex gap-2 items-center bg-light rounded-xl">
-            <div className="p-1 sm:pl-2 sm:gap-1 flex items-center text-xs sm:text-sm bg-gray-1 rounded-md">
+         <form id="search-bar" onSubmit={handleSubmit} className="px-1 py-1 sm:py-1.5 sm:pl-2 w-full text-black flex gap-2 items-center bg-light dark:bg-dark rounded-xl dark:border dark:border-gray-2">
+            <div className="p-1 sm:pl-2 sm:gap-1 flex items-center text-xs sm:text-sm bg-gray-1 dark:bg-dark dark:border border-gray-600 rounded-md">
                <img
-                  className="size-4 sm:size-5 absolute"
+                  className="size-4 sm:size-5 absolute dark:invert"
                   src={searchType === "photo" ? photosIcon : videosIcon}
                   alt={`${searchType}-icon`}
                />
                <select
                   id="search-type"
                   name="search-type"
-                  className="pl-5 py-0.5 rounded-md bg-transparent outline-none"
+                  className="pl-5 py-0.5 rounded-md bg-transparent outline-none dark:text-white"
                   value={searchType}
                   onChange={onSearchTypeChange}
                >
-                  <option className="text-black bg-gray-1" value="photo">Photos</option>
-                  <option className="text-black bg-gray-1" value="video">Videos</option>
+                  <option className="dark:text-white dark:bg-dark" value="photo">Photos</option>
+                  <option className="dark:text-white dark:bg-dark" value="video">Videos</option>
                </select>
             </div>
-            <input className="w-1/2 sm:pl-2 text-xs sm:text-lg grow bg-light outline-none"
+            <input className="w-1/2 pl-1 sm:pl-2 text-sm sm:text-lg grow bg-light dark:text-white dark:bg-dark dark:caret-white outline-none"
                id="search-input"
                placeholder="Search"
                type="text"

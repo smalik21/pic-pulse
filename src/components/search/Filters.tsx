@@ -30,21 +30,21 @@ const Filters = () => {
             id="filters-toggle"
             name="filters-toggle"
             type="checkbox"
-            className="peer appearance-none md:hidden px-3 py-1.5 border border-black rounded-md flex
+            className="peer appearance-none md:hidden px-3 py-1.5 border border-black dark:border-white rounded-md flex
                             before:inline-block before:content-['FILTERS'] before:text-xs before:sm:text-sm
-                            checked:before:text-white checked:bg-dark"
+                            checked:before:text-white checked:bg-dark dark:checked:before:text-dark dark:checked:bg-white"
          />
          <section className="hidden peer-checked:flex md:flex items-baseline mt-4 pb-1 md:p-0 md:m-0 w-full md:w-fit overflow-x-scroll no-scrollbar gap-3 sm:gap-6 xs:justify-center">
             {filters.map(filter => {
                if (type === "video" && !filter.video) return
                return (
                   <article key={filter.name} className="flex flex-col items-center gap-2">
-                     <label className="text-xs sm:text-sm font-bold text-gray-500">{filter.name}</label>
-                     <div className="w-fit text-xs sm:text-sm flex items-center border border-black rounded-md">
+                     <label className="text-xs sm:text-sm font-bold text-gray-500 dark:text-gray-1">{filter.name}</label>
+                     <div className="w-fit text-xs sm:text-sm flex items-center border border-black dark:border-gray-2 rounded-md">
                         <select
                            id={filter.name}
                            name={filter.parameter}
-                           className="px-3 py-1.5 text-xs sm:text-sm rounded-md bg-transparent outline-none"
+                           className="px-3 py-1.5 text-xs sm:text-sm dark:text-white dark:bg-dark rounded-md bg-transparent outline-none"
                            onChange={handleParameterChange}
                            value={filter.value}
                         >

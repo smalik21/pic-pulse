@@ -48,10 +48,10 @@ const PasswordReset = () => {
    return (
       <>
          <DefaultHeader />
-         <main className="w-full h-dvh flex justify-center items-center bg-blue-400 bg-heroSection">
+         <main className="w-full h-dvh flex justify-center items-center bg-heroSection">
             <form
                onSubmit={handleSubmit}
-               className="p-8 w-full max-w-sm mx-auto flex flex-col items-center gap-5 text-dark bg-white rounded-lg"
+               className="p-8 w-full max-w-sm mx-auto flex flex-col items-center gap-5 text-dark dark:text-white bg-white dark:bg-dark rounded-lg"
             >
                <h1 className="mb-4 font-bold text-center text-2xl">Reset Password</h1>
                <div className="relative z-0 w-full group">
@@ -59,13 +59,13 @@ const PasswordReset = () => {
                      type="email"
                      name="email"
                      id="email"
-                     className="block rounded-md py-3 px-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                     className="block rounded-md py-3 px-4 w-full text-sm text-gray-900 dark:text-gray-100 bg-transparent border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                      placeholder=""
                      ref={emailRef}
                      disabled={loading}
                      required
                   />
-                  <label htmlFor="email" className="ml-3 px-1 hover:cursor-text bg-white peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-2 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                  <label htmlFor="email" className="ml-3 px-1 hover:cursor-text bg-white dark:bg-dark peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 z-2 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                      Email
                   </label>
                </div>

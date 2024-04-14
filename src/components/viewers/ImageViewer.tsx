@@ -124,7 +124,7 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
 
    return (
       <div id="emptySpace" className="h-dvh w-full top-0 fixed flex flex-col justify-start items-center bg-black bg-opacity-90 z-10">
-         <article id="imageViewer" className="w-full max-h-full mt-24 sm:mt-12 sm:w-2/3 rounded-xl overflow-y-scroll thin-scrollbar bg-light">
+         <article id="imageViewer" className="w-full max-h-full mt-24 sm:mt-12 sm:w-2/3 rounded-xl overflow-y-scroll thin-scrollbar bg-light dark:bg-dark dark:border border-gray-700">
             <span className="absolute -mt-12 sm:mt-0 sm:-ml-16">
                <button onClick={handleClose} className="size-10 opacity-80 hover:opacity-100 active:opacity-80">
                   <img src={CloseIcon} alt="close-icon" />
@@ -134,12 +134,12 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
                <section className="w-full flex flex-row justify-between">
                   {(saved)
                      ? (
-                        <button id="bookmark-filled" onClick={handleRemove} disabled={removing} className="size-8 sm:size-10 invert opacity-80 hover:opacity-100 active:opacity-80 disabled:cursor-wait">
+                        <button id="bookmark-filled" onClick={handleRemove} disabled={removing} className="size-8 sm:size-10 invert dark:invert-0 opacity-80 hover:opacity-100 active:opacity-80">
                            <img src={BookmarkFilledIcon} alt="bookmark-filled-icon" />
                         </button>
                      )
                      : (
-                        <button id="bookmark" onClick={handleSave} disabled={saving} className="size-8 sm:size-10 invert opacity-80 hover:opacity-100 active:opacity-80 disabled:cursor-wait">
+                        <button id="bookmark" onClick={handleSave} disabled={saving} className="size-8 sm:size-10 invert dark:invert-0 opacity-80 hover:opacity-100 active:opacity-80">
                            <img src={BookmarkIcon} alt="bookmark-icon" />
                         </button>
                      )
@@ -156,7 +156,7 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
                   <img
                      src={image?.imageURL}
                      alt="image"
-                     className="object-contain w-full h-full"
+                     className="object-contain w-full h-full dark:border border-gray-700"
                   />
                </figure>
                <aside className="w-full mt-4 mb-8 flex flex-col xs:flex-row gap-4 items-center">

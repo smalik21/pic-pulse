@@ -8,6 +8,7 @@ import { useFile } from "../../hooks/useFile"
 import { useAuth } from "../../hooks/useAuth"
 import { toast } from "react-toastify"
 import Spinner from "../Spinner"
+import { useAlert } from "../../hooks/useAlert"
 
 type VideoViewerPropTypes = {
    video: videoType | undefined,
@@ -20,8 +21,10 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
    const [saving, setSaving] = useState<boolean>(false)
    const [removing, setRemoving] = useState<boolean>(false)
    const [downloading, setDownloading] = useState<boolean>(false)
+
    const { files, addFile, deleteFile } = useFile()
    const { isAuthenticated } = useAuth()
+   const { onError } = useAlert()
 
    const handleClose = () => setShowVideoViewer(false)
 
@@ -35,7 +38,11 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
                setSaved(true)
                resolve()
             })
-            .catch(() => reject())
+            .catch((error) => {
+               if (!isAuthenticated) onError('User needs to be logged in')
+               else onError(error)
+               reject()
+            })
             .finally(() => setSaving(false))
       })
 
@@ -44,7 +51,6 @@ const VideoViewer = ({ video, setShowVideoViewer }: VideoViewerPropTypes) => {
          {
             pending: 'Saving video...',
             success: 'Video saved succesfully!',
-            error: (isAuthenticated) ? 'Error saving file' : 'User needs to be logged in'
          }
       )
    }

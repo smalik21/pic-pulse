@@ -8,6 +8,7 @@ import BookmarkFilledIcon from "../../assets/bookmark-filled-icon.svg"
 import { useAuth } from "../../hooks/useAuth"
 import { toast } from "react-toastify"
 import Spinner from "../Spinner"
+import { useAlert } from "../../hooks/useAlert"
 
 type ImageViewerPropTypes = {
    image: imageType | undefined,
@@ -23,6 +24,7 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
 
    const { isAuthenticated } = useAuth()
    const { files, addFile, deleteFile } = useFile()
+   const { onError } = useAlert()
 
    const handleClose = () => setShowImageViewer(false)
 
@@ -36,7 +38,11 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
                setSaved(true)
                resolve()
             })
-            .catch(() => reject())
+            .catch((error) => {
+               if (!isAuthenticated) onError('User needs to be logged in')
+               else onError(error)
+               reject()
+            })
             .finally(() => setSaving(false))
       })
 
@@ -45,7 +51,6 @@ const ImageViewer = ({ image, setShowImageViewer }: ImageViewerPropTypes) => {
          {
             pending: 'Saving image...',
             success: 'Image saved succesfully!',
-            error: (isAuthenticated) ? 'Error saving file' : 'User needs to be logged in'
          }
       )
    }
